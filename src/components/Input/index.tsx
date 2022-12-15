@@ -1,4 +1,3 @@
-function Input() {
-    
-}
-export default Input
+function Input() {}
+
+export default Input;

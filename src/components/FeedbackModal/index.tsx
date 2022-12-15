@@ -1,4 +1,3 @@
-function FeedbackModal() {
-    
-}
-export default FeedbackModal
+function FeedbackModal() {}
+
+export default FeedbackModal;

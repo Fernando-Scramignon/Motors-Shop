@@ -1,4 +1,3 @@
-function Comments() {
-    
-}
-export default Comments
+function Comments() {}
+
+export default Comments;

@@ -1,4 +1,3 @@
-function UserCardInfo() {
-    
-}
-export default UserCardInfo
+function UserCardInfo() {}
+
+export default UserCardInfo;

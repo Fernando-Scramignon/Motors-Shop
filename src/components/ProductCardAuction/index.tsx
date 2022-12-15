@@ -1,4 +1,3 @@
-function ProductCardAuction() {
-    
-}
-export default ProductCardAuction
+function ProductCardAuction() {}
+
+export default ProductCardAuction;
