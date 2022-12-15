@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export const Router = () => {
+function Router (){
 	return (
 		<Routes>
 			<>
@@ -18,3 +18,5 @@ export const Router = () => {
 		</Routes>
 	);
 };
+
+export default Router
