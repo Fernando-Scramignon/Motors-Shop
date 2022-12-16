@@ -1,4 +1,3 @@
-function ProductCardAuctinList() {
-    
-}
-export default ProductCardAuctinList
+function ProductCardAuctinList() {}
+
+export default ProductCardAuctinList;
