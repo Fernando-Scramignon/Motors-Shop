@@ -1,4 +1,3 @@
-function Header() {
-    
-}
-export default Header
+function Header() {}
+
+export default Header;

@@ -1,4 +1,3 @@
-function ProductCardList() {
-    
-}
-export default ProductCardList
+function ProductCardList() {}
+
+export default ProductCardList;

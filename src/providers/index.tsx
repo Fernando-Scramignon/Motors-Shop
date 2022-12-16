@@ -1,4 +1,3 @@
-function Providers() {
-    
-}
-export default Providers
+function Providers() {}
+
+export default Providers;
