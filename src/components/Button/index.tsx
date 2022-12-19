@@ -1,4 +1,4 @@
-import { ButtonProps, StyledButton } from "./style";
+import { IButtonProps, StyledButton } from "./style";
 
 function Button({
     children,
@@ -11,7 +11,7 @@ function Button({
     color,
     hover,
     size,
-}: ButtonProps) {
+}: IButtonProps) {
     return (
         <StyledButton
             type={type}

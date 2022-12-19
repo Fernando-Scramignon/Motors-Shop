@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import styled from "styled-components";
 
-export interface ButtonProps {
+export interface IButtonProps {
     children: ReactNode;
     onFunction?: () => void;
     type?: "button" | "submit" | "reset";
@@ -18,7 +18,7 @@ export interface ButtonProps {
     size: "big" | "small";
 }
 
-export const StyledButton = styled.button<ButtonProps>`
+export const StyledButton = styled.button<IButtonProps>`
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
