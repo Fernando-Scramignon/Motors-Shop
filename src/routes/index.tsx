@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Router() {
-
     return (
         <Routes>
             <>
