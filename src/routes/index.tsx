@@ -1,7 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import { toast } from "react-toastify";
+import Button from "../components/Button";
 
 function Router() {
+    function name() {
+        console.log("olá");
+        return console.log("oii");
+    }
     return (
         <Routes>
             <>
@@ -9,7 +14,7 @@ function Router() {
                     path="/"
                     element={
                         <div>
-                            <h1>Olá, mundo!</h1>
+                            oii
                         </div>
                     }
                 />
