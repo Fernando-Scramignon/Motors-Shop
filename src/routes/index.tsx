@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import { toast } from "react-toastify";
-import Button from "../components/Button";
 
 function Router() {
 
@@ -11,7 +10,7 @@ function Router() {
                     path="/"
                     element={
                         <div>
-                            oii
+                            <h1>Olá, mundo!</h1>
                         </div>
                     }
                 />
