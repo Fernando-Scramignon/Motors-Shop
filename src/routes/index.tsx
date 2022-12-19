@@ -3,10 +3,7 @@ import { toast } from "react-toastify";
 import Button from "../components/Button";
 
 function Router() {
-    function name() {
-        console.log("olá");
-        return console.log("oii");
-    }
+
     return (
         <Routes>
             <>
