@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { StyledModal } from "./style";
 import closeIcon from "../../assets/x_modal.png";
 
-interface FeedbackModalProps {
+interface IFeedbackModalProps {
     state: boolean;
     setState: React.Dispatch<React.SetStateAction<boolean>>;
     children: React.ReactNode;
@@ -17,7 +17,7 @@ function FeedbackModal({
     setState,
     children,
     title,
-}: FeedbackModalProps) {
+}: IFeedbackModalProps) {
     return (
         <Modal
             isOpen={state}
