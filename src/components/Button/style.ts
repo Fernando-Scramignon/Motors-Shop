@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ReactNode } from "react";
 import styled from "styled-components";
 
 export interface IButtonProps {
@@ -19,6 +19,8 @@ export interface IButtonProps {
 }
 
 export const StyledButton = styled.button<IButtonProps>`
+    font-family: "Inter";
+    font-style: normal;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
