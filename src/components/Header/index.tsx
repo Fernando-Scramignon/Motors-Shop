@@ -10,7 +10,7 @@ import Button from "../Button";
 import { useState, useEffect } from "react";
 
 function Header() {
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
     const [isAuthenticated, setIsAuthenticated] = useState(true);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -19,7 +19,7 @@ function Header() {
     }
 
     function handleResize() {
-        if (window.innerWidth >= 1024) {
+        if (window.innerWidth >= 768) {
             return setIsDesktop(true);
         }
         return setIsDesktop(false);

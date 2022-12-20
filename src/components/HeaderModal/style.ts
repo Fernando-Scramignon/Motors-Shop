@@ -40,10 +40,6 @@ export const StyledMobileHeaderModal = styled.div`
 
         padding: 32px 16px;
 
-        button {
-            max-width: 400px;
-        }
-
         span {
             align-self: start;
 
