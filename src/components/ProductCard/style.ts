@@ -10,6 +10,15 @@ export const StyledProductCard = styled.div`
     gap: 16px;
     width: 312px;
     max-width: 312px;
+
+    &:hover .containerImg {
+        border: 2px solid var(--brand-1);
+    }
+
+    &:hover .activity {
+        top: 9px;
+        left: 14px;
+    }
 `;
 
 export const StyledImage = styled.div`
@@ -18,8 +27,9 @@ export const StyledImage = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* Para usar o absolute  */
+    position: relative;
     background-color: var(--grey-7);
+
     > img {
         width: 262px;
         height: 150px;
@@ -43,7 +53,6 @@ export const StyledActivity = styled.p`
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
-
     color: var(--white-fixed);
 `;
 
@@ -91,9 +100,7 @@ export const StyledUsername = styled.div`
         min-width: 32px;
         width: 32px;
         height: 32px;
-        background-color: var(
-            ${"--random-" + Math.floor(Math.random() * 12 + 1)}
-        );
+        background-color: ${({ background }: IThemeProps) => background};
         border-radius: 150px;
         color: var(--white-fixed);
     }
@@ -114,6 +121,7 @@ export const StyledDetails = styled.div`
     > div {
         display: flex;
         gap: 12px;
+
         > p {
             display: flex;
             flex-direction: row;
@@ -127,7 +135,7 @@ export const StyledDetails = styled.div`
             font-style: normal;
             font-weight: 500;
             font-size: 14px;
-            color: #4529e6;
+            color: var(--brand-1);
         }
     }
 
@@ -143,6 +151,7 @@ export const StyledDetails = styled.div`
 export const StyledAdvertiseButtons = styled.div`
     display: flex;
     gap: 16px;
+
     > button {
         display: flex;
         justify-content: center;

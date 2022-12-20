@@ -28,8 +28,6 @@ interface IProductCardProps {
 }
 
 function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
-    // ADICIONAR HOVERS
-
     const {
         cover_image,
         title,
@@ -43,6 +41,7 @@ function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
     const [initialLetters, setInitialLetters] = useState<string>("");
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
 
+    // Adicionar dependencia futuramente, provavelmente o product
     useEffect(() => {
         setInitialLetters(
             username
@@ -57,15 +56,20 @@ function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
 
     return (
         <StyledProductCard>
-            {/* Mudar isso aqui */}
-            <StyledImage>
+            <StyledImage className="containerImg">
                 {showActivity ? (
                     published ? (
-                        <StyledActivity background="var(--brand-1)">
+                        <StyledActivity
+                            className="activity"
+                            background="var(--brand-1)"
+                        >
                             Ativo
                         </StyledActivity>
                     ) : (
-                        <StyledActivity background="var(--grey-4)">
+                        <StyledActivity
+                            className="activity"
+                            background="var(--grey-4)"
+                        >
                             Inativo
                         </StyledActivity>
                     )
@@ -76,7 +80,11 @@ function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
             </StyledImage>
             <StyledTitle>{title}</StyledTitle>
             <StyledDescription>{description}</StyledDescription>
-            <StyledUsername>
+            <StyledUsername
+                background={`var(${
+                    "--random-" + Math.floor(Math.random() * 12 + 1)
+                })`}
+            >
                 <span>{initialLetters}</span>
                 <p>{username}</p>
             </StyledUsername>
