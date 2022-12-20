@@ -4,7 +4,7 @@ import colorizedLogo from "../../assets/motorsShopColor.svg";
 import bars from "../../assets/bars.svg";
 import xMark from "../../assets/xMark.svg";
 
-import MobileHeaderModal from "../MobileHeaderModal";
+import HeaderModal from "../HeaderModal";
 import Button from "../Button";
 
 import { useState, useEffect } from "react";
@@ -101,7 +101,7 @@ function Header() {
                 )}
             </StyledHeader>
             {modalIsOpen && (
-                <MobileHeaderModal
+                <HeaderModal
                     isDesktop={isDesktop}
                     alternateModalIsOpen={alternateModalIsOpen}
                 />
