@@ -66,24 +66,15 @@ export const DesktopMenu = styled.section<IDesktopMenuProps>`
         font-size: 16px;
         font-family: "Inter", sans-serif;
         font-weight: 600;
-
-        button {
-            border: 1px solid black;
-            padding: 7px 20px;
-
-            background: none;
-            color: var(--grey-0);
-
-            font-size: 16px;
-            font-family: "Inter", sans-serif;
-            font-weight: 600;
-        }
     }
 
     .desktopMenu__profile {
         display: flex;
+        justify-content: center;
         align-items: center;
         gap: 8px;
+
+        min-width: 205px;
 
         cursor: pointer;
 
