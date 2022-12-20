@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import {
+    StyledActivity,
+    StyledAdvertiseButtons,
     StyledDescription,
     StyledDetails,
     StyledImage,
@@ -16,13 +18,18 @@ interface IProductCard {
     km: number;
     year: number;
     price: number;
+    published: boolean;
 }
 
 interface IProductCardProps {
-    productData: IProductCard;
+    product: IProductCard;
+    showActivity: boolean;
+    advertise: boolean;
 }
 
-function ProductCard({ productData }: IProductCardProps) {
+function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
+    // ADICIONAR HOVERS
+
     const {
         cover_image,
         title,
@@ -31,7 +38,8 @@ function ProductCard({ productData }: IProductCardProps) {
         km,
         year,
         price,
-    }: IProductCard = productData;
+        published,
+    }: IProductCard = product;
     const [initialLetters, setInitialLetters] = useState<string>("");
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
 
@@ -51,6 +59,19 @@ function ProductCard({ productData }: IProductCardProps) {
         <StyledProductCard>
             {/* Mudar isso aqui */}
             <StyledImage>
+                {showActivity ? (
+                    published ? (
+                        <StyledActivity background="var(--brand-1)">
+                            Ativo
+                        </StyledActivity>
+                    ) : (
+                        <StyledActivity background="var(--grey-4)">
+                            Inativo
+                        </StyledActivity>
+                    )
+                ) : (
+                    <></>
+                )}
                 <img src={cover_image} alt="Imagem de Capa" />
             </StyledImage>
             <StyledTitle>{title}</StyledTitle>
@@ -71,6 +92,12 @@ function ProductCard({ productData }: IProductCardProps) {
                     })}
                 </p>
             </StyledDetails>
+            {advertise && (
+                <StyledAdvertiseButtons>
+                    <button>Editar</button>
+                    <button>Ver como</button>
+                </StyledAdvertiseButtons>
+            )}
         </StyledProductCard>
     );
 }

@@ -11,6 +11,7 @@ let data = {
     km: 0,
     year: 2007,
     price: 5000075,
+    published: true,
 };
 
 function Router() {
@@ -27,7 +28,16 @@ function Router() {
                 />
                 {toast.success("Olá, mundo!")}
             </> */}
-            <Route path="/" element={<ProductCard productData={data} />} />
+            <Route
+                path="/"
+                element={
+                    <ProductCard
+                        product={data}
+                        showActivity={true}
+                        advertise={false}
+                    />
+                }
+            />
         </Routes>
     );
 }

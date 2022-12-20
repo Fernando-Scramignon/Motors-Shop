@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface IThemeProps {
+    background?: string;
+}
+
 export const StyledProductCard = styled.div`
     display: flex;
     flex-direction: column;
@@ -14,11 +18,33 @@ export const StyledImage = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative; /* Para usar o absolute  */
     background-color: var(--grey-7);
     > img {
         width: 262px;
         height: 150px;
     }
+`;
+
+export const StyledActivity = styled.p`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    position: absolute;
+    top: 11px;
+    left: 16px;
+    width: 51px;
+    height: 24px;
+    padding: 0px 8px;
+    background-color: ${({ background }: IThemeProps) => background};
+
+    font-family: "Inter", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+
+    color: var(--white-fixed);
 `;
 
 export const StyledTitle = styled.h6`
@@ -110,6 +136,26 @@ export const StyledDetails = styled.div`
         font-style: normal;
         font-weight: 500;
         font-size: 16px;
+        color: var(--grey-1);
+    }
+`;
+
+export const StyledAdvertiseButtons = styled.div`
+    display: flex;
+    gap: 16px;
+    > button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 20px;
+        border: 1.5px solid var(--grey-1);
+        border-radius: 4px;
+        background-color: transparent;
+
+        font-family: "Inter", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
         color: var(--grey-1);
     }
 `;
