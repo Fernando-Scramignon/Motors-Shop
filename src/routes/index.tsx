@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import ProfileViewUser from "../pages/ProfileViewUser";
-import { toast } from "react-toastify";
 
 function Router() {
     return (
