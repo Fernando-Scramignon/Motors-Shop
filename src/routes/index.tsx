@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
+import ProfileViewUser from "../pages/ProfileViewUser";
 import { toast } from "react-toastify";
 
 function Router() {
-
     return (
         <Routes>
             <>
@@ -14,7 +14,7 @@ function Router() {
                         </div>
                     }
                 />
-                {toast.success("Olá, mundo!")}
+                <Route path="/profileViewUser" element={<ProfileViewUser />} />
             </>
         </Routes>
     );
