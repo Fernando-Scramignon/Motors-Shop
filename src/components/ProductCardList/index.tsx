@@ -11,7 +11,7 @@ interface IProductCard {
     year: number;
     price: number;
     published: boolean;
-    vehicle_type: string;
+    vehicle_type: "Carro" | "Moto";
 }
 
 interface IProductCardListProps {
