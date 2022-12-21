@@ -6,7 +6,7 @@ export interface IDesktopMenuProps {
 
 export const StyledHeader = styled.header`
     height: 80px;
-    width: 100vw;
+    width: 100%;
     min-width: 320px;
 
     padding: 0px 4.3%;
