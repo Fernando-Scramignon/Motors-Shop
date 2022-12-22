@@ -10,7 +10,9 @@ function Footer() {
             <FooterParagraph>
                 © 2022 - Todos os direitos reservados.
             </FooterParagraph>
-            <GoUpButton>
+            <GoUpButton
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
                 <img src={angleUp} />
             </GoUpButton>
         </StyledFooter>

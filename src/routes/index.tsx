@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import ProductPage from "../pages/Product";
 import ProfileViewUser from "../pages/ProfileViewUser";
+import ProfileViewAdmin from "../pages/ProfileViewAdmin";
 
 let product = {
     id: "1",
@@ -41,6 +42,10 @@ function Router() {
                     }
                 />
                 <Route path="/profileViewUser" element={<ProfileViewUser />} />
+                <Route
+                    path="/profileViewAdmin"
+                    element={<ProfileViewAdmin />}
+                  />
                 <Route
                     path="/product"
                     element={<ProductPage product={product} />}
