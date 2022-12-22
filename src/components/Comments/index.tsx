@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
 import {
     StyledComment,
     StyledCommentInput,
     StyledComments,
     StyledCommentsDiv,
     StyledForm,
+    StyledSuggestions,
     StyledUsername,
 } from "./style";
-import TextArea from "../TextArea/index";
 
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { useForm } from "react-hook-form";
+// import * as yup from "yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
 
 interface IUserComment {
     username: string;
@@ -36,9 +35,9 @@ interface IDataComment {
 }
 
 function Comments({ comments, user }: ICommentsProps) {
-    // O TEXT AREA JA ESTÁ FEITO
+    // const [textAreaValue, setTextAreaValue] = useState("");
 
-    const formSchema = yup.object().shape({
+    /* const formSchema = yup.object().shape({
         comment: yup.string().required("Comentário obrigatório"),
     });
 
@@ -50,7 +49,7 @@ function Comments({ comments, user }: ICommentsProps) {
         resolver: yupResolver(formSchema),
     });
 
-    /* function onSubmitFunction(data: IDataComment): SubmitHandler<FieldValues> {
+    function onSubmitFunction(data: IDataComment): SubmitHandler<FieldValues> {
         console.log(data);
     } */
 
@@ -114,6 +113,15 @@ function Comments({ comments, user }: ICommentsProps) {
                     </label>
                     <button type="submit">Comentar</button>
                 </StyledForm> */}
+                <StyledForm>
+                    <textarea placeholder="Automóvel muito confortável, foi uma ótima experiência de compra..." />
+                    <button type="button">Comentar</button>
+                </StyledForm>
+                <StyledSuggestions>
+                    <p>Gostei muito!</p>
+                    <p>Incrível</p>
+                    <p>Recomendarei para meus amigos!</p>
+                </StyledSuggestions>
             </StyledCommentInput>
         </StyledCommentsDiv>
     );

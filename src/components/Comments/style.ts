@@ -97,6 +97,11 @@ export const StyledCommentInput = styled.div`
 `;
 
 export const StyledForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    position: relative;
     > button {
         display: flex;
         justify-content: center;
@@ -113,5 +118,73 @@ export const StyledForm = styled.form`
         font-weight: 600;
         font-size: 14px;
         color: var(--white-fixed);
+    }
+
+    textarea {
+        padding: 8px 16px;
+        height: 128px;
+        color: var(--grey-2);
+        font-family: "Inter";
+        font-style: normal;
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 16px;
+        resize: none;
+        border: 2px solid var(--grey-7);
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        &:hover {
+            border: 2px solid var(--grey-8);
+            background-color: var(--grey-8);
+        }
+
+        &:focus {
+            border: 2px solid var(--brand-2);
+            background-color: transparent;
+            outline: none;
+        }
+
+        &::placeholder {
+            color: var(--gray-3);
+            font-size: 16px;
+            font-weight: 400;
+        }
+    }
+
+    @media (min-width: 1440px) {
+        > button {
+            position: absolute;
+            bottom: 13px;
+            right: 11px;
+        }
+        > textarea {
+            padding-right: 20%;
+        }
+    }
+`;
+
+export const StyledSuggestions = styled.div`
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    > p {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0px 12px;
+        height: 24px;
+        background: var(--grey-7);
+        border-radius: 24px;
+
+        font-family: "Inter", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        color: var(--grey-3);
     }
 `;

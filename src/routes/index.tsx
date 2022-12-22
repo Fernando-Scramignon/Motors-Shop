@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { toast } from "react-toastify";
+import ProductPage from "../pages/Product";
+import ProfileViewUser from "../pages/ProfileViewUser";
 import Comments from "../components/Comments";
 
 let data = [
@@ -36,19 +38,30 @@ let data = [
 function Router() {
     return (
         <Routes>
-            {/* <>
-                <Route path="/" element={<h1>olá mundo</h1>} />
-                {toast.success("Olá, mundo!")}
-            </> */}
-            <Route
-                path="/"
-                element={
-                    <Comments
-                        comments={data}
-                        user={{ username: "Luccas Queiroz" }}
-                    />
-                }
-            />
+            <>
+                <Route
+                    path="/"
+                    element={
+                        <div>
+                            <h1>Olá, mundo!</h1>
+                        </div>
+                    }
+                />
+                <Route path="/profileViewUser" element={<ProfileViewUser />} />
+                <Route
+                    path="/product"
+                    // element={<ProductPage product={data} />}
+                />
+                <Route
+                    path="/comments"
+                    element={
+                        <Comments
+                            comments={data}
+                            user={{ username: "Luccas Queiroz" }}
+                        />
+                    }
+                />
+            </>
         </Routes>
     );
 }
