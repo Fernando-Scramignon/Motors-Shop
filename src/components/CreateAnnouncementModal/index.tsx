@@ -9,6 +9,7 @@ import { StyledModalCreate } from "./style";
 import closeIcon from "../../assets/x_modal.png";
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../providers/product";
+import FeedbackModal from "../FeedbackModal";
 
 Modal.setAppElement("#root");
 
@@ -45,6 +46,7 @@ function ModalCreateAnnouncement({
     const [vehicle_type, setVehicle_type] = useState("Carro");
     const [announcement_type, setAnnouncement_type] = useState("Venda");
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
+    const [sucess, setSucess] = useState(false);
     const { createProduct } = useContext(ProductContext);
 
     function handleResize() {
@@ -99,6 +101,7 @@ function ModalCreateAnnouncement({
         handleSubmit,
         formState: { errors },
         watch,
+        reset,
     } = useForm({
         resolver: yupResolver(formSchema),
     });
@@ -111,7 +114,7 @@ function ModalCreateAnnouncement({
         );
     }
 
-    function registerProduct(data: any) {
+    async function registerProduct(data: any) {
         const RequestData = {
             title: data.title,
             year: data.year,
@@ -125,328 +128,352 @@ function ModalCreateAnnouncement({
             images: [data.images],
         };
 
-        createProduct(RequestData);
+        await createProduct(RequestData);
+
         abrirFecharModal();
+        reset();
+        setSucess(true);
     }
 
     return (
-        <Modal
-            isOpen={modalOpen}
-            onRequestClose={abrirFecharModal}
-            style={{
-                overlay: {
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "auto",
-                    paddingBottom: "80px",
-                },
+        <>
+            <FeedbackModal state={sucess} setState={setSucess} title="Sucesso!">
+                <h3>Seu anúncio foi criado com sucesso!</h3>
 
-                content: {
-                    position: "relative",
-                    inset: 0,
-                    width: "fit-content",
-                    height: "fit-content",
-                    boxSizing: "border-box",
-                    border: "0",
-                    backgroundColor: "transparent",
-                    borderRadius: "0",
-                    overflow: "initial",
-                    maxHeight: "100vh",
-                    marginTop: "80px",
-                },
-            }}
-        >
-            <StyledModalCreate>
-                <div className="modal__header">
-                    <h3>Criar anuncio</h3>
-                    <button onClick={abrirFecharModal}>
-                        <img src={closeIcon} />
-                    </button>
-                </div>
-                <h4>Tipo de Anuncio</h4>
-                <div className="containerButtons">
-                    <Button
-                        backgroundcolor={
-                            announcement_type === "Venda"
-                                ? "var(--brand-1)"
-                                : "var(--white-fixed)"
-                        }
-                        width="239px"
-                        height="48px"
-                        type="button"
-                        border={
-                            announcement_type === "Venda"
-                                ? "none"
-                                : "1.5px solid var(--grey-4)"
-                        }
-                        color={
-                            announcement_type === "Venda"
-                                ? "var(--white-fixed)"
-                                : "var(--grey-0)"
-                        }
-                        hover={{
-                            backgroundColorHover:
+                <p>
+                    Agora você poderá ver seus negócios crescendo em grande
+                    escala
+                </p>
+            </FeedbackModal>
+            <Modal
+                isOpen={modalOpen}
+                onRequestClose={() => {
+                    abrirFecharModal();
+                    reset();
+                }}
+                style={{
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "auto",
+                        paddingBottom: "80px",
+                    },
+
+                    content: {
+                        position: "relative",
+                        inset: 0,
+                        width: "fit-content",
+                        height: "fit-content",
+                        boxSizing: "border-box",
+                        border: "0",
+                        backgroundColor: "transparent",
+                        borderRadius: "0",
+                        overflow: "initial",
+                        maxHeight: "100vh",
+                        marginTop: "80px",
+                    },
+                }}
+            >
+                <StyledModalCreate>
+                    <div className="modal__header">
+                        <h3>Criar anuncio</h3>
+                        <button
+                            onClick={() => {
+                                abrirFecharModal();
+                                reset();
+                            }}
+                        >
+                            <img src={closeIcon} />
+                        </button>
+                    </div>
+                    <h4>Tipo de Anuncio</h4>
+                    <div className="containerButtons">
+                        <Button
+                            backgroundcolor={
                                 announcement_type === "Venda"
-                                    ? "var(--brand-2)"
-                                    : "var(--grey-1)",
-                            colorHover:
+                                    ? "var(--brand-1)"
+                                    : "var(--white-fixed)"
+                            }
+                            width="239px"
+                            height="48px"
+                            type="button"
+                            border={
+                                announcement_type === "Venda"
+                                    ? "none"
+                                    : "1.5px solid var(--grey-4)"
+                            }
+                            color={
                                 announcement_type === "Venda"
                                     ? "var(--white-fixed)"
-                                    : "var(--grey-10)",
-                            border: "none",
-                        }}
-                        size="big"
-                        onFunction={() => {
-                            setAnnouncement_type("Venda");
-                        }}
-                    >
-                        Venda
-                    </Button>
-                    <Button
-                        backgroundcolor={
-                            announcement_type === "Leilão"
-                                ? "var(--brand-1)"
-                                : "var(--white-fixed)"
-                        }
-                        width="239px"
-                        height="48px"
-                        type="button"
-                        border={
-                            announcement_type === "Leilão"
-                                ? "none"
-                                : "1.5px solid var(--grey-4)"
-                        }
-                        color={
-                            announcement_type === "Leilão"
-                                ? "var(--white-fixed)"
-                                : "var(--grey-0)"
-                        }
-                        hover={{
-                            backgroundColorHover:
+                                    : "var(--grey-0)"
+                            }
+                            hover={{
+                                backgroundColorHover:
+                                    announcement_type === "Venda"
+                                        ? "var(--brand-2)"
+                                        : "var(--grey-1)",
+                                colorHover:
+                                    announcement_type === "Venda"
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-10)",
+                                border: "none",
+                            }}
+                            size="big"
+                            onFunction={() => {
+                                setAnnouncement_type("Venda");
+                            }}
+                        >
+                            Venda
+                        </Button>
+                        <Button
+                            backgroundcolor={
                                 announcement_type === "Leilão"
-                                    ? "var(--brand-2)"
-                                    : "var(--grey-1)",
-                            colorHover:
+                                    ? "var(--brand-1)"
+                                    : "var(--white-fixed)"
+                            }
+                            width="239px"
+                            height="48px"
+                            type="button"
+                            border={
+                                announcement_type === "Leilão"
+                                    ? "none"
+                                    : "1.5px solid var(--grey-4)"
+                            }
+                            color={
                                 announcement_type === "Leilão"
                                     ? "var(--white-fixed)"
-                                    : "var(--grey-10)",
-                            border: "none",
-                        }}
-                        size="big"
-                        onFunction={() => {
-                            setAnnouncement_type("Leilão");
-                        }}
-                    >
-                        Leilão
-                    </Button>
-                </div>
-                <h4>Informação do veículo</h4>
-                <form id="Forms" onSubmit={handleSubmit(registerProduct)}>
-                    <Input
-                        label="Título"
-                        name="title"
-                        placeholder="Digitar título"
-                        type="text"
-                        register={register}
-                        errors={errors}
-                    />
-                    <div>
+                                    : "var(--grey-0)"
+                            }
+                            hover={{
+                                backgroundColorHover:
+                                    announcement_type === "Leilão"
+                                        ? "var(--brand-2)"
+                                        : "var(--grey-1)",
+                                colorHover:
+                                    announcement_type === "Leilão"
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-10)",
+                                border: "none",
+                            }}
+                            size="big"
+                            onFunction={() => {
+                                setAnnouncement_type("Leilão");
+                            }}
+                        >
+                            Leilão
+                        </Button>
+                    </div>
+                    <h4>Informação do veículo</h4>
+                    <form id="Forms" onSubmit={handleSubmit(registerProduct)}>
                         <Input
-                            label="Ano"
-                            name="year"
-                            placeholder="Digitar ano"
-                            type="number"
-                            register={register}
-                            errors={errors}
-                        />
-                        <Input
-                            label="Quilometragem"
-                            name="km"
-                            placeholder="0"
-                            type="number"
-                            register={register}
-                            errors={errors}
-                        />
-                        <Input
-                            label="Preço"
-                            name="price"
-                            placeholder="Digitar preço"
+                            label="Título"
+                            name="title"
+                            placeholder="Digitar título"
                             type="text"
                             register={register}
                             errors={errors}
                         />
-                    </div>
+                        <div>
+                            <Input
+                                label="Ano"
+                                name="year"
+                                placeholder="Digitar ano"
+                                type=""
+                                register={register}
+                                errors={errors}
+                            />
+                            <Input
+                                label="Quilometragem"
+                                name="km"
+                                placeholder="0"
+                                type=""
+                                register={register}
+                                errors={errors}
+                            />
+                            <Input
+                                label="Preço"
+                                name="price"
+                                placeholder="Digitar preço"
+                                type="text"
+                                register={register}
+                                errors={errors}
+                            />
+                        </div>
 
-                    <TextArea
-                        label="Descrição"
-                        width=""
-                        height="50px"
-                        placeholder="Digitar descrição"
-                        name="description"
-                        register={register}
-                        errors={errors}
-                    />
-                    <h4 className="veicleType" id="veichleTypeId">
-                        Tipo de veículo
-                    </h4>
-                    <div className="containerButtons" id="CarOrMotorbike">
-                        <Button
-                            backgroundcolor={
-                                vehicle_type === "Carro"
-                                    ? "var(--brand-1)"
-                                    : "var(--white-fixed)"
-                            }
-                            width="239px"
-                            height="48px"
-                            type="button"
-                            border={
-                                vehicle_type === "Carro"
-                                    ? "none"
-                                    : "1.5px solid var(--grey-4)"
-                            }
-                            color={
-                                vehicle_type === "Carro"
-                                    ? "var(--white-fixed)"
-                                    : "var(--grey-0)"
-                            }
-                            hover={{
-                                backgroundColorHover:
-                                    vehicle_type === "Carro"
-                                        ? "var(--brand-2)"
-                                        : "var(--grey-1)",
-                                colorHover:
-                                    vehicle_type === "Carro"
-                                        ? "var(--white-fixed)"
-                                        : "var(--grey-10)",
-                                border: "none",
-                            }}
-                            size="big"
-                            onFunction={() => {
-                                setVehicle_type("Carro");
-                            }}
-                        >
-                            Carro
-                        </Button>
-                        <Button
-                            backgroundcolor={
-                                vehicle_type === "Moto"
-                                    ? "var(--brand-1)"
-                                    : "var(--white-fixed)"
-                            }
-                            width="239px"
-                            height="48px"
-                            type="button"
-                            border={
-                                vehicle_type === "Moto"
-                                    ? "none"
-                                    : "1.5px solid var(--grey-4)"
-                            }
-                            color={
-                                vehicle_type === "Moto"
-                                    ? "var(--white-fixed)"
-                                    : "var(--grey-0)"
-                            }
-                            hover={{
-                                backgroundColorHover:
-                                    vehicle_type === "Moto"
-                                        ? "var(--brand-2)"
-                                        : "var(--grey-1)",
-                                colorHover:
-                                    vehicle_type === "Moto"
-                                        ? "var(--white-fixed)"
-                                        : "var(--grey-10)",
-                                border: "none",
-                            }}
-                            size="big"
-                            onFunction={() => {
-                                setVehicle_type("Moto");
-                            }}
-                        >
-                            Moto
-                        </Button>
-                    </div>
-
-                    <Input
-                        label="Imagem da Capa"
-                        name="cover_image"
-                        placeholder="Inserir URL da imagem"
-                        type="text"
-                        register={register}
-                        errors={errors}
-                    />
-
-                    <Input
-                        label="1º Imagem da galeria"
-                        name="images"
-                        placeholder="Inserir URL da imagem"
-                        type="text"
-                        register={register}
-                        errors={errors}
-                    />
-                    <Button
-                        backgroundcolor="var(--brand-4)"
-                        width={isDesktop ? "" : "100%"}
-                        height="48px"
-                        type="button"
-                        border="none"
-                        color="var(--brand-1)"
-                        hover={{
-                            backgroundColorHover: "",
-                            colorHover: "",
-                            border: "",
-                        }}
-                        id={"AddFieldImg"}
-                        size="small"
-                        onFunction={() => {}}
-                    >
-                        Adicionar Campo para imagem da galeria
-                    </Button>
-                    <div className="containerButtonsFinal">
-                        <Button
-                            backgroundcolor="var(--grey-6)"
-                            width="126px"
-                            height="48px"
-                            type="button"
-                            border="none"
-                            color="var(--grey-2)"
-                            hover={{
-                                backgroundColorHover: "var(--grey-5)",
-                                colorHover: "var(--grey-2)",
-                                border: "none",
-                            }}
-                            size="big"
-                            onFunction={abrirFecharModal}
-                        >
-                            Cancelar
-                        </Button>
-                        {buttonIsAble() ? (
+                        <TextArea
+                            label="Descrição"
+                            width=""
+                            height="50px"
+                            placeholder="Digitar descrição"
+                            name="description"
+                            register={register}
+                            errors={errors}
+                        />
+                        <h4 className="veicleType" id="veichleTypeId">
+                            Tipo de veículo
+                        </h4>
+                        <div className="containerButtons" id="CarOrMotorbike">
                             <Button
-                                backgroundcolor="var(--brand-1)"
-                                width="193px"
+                                backgroundcolor={
+                                    vehicle_type === "Carro"
+                                        ? "var(--brand-1)"
+                                        : "var(--white-fixed)"
+                                }
+                                width="239px"
                                 height="48px"
-                                type="submit"
-                                border="none"
-                                color="var(--white-fixed)"
+                                type="button"
+                                border={
+                                    vehicle_type === "Carro"
+                                        ? "none"
+                                        : "1.5px solid var(--grey-4)"
+                                }
+                                color={
+                                    vehicle_type === "Carro"
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-0)"
+                                }
                                 hover={{
-                                    backgroundColorHover: "var(--brand-2)",
-                                    colorHover: "var(--white-fixed)",
+                                    backgroundColorHover:
+                                        vehicle_type === "Carro"
+                                            ? "var(--brand-2)"
+                                            : "var(--grey-1)",
+                                    colorHover:
+                                        vehicle_type === "Carro"
+                                            ? "var(--white-fixed)"
+                                            : "var(--grey-10)",
                                     border: "none",
                                 }}
                                 size="big"
+                                onFunction={() => {
+                                    setVehicle_type("Carro");
+                                }}
                             >
-                                Criar anúncio
+                                Carro
                             </Button>
-                        ) : (
-                            <button className="disableButton" disabled>
-                                Criar anúncio
-                            </button>
-                        )}
-                    </div>
-                </form>
-            </StyledModalCreate>
-        </Modal>
+                            <Button
+                                backgroundcolor={
+                                    vehicle_type === "Moto"
+                                        ? "var(--brand-1)"
+                                        : "var(--white-fixed)"
+                                }
+                                width="239px"
+                                height="48px"
+                                type="button"
+                                border={
+                                    vehicle_type === "Moto"
+                                        ? "none"
+                                        : "1.5px solid var(--grey-4)"
+                                }
+                                color={
+                                    vehicle_type === "Moto"
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-0)"
+                                }
+                                hover={{
+                                    backgroundColorHover:
+                                        vehicle_type === "Moto"
+                                            ? "var(--brand-2)"
+                                            : "var(--grey-1)",
+                                    colorHover:
+                                        vehicle_type === "Moto"
+                                            ? "var(--white-fixed)"
+                                            : "var(--grey-10)",
+                                    border: "none",
+                                }}
+                                size="big"
+                                onFunction={() => {
+                                    setVehicle_type("Moto");
+                                }}
+                            >
+                                Moto
+                            </Button>
+                        </div>
+
+                        <Input
+                            label="Imagem da Capa"
+                            name="cover_image"
+                            placeholder="Inserir URL da imagem"
+                            type="text"
+                            register={register}
+                            errors={errors}
+                        />
+
+                        <Input
+                            label="1º Imagem da galeria"
+                            name="images"
+                            placeholder="Inserir URL da imagem"
+                            type="text"
+                            register={register}
+                            errors={errors}
+                        />
+                        <Button
+                            backgroundcolor="var(--brand-4)"
+                            width={isDesktop ? "" : "100%"}
+                            height="48px"
+                            type="button"
+                            border="none"
+                            color="var(--brand-1)"
+                            hover={{
+                                backgroundColorHover: "",
+                                colorHover: "",
+                                border: "",
+                            }}
+                            id={"AddFieldImg"}
+                            size="small"
+                            onFunction={() => {}}
+                        >
+                            Adicionar Campo para imagem da galeria
+                        </Button>
+                        <div className="containerButtonsFinal">
+                            <Button
+                                backgroundcolor="var(--grey-6)"
+                                width="126px"
+                                height="48px"
+                                type="button"
+                                border="none"
+                                color="var(--grey-2)"
+                                hover={{
+                                    backgroundColorHover: "var(--grey-5)",
+                                    colorHover: "var(--grey-2)",
+                                    border: "none",
+                                }}
+                                size="big"
+                                onFunction={() => {
+                                    abrirFecharModal();
+                                    reset();
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                            {buttonIsAble() ? (
+                                <Button
+                                    backgroundcolor="var(--brand-1)"
+                                    width="193px"
+                                    height="48px"
+                                    type="submit"
+                                    border="none"
+                                    color="var(--white-fixed)"
+                                    hover={{
+                                        backgroundColorHover: "var(--brand-2)",
+                                        colorHover: "var(--white-fixed)",
+                                        border: "none",
+                                    }}
+                                    size="big"
+                                >
+                                    Criar anúncio
+                                </Button>
+                            ) : (
+                                <button className="disableButton" disabled>
+                                    Criar anúncio
+                                </button>
+                            )}
+                        </div>
+                    </form>
+                </StyledModalCreate>
+            </Modal>
+        </>
     );
 }
 
