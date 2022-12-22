@@ -162,6 +162,7 @@ function ModalCreateAnnouncement({
                         justifyContent: "center",
                         overflow: "auto",
                         paddingBottom: "80px",
+                        zIndex: 20,
                     },
 
                     content: {
