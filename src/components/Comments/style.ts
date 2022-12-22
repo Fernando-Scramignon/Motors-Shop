@@ -84,4 +84,34 @@ export const StyledUsername = styled.div`
     }
 `;
 
-export const StyledCommentInput = styled.div``;
+export const StyledCommentInput = styled.div`
+    width: 90%;
+    max-width: 752px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 36px 28px 36px 28px;
+    background-color: var(--grey-10);
+    border-radius: 4px;
+`;
+
+export const StyledForm = styled.form`
+    > button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 20px;
+        width: 108px;
+        height: 38px;
+        background: var(--brand-1);
+        border: 1.5px solid var(--brand-1);
+        border-radius: 4px;
+
+        font-family: "Inter", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--white-fixed);
+    }
+`;

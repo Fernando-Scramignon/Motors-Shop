@@ -24,6 +24,13 @@ let data = [
             username: "Camila Silva",
         },
     },
+    {
+        comment:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        user: {
+            username: "Camila Silva",
+        },
+    },
 ];
 
 function Router() {
@@ -33,7 +40,15 @@ function Router() {
                 <Route path="/" element={<h1>olá mundo</h1>} />
                 {toast.success("Olá, mundo!")}
             </> */}
-            <Route path="/" element={<Comments comments={data} />} />
+            <Route
+                path="/"
+                element={
+                    <Comments
+                        comments={data}
+                        user={{ username: "Luccas Queiroz" }}
+                    />
+                }
+            />
         </Routes>
     );
 }
