@@ -56,8 +56,7 @@ export const GlobalStyle = createGlobalStyle`
         width: 100vw;
         height: 100vh;
     } */
-
-
+    
     :root {
         --brand-1: #4529E6;
         --brand-2: #5126EA;
