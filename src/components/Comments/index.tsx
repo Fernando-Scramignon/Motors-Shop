@@ -35,6 +35,8 @@ interface IDataComment {
 }
 
 function Comments({ comments, user }: ICommentsProps) {
+    // ADICIONAR AUTENTICAÇÃO
+
     // const [textAreaValue, setTextAreaValue] = useState("");
 
     /* const formSchema = yup.object().shape({

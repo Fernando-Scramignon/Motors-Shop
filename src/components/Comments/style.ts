@@ -7,10 +7,19 @@ interface IThemeProps {
 export const StyledCommentsDiv = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 42px;
+    width: 100%;
+    max-width: 752px;
+    margin: 0 auto;
 
     @media (min-width: 768px) {
         gap: 33px;
+    }
+
+    @media (min-width: 1440px) {
+        max-width: 1147.8px;
+        align-items: flex-start;
     }
 `;
 
@@ -36,6 +45,10 @@ export const StyledComments = styled.div`
         display: flex;
         flex-direction: column;
         gap: 44px;
+    }
+
+    @media (min-width: 1440px) {
+        max-width: 676.8px;
     }
 `;
 
@@ -94,6 +107,12 @@ export const StyledCommentInput = styled.div`
     padding: 36px 28px 36px 28px;
     background-color: var(--grey-10);
     border-radius: 4px;
+    margin-bottom: 45px;
+
+    @media (min-width: 1440px) {
+        max-width: 676.8px;
+        margin-bottom: 73px;
+    }
 `;
 
 export const StyledForm = styled.form`

@@ -1,39 +1,32 @@
 import { Routes, Route } from "react-router-dom";
-import { toast } from "react-toastify";
 import ProductPage from "../pages/Product";
 import ProfileViewUser from "../pages/ProfileViewUser";
-import Comments from "../components/Comments";
 
-let data = [
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Júlia Lima",
-        },
-    },
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Marcos Antônio",
-        },
-    },
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Camila Silva",
-        },
-    },
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Camila Silva",
-        },
-    },
-];
+let product = {
+    id: "1",
+    cover_image: "https://i.imgur.com/uRnumCd.png",
+    title: "Um carro que comporta até 5 pessoas, mas se apertar direitinho cabe 7",
+    description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry LoremIpsumla",
+    user: {
+        name: "Luccas Queiroz",
+        description:
+            "Luccas mora em Serrinha e vende carros tops da balada, mais algumas coisas pra dar mais linhas na descrição",
+    }, // Mudará para user_id
+    km: 0,
+    year: 2007,
+    price: 5000075,
+    published: true,
+    vehicle_type: "Carro",
+    images: [
+        "https://i.imgur.com/uRnumCd.png",
+        "https://i.imgur.com/uRnumCd.png",
+        "https://i.imgur.com/uRnumCd.png",
+        "https://i.imgur.com/uRnumCd.png",
+        "https://i.imgur.com/uRnumCd.png",
+        "https://i.imgur.com/uRnumCd.png",
+    ],
+};
 
 function Router() {
     return (
@@ -50,16 +43,7 @@ function Router() {
                 <Route path="/profileViewUser" element={<ProfileViewUser />} />
                 <Route
                     path="/product"
-                    // element={<ProductPage product={data} />}
-                />
-                <Route
-                    path="/comments"
-                    element={
-                        <Comments
-                            comments={data}
-                            user={{ username: "Luccas Queiroz" }}
-                        />
-                    }
+                    element={<ProductPage product={product} />}
                 />
             </>
         </Routes>
