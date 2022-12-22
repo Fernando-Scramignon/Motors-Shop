@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import ProfileViewUser from "../pages/ProfileViewUser";
+import ProfileViewAdmin from "../pages/ProfileViewAdmin";
 
 function Router() {
     return (
@@ -14,6 +15,10 @@ function Router() {
                     }
                 />
                 <Route path="/profileViewUser" element={<ProfileViewUser />} />
+                <Route
+                    path="/profileViewAdmin"
+                    element={<ProfileViewAdmin />}
+                />
             </>
         </Routes>
     );

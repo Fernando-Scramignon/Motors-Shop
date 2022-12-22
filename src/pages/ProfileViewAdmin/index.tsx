@@ -1,15 +1,15 @@
 import {
-    StyledProfileBody,
+    StyledAdminProfileBody,
     ProfileBackground,
     ProductListSection,
 } from "./style";
-
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProfileCard from "../../components/ProfileCard";
 import ProductCardList from "../../components/ProductCardList";
 
 import { IProductCard } from "../../components/ProductCardList";
+
 import { useState } from "react";
 
 const car: IProductCard = {
@@ -59,34 +59,32 @@ for (let i = 0; i < 6; i++) {
     motoList.push({ ...moto, id: String(i * 10) });
 }
 
-for (let i = 0; i < 6; i++) {}
-
-function ProfileViewUser() {
+function ProfileViewAdmin() {
     const [cars, setCars] = useState(carsList);
     const [motos, setMotos] = useState(motoList);
 
     return (
-        <StyledProfileBody>
+        <StyledAdminProfileBody>
             <Header />
             <ProfileBackground />
-            <ProfileCard isAdvertiser={false} />
+            <ProfileCard isAdvertiser={true} />
             <ProductListSection>
                 <ProductCardList
-                    productList={cars}
-                    advertise={false}
-                    showActivity={true}
                     title="Carro"
+                    advertise={true}
+                    showActivity={false}
+                    productList={cars}
                 />
                 <ProductCardList
-                    productList={motos}
-                    advertise={false}
-                    showActivity={true}
                     title="Moto"
+                    advertise={true}
+                    showActivity={false}
+                    productList={motos}
                 />
             </ProductListSection>
             <Footer />
-        </StyledProfileBody>
+        </StyledAdminProfileBody>
     );
 }
 
-export default ProfileViewUser;
+export default ProfileViewAdmin;
