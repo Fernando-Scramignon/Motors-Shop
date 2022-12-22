@@ -12,10 +12,12 @@ import ProductCardList from "../../components/ProductCardList";
 import { IProductCard } from "../../components/ProductCardList";
 import { useState } from "react";
 
+import carPhoto from "../../assets/carPhoto.png";
+import motorcyclePhoto from "../../assets/motorcyclePhoto.png";
+
 const car: IProductCard = {
     id: "a",
-    cover_image:
-        "https://auto-didakt.com/assets/images/5/tesla_cybertruck_1-7cc6c0d5.jpg",
+    cover_image: carPhoto,
     description: "lorem ipsum",
     km: 10000,
     price: 150000,
@@ -28,8 +30,7 @@ const car: IProductCard = {
 
 const moto: IProductCard = {
     id: "a",
-    cover_image:
-        "https://i.pinimg.com/736x/39/67/d0/3967d0a5d1ab1659399b8ecab30df3a3.jpg",
+    cover_image: motorcyclePhoto,
     description: "vrummmmm",
     km: 5000,
     price: 90000,

@@ -128,11 +128,14 @@ function ModalCreateAnnouncement({
             images: [data.images],
         };
 
-        await createProduct(RequestData);
-
         abrirFecharModal();
-        reset();
-        setSucess(true);
+
+        await createProduct(RequestData).then((res) => {
+            if (res) {
+                setSucess(true);
+                reset();
+            }
+        });
     }
 
     return (
