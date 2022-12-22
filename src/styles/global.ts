@@ -48,10 +48,16 @@ export const GlobalStyle = createGlobalStyle`
         cursor: pointer;
         transition: 0.3s;
     }
-    #root {
+    body {
+        min-height: 100vh;
+    }
+    
+    /* #root {
         width: 100vw;
         height: 100vh;
-    }
+    } */
+
+
     :root {
         --brand-1: #4529E6;
         --brand-2: #5126EA;
