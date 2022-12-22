@@ -53,7 +53,7 @@ export const StyledContainer = styled.div<ITextAreaPropertiesProps>`
         font-weight: 400;
         font-size: 16px;
         resize: none;
-        border: 1.5px solid
+        border: 2px solid
             ${(prop) => (prop.error ? "var(--alert-1)" : "var(--grey-7)")};
 
         &::-webkit-scrollbar {

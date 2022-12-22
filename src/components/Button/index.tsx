@@ -11,6 +11,7 @@ function Button({
     color,
     hover,
     size,
+    id,
 }: IButtonProps) {
     return (
         <StyledButton
@@ -23,7 +24,7 @@ function Button({
             hover={hover}
             size={size}
             height={height}
-            
+            id={id}
         >
             {children}
         </StyledButton>

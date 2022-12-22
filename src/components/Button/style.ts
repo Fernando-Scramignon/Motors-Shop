@@ -5,6 +5,7 @@ export interface IButtonProps {
     children: ReactNode;
     onFunction?: () => void;
     type?: "button" | "submit" | "reset";
+    id?: string;
     backgroundcolor: string;
     width: string;
     height: string;

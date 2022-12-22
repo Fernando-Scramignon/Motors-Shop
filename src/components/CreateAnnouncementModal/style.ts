@@ -76,13 +76,17 @@ export const StyledModalCreate = styled.div`
         background-color: var(--brand-3);
         border: none;
         color: var(--brand-4);
-        width: 228px;
+        width: 193px;
         border-radius: 4px;
-
         font-size: 14px;
+        cursor: not-allowed;
     }
 
     #imagesSpan {
         margin-bottom: 24px;
+    }
+
+    #AddFieldImg {
+        margin-top: 24px;
     }
 `;
