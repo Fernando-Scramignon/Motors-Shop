@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import { toast } from "react-toastify";
+import ProductPage from "../pages/Product";
+import ProfileViewUser from "../pages/ProfileViewUser";
+
 function Router() {
     return (
         <Routes>
@@ -12,7 +14,11 @@ function Router() {
                         </div>
                     }
                 />
-                {toast.success("Olá, mundo!")}
+                <Route path="/profileViewUser" element={<ProfileViewUser />} />
+                <Route
+                    path="/product"
+                    // element={<ProductPage product={data} />}
+                />
             </>
         </Routes>
     );

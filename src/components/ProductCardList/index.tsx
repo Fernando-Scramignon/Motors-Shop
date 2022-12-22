@@ -1,7 +1,7 @@
 import ProductCard from "../ProductCard";
 import { StyledProductCardList } from "./style";
 
-interface IProductCard {
+export interface IProductCard {
     id: string;
     cover_image: string;
     title: string;
@@ -11,10 +11,10 @@ interface IProductCard {
     year: number;
     price: number;
     published: boolean;
-    vehicle_type: string;
+    vehicle_type: "Carro" | "Moto";
 }
 
-interface IProductCardListProps {
+export interface IProductCardListProps {
     title: string;
     productList: IProductCard[];
     showActivity: boolean;
