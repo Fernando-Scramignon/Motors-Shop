@@ -23,6 +23,7 @@ function Button({
             hover={hover}
             size={size}
             height={height}
+            
         >
             {children}
         </StyledButton>
