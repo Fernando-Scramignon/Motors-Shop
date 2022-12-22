@@ -21,7 +21,14 @@ export const StyledHeader = styled.header`
 
 export const LogoContainer = styled.section``;
 
-export const MobileMenu = styled.section``;
+export const MobileMenu = styled.section`
+    cursor: pointer;
+
+    transition: 0.3s;
+    &:hover {
+        filter: brightness(0.8);
+    }
+`;
 
 export const DesktopMenu = styled.section<IDesktopMenuProps>`
     display: flex;

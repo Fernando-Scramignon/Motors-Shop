@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Comments from "../../components/Comments";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import {
@@ -14,6 +15,37 @@ import {
     StyledUserDetails,
     StyledInitialLetters,
 } from "./style";
+
+let data = [
+    {
+        comment:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        user: {
+            username: "Júlia Lima",
+        },
+    },
+    {
+        comment:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        user: {
+            username: "Marcos Antônio",
+        },
+    },
+    {
+        comment:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        user: {
+            username: "Camila Silva",
+        },
+    },
+    {
+        comment:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        user: {
+            username: "Camila Silva",
+        },
+    },
+];
 
 interface IUserProductPage {
     name: string;
@@ -115,6 +147,10 @@ function ProductPage({ product }: IProductPageProps) {
                         </StyledUserDetails>
                     </StyledProductUserDetails>
                 </StyledSectionProduct>
+                <Comments
+                    comments={data}
+                    user={{ username: "Luccas Queiroz" }}
+                />
             </StyledProductPage>
             <Footer />
         </>

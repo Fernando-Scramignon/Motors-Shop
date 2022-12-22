@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useState } from "react";
-import FeedbackModal from "../../components/FeedbackModal";
 
 import api from "../../services/api";
 import { IAxiosError } from "../../interfaces";
 import { showErrors } from "../../utils";
+import ErrorModal from "../../components/ErrorModal";
 
 export interface IProductCreateRequest {
-    // title: string;
+    title: string;
     year: number;
     km: number;
     price: number;
@@ -22,10 +22,30 @@ export interface IProduct extends IProductCreateRequest {
     id: string;
 }
 
+export interface IProductUpdateRequest {
+    title?: string;
+    year?: number;
+    km?: number;
+    price?: number;
+    description?: string;
+    vehicle_type?: string;
+    announcement_type?: string;
+    published?: boolean;
+    cover_image?: string;
+    images?: string[];
+}
+
 interface IProductContextProps {
     createProduct: (
         data: IProductCreateRequest
     ) => Promise<IProduct | undefined>;
+    listProducts: () => Promise<IProduct[] | undefined>;
+    getProductById: (product_id: string) => Promise<IProduct | undefined>;
+    updateProduct: (
+        product_id: string,
+        data: IProductUpdateRequest
+    ) => Promise<IProduct | undefined>;
+    deleteProduct: (product_id: string) => Promise<boolean | undefined>;
 }
 interface IProductProviderProps {
     children: ReactNode;
@@ -48,23 +68,61 @@ export const ProductProvider = ({ children }: IProductProviderProps) => {
             );
     }
 
+    async function listProducts() {
+        return await api
+            .get("/products")
+            .then((res) => res.data as IProduct[])
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
+    }
+
+    async function getProductById(product_id: string) {
+        return await api
+            .get(`/products/${product_id}`)
+            .then((res) => res.data as IProduct)
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
+    }
+
+    async function updateProduct(
+        product_id: string,
+        data: IProductUpdateRequest
+    ) {
+        return await api
+            .patch(`/products/${product_id}`, data)
+            .then((res) => res.data as IProduct)
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
+    }
+
+    async function deleteProduct(product_id: string) {
+        return await api
+            .delete(`/products/${product_id}`)
+            .then(() => true)
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
+    }
+
     return (
-        <ProductContext.Provider value={{ createProduct }}>
+        <ProductContext.Provider
+            value={{
+                createProduct,
+                listProducts,
+                getProductById,
+                updateProduct,
+                deleteProduct,
+            }}
+        >
             {children}
-            <FeedbackModal
+            <ErrorModal
                 state={modalError}
                 setState={setModalError}
-                title="Erro"
-            >
-                <div>
-                    <span className="modalError__span--subtitle">
-                        Ocorreu um erro:
-                    </span>
-                    <span className="modalError__span--description">
-                        {error}
-                    </span>
-                </div>
-            </FeedbackModal>
+                error={error}
+            />
         </ProductContext.Provider>
     );
 };

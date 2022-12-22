@@ -5,7 +5,7 @@ export const StyledMobileHeaderModal = styled.div`
     width: 100%;
 
     position: absolute;
-    z-index: 3;
+    z-index: 11;
     top: 80px;
     left: 0px;
 
@@ -92,6 +92,6 @@ export const ModalContainer = styled.div`
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 2;
+        z-index: 10;
     }
 `;
