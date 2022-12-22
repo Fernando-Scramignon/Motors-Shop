@@ -1,7 +1,7 @@
 import ProductCard from "../ProductCard";
 import { StyledProductCardList } from "./style";
 
-interface IProductCard {
+export interface IProductCard {
     id: string;
     cover_image: string;
     title: string;
@@ -14,7 +14,7 @@ interface IProductCard {
     vehicle_type: "Carro" | "Moto";
 }
 
-interface IProductCardListProps {
+export interface IProductCardListProps {
     title: string;
     productList: IProductCard[];
     showActivity: boolean;

@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 export const StyledMobileHeaderModal = styled.div`
     height: fit-content;
-    width: 100vw;
+    width: 100%;
 
     position: absolute;
     z-index: 3;
     top: 80px;
+    left: 0px;
 
     background: #ffffff;
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledProductPage = styled.div`
-    min-width: 100vw;
+    min-width: 100%;
     min-height: 74.1vh;
     background: linear-gradient(var(--brand-1) 436px, var(--grey-8) 436px 100%);
 
@@ -64,6 +64,13 @@ export const StyledProductImage = styled.div`
     justify-content: center;
     background-color: var(--grey-10);
     border-radius: 4px;
+
+    > img {
+        width: 90%;
+        max-width: 441px;
+        object-fit: contain;
+        height: 253px;
+    }
 `;
 
 export const StyledProductDetail = styled.div`
@@ -102,6 +109,11 @@ export const StyledProductDetail = styled.div`
         font-weight: 600;
         font-size: 14px;
         color: var(--white-fixed);
+
+        &:hover {
+            background: var(--brand-2);
+            border: 1.5px solid var(--brand-2);
+        }
     }
 
     @media (min-width: 768px) {
@@ -220,6 +232,7 @@ export const StyledImages = styled.div`
 
             > img {
                 width: 90px;
+                object-fit: contain;
                 height: 54px;
             }
         }
@@ -282,6 +295,11 @@ export const StyledUserDetails = styled.div`
         font-weight: 600;
         font-size: 16px;
         color: var(--white-fixed);
+
+        &:hover {
+            background: var(--grey-1);
+            border: 1.5px solid var(--grey-1);
+        }
     }
 `;
 

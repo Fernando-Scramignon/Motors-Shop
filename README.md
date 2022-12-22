@@ -11,6 +11,7 @@ Loja virtual Compra, venda e leilão de automóveis. Existem dois tipos de usuá
 -   Clone o repositório
 -   Instale as dependências
     -   ex: `yarn`
+    -   ex: `npm install`
 -   rode o comando `dev`
     -   ex: `npm run dev`
     -   ex: `yarn dev`

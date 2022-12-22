@@ -13,7 +13,7 @@ export const GlobalStyle = createGlobalStyle`
     article, aside, canvas, details, embed,
     figure, figcaption, footer, header, hgroup,
     menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
+    time, mark, audio, video, input {
         margin: 0;
         padding: 0;
         border: 0;
@@ -48,13 +48,15 @@ export const GlobalStyle = createGlobalStyle`
         cursor: pointer;
         transition: 0.3s;
     }
+    body {
+        min-height: 100vh;
+    }
+    
     /* #root {
         width: 100vw;
         height: 100vh;
     } */
-    body {
-        width: 100vw;
-    }
+
     :root {
         --brand-1: #4529E6;
         --brand-2: #5126EA;
