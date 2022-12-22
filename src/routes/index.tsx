@@ -17,12 +17,12 @@ function Router() {
                     path="/"
                     element={
                         <>
-                            {modalOpen && (
+                            {
                                 <ModalCreateAnnouncement
                                     abrirFecharModal={abrirFecharModal}
                                     modalOpen={modalOpen}
                                 />
-                            )}
+                            }
                             <button onClick={abrirFecharModal}>
                                 aperte aqui para modal
                             </button>
