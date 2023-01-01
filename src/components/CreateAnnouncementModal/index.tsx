@@ -28,7 +28,7 @@ export interface IProductRequest {
 
 interface IModalCreateAnnouncement {
     modalOpen: boolean;
-    abrirFecharModal: () => void;
+    openOrCloseModal: () => void;
 }
 function isValidUrl(url: string) {
     try {
@@ -41,7 +41,7 @@ function isValidUrl(url: string) {
 
 function ModalCreateAnnouncement({
     modalOpen,
-    abrirFecharModal,
+    openOrCloseModal,
 }: IModalCreateAnnouncement) {
     const [vehicle_type, setVehicle_type] = useState("Carro");
     const [announcement_type, setAnnouncement_type] = useState("Venda");
@@ -128,7 +128,7 @@ function ModalCreateAnnouncement({
             images: [data.images],
         };
 
-        abrirFecharModal();
+        openOrCloseModal();
 
         await createProduct(RequestData).then((res) => {
             if (res) {
@@ -151,7 +151,7 @@ function ModalCreateAnnouncement({
             <Modal
                 isOpen={modalOpen}
                 onRequestClose={() => {
-                    abrirFecharModal();
+                    openOrCloseModal();
                     reset();
                 }}
                 style={{
@@ -185,7 +185,7 @@ function ModalCreateAnnouncement({
                         <h3>Criar anuncio</h3>
                         <button
                             onClick={() => {
-                                abrirFecharModal();
+                                openOrCloseModal();
                                 reset();
                             }}
                         >
@@ -445,7 +445,7 @@ function ModalCreateAnnouncement({
                                 }}
                                 size="big"
                                 onFunction={() => {
-                                    abrirFecharModal();
+                                    openOrCloseModal();
                                     reset();
                                 }}
                             >

@@ -10,7 +10,7 @@ interface IProfileProps {
 function ProfileCard({ isAdvertiser }: IProfileProps) {
     const [modal, setModal] = useState(false);
 
-    function abrirFecharModal() {
+    function openOrCloseModal() {
         setModal(!modal);
     }
 
@@ -58,14 +58,14 @@ function ProfileCard({ isAdvertiser }: IProfileProps) {
                             colorHover: "#ffffff",
                             border: "2px solid var(--brand-1)",
                         }}
-                        onFunction={() => abrirFecharModal()}
+                        onFunction={() => openOrCloseModal()}
                     >
                         Criar Anuncio
                     </Button>
                 )}
             </StyledCard>
             <ModalCreateAnnouncement
-                abrirFecharModal={abrirFecharModal}
+                openOrCloseModal={openOrCloseModal}
                 modalOpen={modal}
             />
         </>
