@@ -52,7 +52,7 @@ function ModalCreateAnnouncement({
     const [announcement_type, setAnnouncement_type] = useState("Venda");
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
     const [sucess, setSucess] = useState(false);
-    const [emailCounts, setEmailsCounts] = useState<number[]>([]);
+    const [urlsCounts, setUrlsCounts] = useState<number[]>([]);
     const { createProduct } = useContext(ProductContext);
 
     function handleResize() {
@@ -175,11 +175,10 @@ function ModalCreateAnnouncement({
             images: data.images,
         };
 
-        console.log(RequestData);
-
         await createProduct(RequestData).then((res) => {
             if (res) {
                 setSucess(true);
+                setUrlsCounts([]);
                 reset();
                 openOrCloseModal();
             }
@@ -200,6 +199,7 @@ function ModalCreateAnnouncement({
                 isOpen={modalOpen}
                 onRequestClose={() => {
                     openOrCloseModal();
+                    setUrlsCounts([]);
                     reset();
                 }}
                 style={{
@@ -234,6 +234,7 @@ function ModalCreateAnnouncement({
                         <button
                             onClick={() => {
                                 openOrCloseModal();
+                                setUrlsCounts([]);
                                 reset();
                             }}
                         >
@@ -461,13 +462,39 @@ function ModalCreateAnnouncement({
                             errors={errors}
                         />
 
-                        {emailCounts.map((element, index) => {
-                            if (index < 5) {
-                                return (
+                        {urlsCounts.map((element, index) => {
+                            return (
+                                <>
+                                    {index ==
+                                    urlsCounts[urlsCounts.length - 1] ? (
+                                        <button
+                                            type="button"
+                                            key={index + 1}
+                                            className="buttonDeleteInput"
+                                            onClick={(e) => {
+                                                setUrlsCounts(
+                                                    urlsCounts.filter(
+                                                        (elementFilter) =>
+                                                            elementFilter !==
+                                                            index
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            {" "}
+                                            <img
+                                                className="DeleteInput"
+                                                src={closeIcon}
+                                            />{" "}
+                                        </button>
+                                    ) : (
+                                        false
+                                    )}
+
                                     <Input
                                         key={index}
                                         label={`${
-                                            element + 2
+                                            index + 2
                                         }º Imagem da galeria`}
                                         name={`images${index}`}
                                         placeholder="Inserir URL da imagem"
@@ -475,32 +502,44 @@ function ModalCreateAnnouncement({
                                         register={register}
                                         errors={errors}
                                     />
-                                );
-                            }
+                                </>
+                            );
                         })}
-                        <Button
-                            backgroundcolor="var(--brand-4)"
-                            width={isDesktop ? "" : "100%"}
-                            height="48px"
-                            type="button"
-                            border="none"
-                            color="var(--brand-1)"
-                            hover={{
-                                backgroundColorHover: "",
-                                colorHover: "",
-                                border: "",
-                            }}
-                            id={"AddFieldImg"}
-                            size="small"
-                            onFunction={() =>
-                                setEmailsCounts([
-                                    ...emailCounts,
-                                    emailCounts.length,
-                                ])
-                            }
-                        >
-                            Adicionar Campo para imagem da galeria
-                        </Button>
+
+                        {urlsCounts.length < 5 ? (
+                            <Button
+                                backgroundcolor="var(--brand-4)"
+                                width={isDesktop ? "" : "100%"}
+                                height="48px"
+                                type="button"
+                                border="none"
+                                color="var(--brand-1)"
+                                hover={{
+                                    backgroundColorHover: "",
+                                    colorHover: "",
+                                    border: "",
+                                }}
+                                id={"AddFieldImg"}
+                                size="small"
+                                onFunction={() => {
+                                    urlsCounts.length === 0
+                                        ? setUrlsCounts([
+                                              ...urlsCounts,
+                                              urlsCounts.length,
+                                          ])
+                                        : setUrlsCounts([
+                                              ...urlsCounts,
+                                              urlsCounts.length,
+                                          ]);
+                                }}
+                            >
+                                Adicionar Campo para imagem da galeria
+                            </Button>
+                        ) : (
+                            <button className="disableButtonImage" disabled>
+                                Adicionar Campo para imagem da galeria
+                            </button>
+                        )}
                         <div className="containerButtonsFinal">
                             <Button
                                 backgroundcolor="var(--grey-6)"
@@ -517,6 +556,7 @@ function ModalCreateAnnouncement({
                                 size="big"
                                 onFunction={() => {
                                     openOrCloseModal();
+                                    setUrlsCounts([]);
                                     reset();
                                 }}
                             >

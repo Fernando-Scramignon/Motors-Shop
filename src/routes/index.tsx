@@ -31,24 +31,15 @@ let product = {
     ],
 };
 function Router() {
-    const [abrir, setAbrir]= useState(false)
-    function abrireFechar(){
-        setAbrir(!abrir)
-    } 
     return (
         <Routes>
             <>
                 <Route
                     path="/"
                     element={
-                        <>
                         <div>
                             <h1>Olá, mundo!</h1>
-
-                            <button onClick={abrireFechar}>ABRIR Modal</button>
-                        <ModalCreateAnnouncement modalOpen={abrir} openOrCloseModal={abrireFechar}></ModalCreateAnnouncement>
                         </div>
-                        </>
                     }
                 />
                 <Route path="/profileViewUser" element={<ProfileViewUser />} />
