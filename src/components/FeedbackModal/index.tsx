@@ -24,10 +24,12 @@ function FeedbackModal({
             onRequestClose={() => setState(false)}
             style={{
                 overlay: {
+                    minHeight: "100vh",
+                    overflowY: "scroll",
                     backgroundColor: "#00000080",
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center",
+                    padding: "80px 0 80px 0",
                     zIndex: 20,
                 },
                 content: {
