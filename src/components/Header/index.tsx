@@ -9,6 +9,8 @@ import Button from "../Button";
 
 import { useState, useEffect } from "react";
 
+import { limitString } from "../../utils";
+
 function Header() {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
     const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -73,7 +75,7 @@ function Header() {
                                     FS
                                 </div>
                                 <div className="desktopMenu__profile--name">
-                                    Fernando Scramignon
+                                    {limitString("Fernando Scramignon", 19)}
                                 </div>
                             </div>
                         ) : (
