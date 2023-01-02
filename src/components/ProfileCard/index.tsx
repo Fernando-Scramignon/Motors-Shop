@@ -3,6 +3,8 @@ import Button from "../Button";
 import ModalCreateAnnouncement from "../CreateAnnouncementModal";
 import { useState } from "react";
 
+import { limitString } from "../../utils";
+
 interface IProfileProps {
     isAdvertiser: boolean;
 }
@@ -20,7 +22,7 @@ function ProfileCard({ isAdvertiser }: IProfileProps) {
                 <div className="profileNameDiv">
                     <div className="profileNameDiv__icon">FS</div>
                     <div className="profileNameDiv__name">
-                        <h2>Fernando Scramignon</h2>
+                        <h2>{limitString("Fernando Scramignon", 19)}</h2>
                         <Button
                             size="small"
                             type="button"

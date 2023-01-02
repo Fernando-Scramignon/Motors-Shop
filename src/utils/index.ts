@@ -18,3 +18,18 @@ export function showErrors(
 
     return undefined;
 }
+
+// Limits a string length
+// If the string surpasses the limit, it becomes sliced and gets "..." at the end
+export function limitString(text: string, limit: number) {
+    if (limit <= 0 && limit > text.length) {
+        throw new Error(
+            "Limit must be greater than zero and lower than the text length"
+        );
+    }
+
+    if (limit >= text.length) return text;
+
+    const limitedText = text.slice(0, limit) + "...";
+    return limitedText;
+}
