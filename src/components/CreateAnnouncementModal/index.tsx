@@ -47,6 +47,7 @@ function ModalCreateAnnouncement({
     const [announcement_type, setAnnouncement_type] = useState("Venda");
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
     const [sucess, setSucess] = useState(false);
+    const [emailCounts,setEmailsCounts]= useState<number[]>([])
     const { createProduct } = useContext(ProductContext);
 
     function handleResize() {
@@ -94,6 +95,33 @@ function ModalCreateAnnouncement({
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
             ),
+            images0: yup
+            .string() 
+            .notRequired()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            ).optional(),
+            images1: yup
+            .string() 
+            .notRequired()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            ),
+            images2: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            ),
+            images3: yup
+            .string() 
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            ),
+            images4: yup
+            .string() 
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            ),
     });
 
     const {
@@ -105,7 +133,7 @@ function ModalCreateAnnouncement({
     } = useForm({
         resolver: yupResolver(formSchema),
     });
-
+console.log(errors)
     function buttonIsAble() {
         return (
             Object.keys(errors).length == 0 &&
@@ -115,7 +143,12 @@ function ModalCreateAnnouncement({
     }
 
     async function registerProduct(data: any) {
-        const RequestData = {
+        console.log([data.images,data.images0,data.images1,data.images2,data.images3,data.images4])
+        console.log(data)
+     
+ /*        console.log(data)
+
+         const RequestData = {
             title: data.title,
             year: data.year,
             km: data.km,
@@ -125,17 +158,17 @@ function ModalCreateAnnouncement({
             announcement_type: announcement_type,
             published: false,
             cover_image: data.cover_image,
-            images: [data.images],
-        };
+            images: [data.images,data.images0,data.images1,data.images2,data.images3,data.images4],
+        }; */
 
-        openOrCloseModal();
+      /*   openOrCloseModal();
 
         await createProduct(RequestData).then((res) => {
             if (res) {
                 setSucess(true);
                 reset();
             }
-        });
+        });  */
     }
 
     return (
@@ -407,11 +440,30 @@ function ModalCreateAnnouncement({
                         <Input
                             label="1º Imagem da galeria"
                             name="images"
+                   
                             placeholder="Inserir URL da imagem"
                             type="text"
                             register={register}
                             errors={errors}
                         />
+
+                        {emailCounts.map((element,index)=>{
+                            if(index<5){
+                                
+                                return(
+                                    <Input
+                       
+                                    key={index}
+                                    label={`${element+2}º Imagem da galeria`}
+                                    name={`images${index}`}
+                                    placeholder="Inserir URL da imagem"
+                                    type="text"
+                                    register={register}
+                                    errors={errors}
+                                /> 
+                                )
+                            }
+                        })}
                         <Button
                             backgroundcolor="var(--brand-4)"
                             width={isDesktop ? "" : "100%"}
@@ -426,7 +478,7 @@ function ModalCreateAnnouncement({
                             }}
                             id={"AddFieldImg"}
                             size="small"
-                            onFunction={() => {}}
+                            onFunction={()=>setEmailsCounts([...emailCounts,emailCounts.length])}
                         >
                             Adicionar Campo para imagem da galeria
                         </Button>

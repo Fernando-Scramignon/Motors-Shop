@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import ProductPage from "../pages/Product";
 import ProfileViewUser from "../pages/ProfileViewUser";
 import ProfileViewAdmin from "../pages/ProfileViewAdmin";
+import ModalCreateAnnouncement from "../components/CreateAnnouncementModal";
+import { useState } from "react";
 
 let product = {
     id: "1",
@@ -28,17 +30,25 @@ let product = {
         "https://i.imgur.com/uRnumCd.png",
     ],
 };
-
 function Router() {
+    const [abrir, setAbrir]= useState(false)
+    function abrireFechar(){
+        setAbrir(!abrir)
+    } 
     return (
         <Routes>
             <>
                 <Route
                     path="/"
                     element={
+                        <>
                         <div>
                             <h1>Olá, mundo!</h1>
+
+                            <button onClick={abrireFechar}>ABRIR Modal</button>
+                        <ModalCreateAnnouncement modalOpen={abrir} openOrCloseModal={abrireFechar}></ModalCreateAnnouncement>
                         </div>
+                        </>
                     }
                 />
                 <Route path="/profileViewUser" element={<ProfileViewUser />} />
