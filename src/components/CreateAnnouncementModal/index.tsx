@@ -10,6 +10,7 @@ import closeIcon from "../../assets/x_modal.png";
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../providers/product";
 import FeedbackModal from "../FeedbackModal";
+import { FieldValues } from "react-hook-form/dist/types/fields";
 
 Modal.setAppElement("#root");
 
@@ -30,8 +31,12 @@ interface IModalCreateAnnouncement {
     modalOpen: boolean;
     openOrCloseModal: () => void;
 }
+
 function isValidUrl(url: string) {
     try {
+        if (url == undefined) {
+            return true;
+        }
         new URL(url);
     } catch (e) {
         return false;
@@ -47,7 +52,7 @@ function ModalCreateAnnouncement({
     const [announcement_type, setAnnouncement_type] = useState("Venda");
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
     const [sucess, setSucess] = useState(false);
-    const [emailCounts,setEmailsCounts]= useState<number[]>([])
+    const [emailCounts, setEmailsCounts] = useState<number[]>([]);
     const { createProduct } = useContext(ProductContext);
 
     function handleResize() {
@@ -95,33 +100,36 @@ function ModalCreateAnnouncement({
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
             ),
-            images0: yup
-            .string() 
-            .notRequired()
-            .test("is-url-valid", "A URL não é válida", (value) =>
-                isValidUrl(value as string)
-            ).optional(),
-            images1: yup
-            .string() 
-            .notRequired()
-            .test("is-url-valid", "A URL não é válida", (value) =>
-                isValidUrl(value as string)
-            ),
-            images2: yup
+        images0: yup
             .string()
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
-            ),
-            images3: yup
-            .string() 
+            )
+            .notRequired(),
+        images1: yup
+            .string()
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
-            ),
-            images4: yup
-            .string() 
+            )
+            .notRequired(),
+        images2: yup
+            .string()
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
-            ),
+            )
+            .notRequired(),
+        images3: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images4: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
     });
 
     const {
@@ -133,7 +141,7 @@ function ModalCreateAnnouncement({
     } = useForm({
         resolver: yupResolver(formSchema),
     });
-console.log(errors)
+
     function buttonIsAble() {
         return (
             Object.keys(errors).length == 0 &&
@@ -142,13 +150,19 @@ console.log(errors)
         );
     }
 
-    async function registerProduct(data: any) {
-        console.log([data.images,data.images0,data.images1,data.images2,data.images3,data.images4])
-        console.log(data)
-     
- /*        console.log(data)
+    async function registerProduct(data: FieldValues) {
+        data.images = [
+            data.images,
+            data.images0,
+            data.images1,
+            data.images2,
+            data.images3,
+            data.images4,
+        ].filter((img: string | undefined) => {
+            return img != undefined;
+        });
 
-         const RequestData = {
+        const RequestData = {
             title: data.title,
             year: data.year,
             km: data.km,
@@ -158,17 +172,18 @@ console.log(errors)
             announcement_type: announcement_type,
             published: false,
             cover_image: data.cover_image,
-            images: [data.images,data.images0,data.images1,data.images2,data.images3,data.images4],
-        }; */
+            images: data.images,
+        };
 
-      /*   openOrCloseModal();
+        console.log(RequestData);
 
         await createProduct(RequestData).then((res) => {
             if (res) {
                 setSucess(true);
                 reset();
+                openOrCloseModal();
             }
-        });  */
+        });
     }
 
     return (
@@ -440,28 +455,27 @@ console.log(errors)
                         <Input
                             label="1º Imagem da galeria"
                             name="images"
-                   
                             placeholder="Inserir URL da imagem"
                             type="text"
                             register={register}
                             errors={errors}
                         />
 
-                        {emailCounts.map((element,index)=>{
-                            if(index<5){
-                                
-                                return(
+                        {emailCounts.map((element, index) => {
+                            if (index < 5) {
+                                return (
                                     <Input
-                       
-                                    key={index}
-                                    label={`${element+2}º Imagem da galeria`}
-                                    name={`images${index}`}
-                                    placeholder="Inserir URL da imagem"
-                                    type="text"
-                                    register={register}
-                                    errors={errors}
-                                /> 
-                                )
+                                        key={index}
+                                        label={`${
+                                            element + 2
+                                        }º Imagem da galeria`}
+                                        name={`images${index}`}
+                                        placeholder="Inserir URL da imagem"
+                                        type="text"
+                                        register={register}
+                                        errors={errors}
+                                    />
+                                );
                             }
                         })}
                         <Button
@@ -478,7 +492,12 @@ console.log(errors)
                             }}
                             id={"AddFieldImg"}
                             size="small"
-                            onFunction={()=>setEmailsCounts([...emailCounts,emailCounts.length])}
+                            onFunction={() =>
+                                setEmailsCounts([
+                                    ...emailCounts,
+                                    emailCounts.length,
+                                ])
+                            }
                         >
                             Adicionar Campo para imagem da galeria
                         </Button>
