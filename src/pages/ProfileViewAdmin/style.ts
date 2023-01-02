@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledAdminProfileBody = styled.main`
     display: flex;
     flex-direction: column;
-    background: var(--grey-7);
+    background: var(--grey-8);
 `;
 
 export const ProfileBackground = styled.section`

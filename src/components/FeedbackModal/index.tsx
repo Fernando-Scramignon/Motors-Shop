@@ -28,6 +28,7 @@ function FeedbackModal({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    zIndex: 20,
                 },
                 content: {
                     position: "relative",

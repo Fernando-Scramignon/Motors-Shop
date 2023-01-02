@@ -7,7 +7,7 @@ export const StyledProfileBody = styled.main`
     flex-direction: column;
     /* align-items: center; */
 
-    background: var(--grey-7);
+    background: var(--grey-8);
 `;
 
 export const ProfileBackground = styled.section`

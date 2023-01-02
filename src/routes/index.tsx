@@ -45,7 +45,7 @@ function Router() {
                 <Route
                     path="/profileViewAdmin"
                     element={<ProfileViewAdmin />}
-                  />
+                />
                 <Route
                     path="/product"
                     element={<ProductPage product={product} />}
@@ -54,5 +54,4 @@ function Router() {
         </Routes>
     );
 }
-
 export default Router;
