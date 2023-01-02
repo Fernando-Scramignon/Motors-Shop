@@ -5,6 +5,7 @@ export interface IButtonProps {
     children: ReactNode;
     onFunction?: () => void;
     type?: "button" | "submit" | "reset";
+    id?: string;
     backgroundcolor: string;
     width: string;
     height: string;
@@ -15,6 +16,7 @@ export interface IButtonProps {
         colorHover: string;
         border: string;
     };
+
     size: "big" | "small";
 }
 
@@ -36,7 +38,6 @@ export const StyledButton = styled.button<IButtonProps>`
     border-radius: 4px;
     padding: ${(props) => (props.size === "big" ? "12px 28px" : "12px 20px")};
     font-size: ${(props) => (props.size === "big" ? "16px" : "14px")};
-
     &:hover {
         background-color: ${(props) => props.hover.backgroundColorHover};
         color: ${(props) => props.hover.colorHover};

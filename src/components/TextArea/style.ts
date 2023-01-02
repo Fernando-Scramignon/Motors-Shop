@@ -37,6 +37,7 @@ export const StyledContainer = styled.div<ITextAreaPropertiesProps>`
     }
 
     span {
+        font-size: 14px;
         margin-bottom: 10px;
         font-weight: 500;
         color: var(--alert-1);
@@ -52,7 +53,7 @@ export const StyledContainer = styled.div<ITextAreaPropertiesProps>`
         font-weight: 400;
         font-size: 16px;
         resize: none;
-        border: 1.5px solid
+        border: 2px solid
             ${(prop) => (prop.error ? "var(--alert-1)" : "var(--grey-7)")};
 
         &::-webkit-scrollbar {
@@ -64,8 +65,7 @@ export const StyledContainer = styled.div<ITextAreaPropertiesProps>`
         }
 
         &:focus {
-            border: 2px solid
-                ${(prop) => (prop.error ? "var(--alert-1)" : "var(--brand-2)")};
+            border: 2px solid var(--brand-2);
             background-color: transparent;
             outline: none;
         }
