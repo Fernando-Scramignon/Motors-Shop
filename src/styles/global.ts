@@ -52,10 +52,11 @@ export const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
     }
     
-    /* #root {
-        width: 100vw;
-        height: 100vh;
-    } */
+    .ReactModal__Overlay {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
     
     :root {
         --brand-1: #4529E6;
