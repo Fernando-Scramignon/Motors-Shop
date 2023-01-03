@@ -8,6 +8,8 @@ interface IFeedbackModalProps {
     setState: React.Dispatch<React.SetStateAction<boolean>>;
     children: React.ReactNode;
     title: string;
+    closeIconMarginRight?: string;
+    bodyPaddingRight?: string;
 }
 
 Modal.setAppElement("#root");
@@ -17,6 +19,8 @@ function FeedbackModal({
     setState,
     children,
     title,
+    closeIconMarginRight,
+    bodyPaddingRight,
 }: IFeedbackModalProps) {
     return (
         <Modal
@@ -45,7 +49,10 @@ function FeedbackModal({
                 },
             }}
         >
-            <StyledModal>
+            <StyledModal
+                closeIconMarginRight={closeIconMarginRight}
+                bodyPaddingRight={bodyPaddingRight}
+            >
                 <div className="modal__header">
                     <h3>{title}</h3>
                     <button onClick={() => setState(false)}>
