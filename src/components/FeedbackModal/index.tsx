@@ -10,6 +10,7 @@ interface IFeedbackModalProps {
     title: string;
     closeIconMarginRight?: string;
     bodyPaddingRight?: string;
+    onClose?: () => void;
 }
 
 Modal.setAppElement("#root");
@@ -21,11 +22,15 @@ function FeedbackModal({
     title,
     closeIconMarginRight,
     bodyPaddingRight,
+    onClose,
 }: IFeedbackModalProps) {
     return (
         <Modal
             isOpen={state}
-            onRequestClose={() => setState(false)}
+            onRequestClose={() => {
+                setState(false);
+                onClose && onClose();
+            }}
             style={{
                 overlay: {
                     minHeight: "100vh",

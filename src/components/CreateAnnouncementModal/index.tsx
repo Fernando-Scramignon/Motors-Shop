@@ -1,17 +1,15 @@
-import Modal from "react-modal";
 import Button from "../Button";
 import Input from "../Input";
 import TextArea from "../TextArea";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { StyledModalCreate } from "./style";
+import { StyledModalCreate, StyledSuccessModal } from "./style";
 import closeIcon from "../../assets/x_modal.png";
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../providers/product";
 import FeedbackModal from "../FeedbackModal";
-
-Modal.setAppElement("#root");
+import { FieldValues } from "react-hook-form/dist/types/fields";
 
 export interface IProductRequest {
     title: string;
@@ -30,8 +28,12 @@ interface IModalCreateAnnouncement {
     modalOpen: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 function isValidUrl(url: string) {
     try {
+        if (url == undefined) {
+            return true;
+        }
         new URL(url);
     } catch (e) {
         return false;
@@ -47,6 +49,7 @@ function ModalCreateAnnouncement({
     const [announcement_type, setAnnouncement_type] = useState("Venda");
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
     const [sucess, setSucess] = useState(false);
+    const [urlsCounts, setUrlsCounts] = useState<number[]>([]);
     const { createProduct } = useContext(ProductContext);
 
     function handleResize() {
@@ -94,6 +97,36 @@ function ModalCreateAnnouncement({
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
             ),
+        images0: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images1: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images2: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images3: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images4: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
     });
 
     const {
@@ -114,7 +147,18 @@ function ModalCreateAnnouncement({
         );
     }
 
-    async function registerProduct(data: any) {
+    async function registerProduct(data: FieldValues) {
+        data.images = [
+            data.images,
+            data.images0,
+            data.images1,
+            data.images2,
+            data.images3,
+            data.images4,
+        ].filter((img: string | undefined) => {
+            return img != undefined;
+        });
+
         const RequestData = {
             title: data.title,
             year: data.year,
@@ -125,7 +169,7 @@ function ModalCreateAnnouncement({
             announcement_type: announcement_type,
             published: false,
             cover_image: data.cover_image,
-            images: [data.images],
+            images: data.images,
         };
 
         setModalOpen(false);
@@ -133,6 +177,7 @@ function ModalCreateAnnouncement({
         await createProduct(RequestData).then((res) => {
             if (res) {
                 setSucess(true);
+                setUrlsCounts([]);
                 reset();
             }
         });
@@ -141,16 +186,24 @@ function ModalCreateAnnouncement({
     return (
         <>
             <FeedbackModal state={sucess} setState={setSucess} title="Sucesso!">
-                <h3>Seu anúncio foi criado com sucesso!</h3>
+                <StyledSuccessModal>
+                    <h3 className="modalSuccess__h3--subtitle">
+                        Seu anúncio foi criado com sucesso!
+                    </h3>
 
-                <p>
-                    Agora você poderá ver seus negócios crescendo em grande
-                    escala
-                </p>
+                    <p className="modalSuccess__p--description">
+                        Agora você poderá ver seus negócios crescendo em grande
+                        escala
+                    </p>
+                </StyledSuccessModal>
             </FeedbackModal>
             <FeedbackModal
                 state={modalOpen}
                 setState={setModalOpen}
+                onClose={() => {
+                    setUrlsCounts([]);
+                    reset();
+                }}
                 title="Criar anuncio"
                 closeIconMarginRight="0px"
                 bodyPaddingRight="30px"
@@ -378,24 +431,85 @@ function ModalCreateAnnouncement({
                             register={register}
                             errors={errors}
                         />
-                        <Button
-                            backgroundcolor="var(--brand-4)"
-                            width={isDesktop ? "" : "100%"}
-                            height="48px"
-                            type="button"
-                            border="none"
-                            color="var(--brand-1)"
-                            hover={{
-                                backgroundColorHover: "",
-                                colorHover: "",
-                                border: "",
-                            }}
-                            id={"AddFieldImg"}
-                            size="small"
-                            onFunction={() => {}}
-                        >
-                            Adicionar Campo para imagem da galeria
-                        </Button>
+
+                        {urlsCounts.map((element, index) => {
+                            return (
+                                <>
+                                    {index ==
+                                    urlsCounts[urlsCounts.length - 1] ? (
+                                        <button
+                                            type="button"
+                                            key={index + 1}
+                                            className="buttonDeleteInput"
+                                            onClick={(e) => {
+                                                setUrlsCounts(
+                                                    urlsCounts.filter(
+                                                        (elementFilter) =>
+                                                            elementFilter !==
+                                                            index
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            {" "}
+                                            <img
+                                                className="DeleteInput"
+                                                src={closeIcon}
+                                            />{" "}
+                                        </button>
+                                    ) : (
+                                        false
+                                    )}
+
+                                    <Input
+                                        key={index}
+                                        label={`${
+                                            index + 2
+                                        }º Imagem da galeria`}
+                                        name={`images${index}`}
+                                        placeholder="Inserir URL da imagem"
+                                        type="text"
+                                        register={register}
+                                        errors={errors}
+                                    />
+                                </>
+                            );
+                        })}
+
+                        {urlsCounts.length < 5 ? (
+                            <Button
+                                backgroundcolor="var(--brand-4)"
+                                width={isDesktop ? "" : "100%"}
+                                height="48px"
+                                type="button"
+                                border="none"
+                                color="var(--brand-1)"
+                                hover={{
+                                    backgroundColorHover: "",
+                                    colorHover: "",
+                                    border: "",
+                                }}
+                                id={"AddFieldImg"}
+                                size="small"
+                                onFunction={() => {
+                                    urlsCounts.length === 0
+                                        ? setUrlsCounts([
+                                              ...urlsCounts,
+                                              urlsCounts.length,
+                                          ])
+                                        : setUrlsCounts([
+                                              ...urlsCounts,
+                                              urlsCounts.length,
+                                          ]);
+                                }}
+                            >
+                                Adicionar Campo para imagem da galeria
+                            </Button>
+                        ) : (
+                            <button className="disableButtonImage" disabled>
+                                Adicionar Campo para imagem da galeria
+                            </button>
+                        )}
                         <div className="containerButtonsFinal">
                             <Button
                                 backgroundcolor="var(--grey-6)"
@@ -412,6 +526,7 @@ function ModalCreateAnnouncement({
                                 size="big"
                                 onFunction={() => {
                                     setModalOpen(false);
+                                    setUrlsCounts([]);
                                     reset();
                                 }}
                             >

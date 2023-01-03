@@ -5,6 +5,7 @@ export const StyledErrorModal = styled.div`
     display: flex;
     flex-flow: column nowrap;
     gap: 20px;
+    max-width: 472px;
 
     .modalError__h3--subtitle {
         color: var(--grey-1);

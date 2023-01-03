@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import ProductPage from "../pages/Product";
 import ProfileViewUser from "../pages/ProfileViewUser";
 import ProfileViewAdmin from "../pages/ProfileViewAdmin";
+import ModalCreateAnnouncement from "../components/CreateAnnouncementModal";
+import { useState } from "react";
 
 let product = {
     id: "1",
@@ -28,7 +30,6 @@ let product = {
         "https://i.imgur.com/uRnumCd.png",
     ],
 };
-
 function Router() {
     return (
         <Routes>
