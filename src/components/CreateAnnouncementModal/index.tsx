@@ -10,6 +10,7 @@ import closeIcon from "../../assets/x_modal.png";
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../providers/product";
 import FeedbackModal from "../FeedbackModal";
+import { FieldValues } from "react-hook-form/dist/types/fields";
 
 Modal.setAppElement("#root");
 
@@ -30,8 +31,12 @@ interface IModalCreateAnnouncement {
     modalOpen: boolean;
     openOrCloseModal: () => void;
 }
+
 function isValidUrl(url: string) {
     try {
+        if (url == undefined) {
+            return true;
+        }
         new URL(url);
     } catch (e) {
         return false;
@@ -47,6 +52,7 @@ function ModalCreateAnnouncement({
     const [announcement_type, setAnnouncement_type] = useState("Venda");
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
     const [sucess, setSucess] = useState(false);
+    const [urlsCounts, setUrlsCounts] = useState<number[]>([]);
     const { createProduct } = useContext(ProductContext);
 
     function handleResize() {
@@ -94,6 +100,36 @@ function ModalCreateAnnouncement({
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
             ),
+        images0: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images1: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images2: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images3: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
+        images4: yup
+            .string()
+            .test("is-url-valid", "A URL não é válida", (value) =>
+                isValidUrl(value as string)
+            )
+            .notRequired(),
     });
 
     const {
@@ -114,7 +150,18 @@ function ModalCreateAnnouncement({
         );
     }
 
-    async function registerProduct(data: any) {
+    async function registerProduct(data: FieldValues) {
+        data.images = [
+            data.images,
+            data.images0,
+            data.images1,
+            data.images2,
+            data.images3,
+            data.images4,
+        ].filter((img: string | undefined) => {
+            return img != undefined;
+        });
+
         const RequestData = {
             title: data.title,
             year: data.year,
@@ -125,15 +172,15 @@ function ModalCreateAnnouncement({
             announcement_type: announcement_type,
             published: false,
             cover_image: data.cover_image,
-            images: [data.images],
+            images: data.images,
         };
-
-        openOrCloseModal();
 
         await createProduct(RequestData).then((res) => {
             if (res) {
                 setSucess(true);
+                setUrlsCounts([]);
                 reset();
+                openOrCloseModal();
             }
         });
     }
@@ -152,6 +199,7 @@ function ModalCreateAnnouncement({
                 isOpen={modalOpen}
                 onRequestClose={() => {
                     openOrCloseModal();
+                    setUrlsCounts([]);
                     reset();
                 }}
                 style={{
@@ -186,6 +234,7 @@ function ModalCreateAnnouncement({
                         <button
                             onClick={() => {
                                 openOrCloseModal();
+                                setUrlsCounts([]);
                                 reset();
                             }}
                         >
@@ -412,24 +461,85 @@ function ModalCreateAnnouncement({
                             register={register}
                             errors={errors}
                         />
-                        <Button
-                            backgroundcolor="var(--brand-4)"
-                            width={isDesktop ? "" : "100%"}
-                            height="48px"
-                            type="button"
-                            border="none"
-                            color="var(--brand-1)"
-                            hover={{
-                                backgroundColorHover: "",
-                                colorHover: "",
-                                border: "",
-                            }}
-                            id={"AddFieldImg"}
-                            size="small"
-                            onFunction={() => {}}
-                        >
-                            Adicionar Campo para imagem da galeria
-                        </Button>
+
+                        {urlsCounts.map((element, index) => {
+                            return (
+                                <>
+                                    {index ==
+                                    urlsCounts[urlsCounts.length - 1] ? (
+                                        <button
+                                            type="button"
+                                            key={index + 1}
+                                            className="buttonDeleteInput"
+                                            onClick={(e) => {
+                                                setUrlsCounts(
+                                                    urlsCounts.filter(
+                                                        (elementFilter) =>
+                                                            elementFilter !==
+                                                            index
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            {" "}
+                                            <img
+                                                className="DeleteInput"
+                                                src={closeIcon}
+                                            />{" "}
+                                        </button>
+                                    ) : (
+                                        false
+                                    )}
+
+                                    <Input
+                                        key={index}
+                                        label={`${
+                                            index + 2
+                                        }º Imagem da galeria`}
+                                        name={`images${index}`}
+                                        placeholder="Inserir URL da imagem"
+                                        type="text"
+                                        register={register}
+                                        errors={errors}
+                                    />
+                                </>
+                            );
+                        })}
+
+                        {urlsCounts.length < 5 ? (
+                            <Button
+                                backgroundcolor="var(--brand-4)"
+                                width={isDesktop ? "" : "100%"}
+                                height="48px"
+                                type="button"
+                                border="none"
+                                color="var(--brand-1)"
+                                hover={{
+                                    backgroundColorHover: "",
+                                    colorHover: "",
+                                    border: "",
+                                }}
+                                id={"AddFieldImg"}
+                                size="small"
+                                onFunction={() => {
+                                    urlsCounts.length === 0
+                                        ? setUrlsCounts([
+                                              ...urlsCounts,
+                                              urlsCounts.length,
+                                          ])
+                                        : setUrlsCounts([
+                                              ...urlsCounts,
+                                              urlsCounts.length,
+                                          ]);
+                                }}
+                            >
+                                Adicionar Campo para imagem da galeria
+                            </Button>
+                        ) : (
+                            <button className="disableButtonImage" disabled>
+                                Adicionar Campo para imagem da galeria
+                            </button>
+                        )}
                         <div className="containerButtonsFinal">
                             <Button
                                 backgroundcolor="var(--grey-6)"
@@ -446,6 +556,7 @@ function ModalCreateAnnouncement({
                                 size="big"
                                 onFunction={() => {
                                     openOrCloseModal();
+                                    setUrlsCounts([]);
                                     reset();
                                 }}
                             >
