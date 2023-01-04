@@ -14,16 +14,24 @@ export const StyledProductCardList = styled.div`
         color: var(--black);
     }
 
-    > ul {
+    > .carousel {
         display: flex;
-        gap: 12px;
-        overflow: auto;
+        cursor: grab;
+        overflow: hidden;
+        /* gap: 12px; */
+        /* overflow: auto;
         &::-webkit-scrollbar {
             height: 5px;
         }
         &::-webkit-scrollbar-thumb {
             background-color: var(--grey-3);
             border-radius: 20px;
+        } */
+
+        > .inner {
+            display: flex;
+            gap: 12px;
+            /* ADICIONAR NA IMAGEM pointer-events: none; */
         }
     }
 

@@ -2,9 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import ProductPage from "../pages/Product";
 import ProfileViewUser from "../pages/ProfileViewUser";
 import ProfileViewAdmin from "../pages/ProfileViewAdmin";
-
-import { useState } from "react";
-
+import Home from "../pages/Home";
 
 function Router() {
 
@@ -14,11 +12,11 @@ function Router() {
                 path="/"
                 element={
                     <div>
-                        <h1>Olá, mundo!</h1>
-                        
+                        <h1>Olá, mundo!</h1>   
                     </div>
                 }
             />
+            <Route path="/" element={<Home />} />
             <Route path="/profileViewUser" element={<ProfileViewUser />} />
             <Route path="/profileViewAdmin" element={<ProfileViewAdmin />} />
             <Route
