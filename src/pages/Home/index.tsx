@@ -16,13 +16,11 @@ function Home() {
     const [motos, setMotos] = useState([]);
 
     useEffect(() => {
-        const mockedUserName = "Fernando Scramignon";
-
         APIRequests.getProducts()
             .then((response: any) => {
                 const vehiclesList = response.data.map(
                     (vehicle: IProductCard) => {
-                        vehicle.username = mockedUserName;
+                        vehicle.username = vehicle.user.name;
                         return vehicle;
                     }
                 );
