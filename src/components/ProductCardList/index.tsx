@@ -4,6 +4,8 @@ import ProductCard from "../ProductCard";
 import { StyledProductCardList } from "./style";
 import { motion } from "framer-motion";
 
+import { IUser } from "../../interfaces";
+
 export interface IProductCard {
     id: string;
     cover_image: string;
@@ -13,6 +15,7 @@ export interface IProductCard {
     km: number;
     year: number;
     price: number;
+    user: IUser;
     published: boolean;
     vehicle_type: "Carro" | "Moto";
 }
