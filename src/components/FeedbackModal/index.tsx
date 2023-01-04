@@ -60,7 +60,12 @@ function FeedbackModal({
             >
                 <div className="modal__header">
                     <h3>{title}</h3>
-                    <button onClick={() => setState(false)}>
+                    <button
+                        onClick={() => {
+                            setState(false);
+                            onClose && onClose();
+                        }}
+                    >
                         <img src={closeIcon} />
                     </button>
                 </div>
