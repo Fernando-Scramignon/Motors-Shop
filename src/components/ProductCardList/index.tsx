@@ -1,3 +1,6 @@
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ProductContext } from "../../providers/product";
 import ProductCard from "../ProductCard";
 import { StyledProductCardList } from "./style";
 
