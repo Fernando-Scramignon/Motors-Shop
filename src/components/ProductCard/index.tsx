@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
     StyledActivity,
     StyledAdvertiseButtons,
@@ -11,6 +12,7 @@ import {
 } from "./style";
 
 interface IProductCard {
+    id: string;
     cover_image: string;
     title: string;
     description: string;
@@ -41,6 +43,8 @@ function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
     const [initialLetters, setInitialLetters] = useState<string>("");
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
 
+    const navigate = useNavigate();
+
     // Adicionar dependencia futuramente, provavelmente o product
     useEffect(() => {
         setInitialLetters(
@@ -56,6 +60,7 @@ function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
 
     return (
         <StyledProductCard>
+            <Link to={`product/${product.id}`} />
             <StyledImage className="containerImg">
                 {showActivity ? (
                     published ? (

@@ -19,6 +19,17 @@ export const StyledProductCard = styled.div`
         top: 9px;
         left: 14px;
     }
+
+    position: relative;
+    > a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        transition: none;
+        width: 100%;
+        height: 100%;
+    }
 `;
 
 export const StyledImage = styled.div`
