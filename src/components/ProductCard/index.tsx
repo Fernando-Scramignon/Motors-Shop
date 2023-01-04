@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     StyledActivity,
     StyledAdvertiseButtons,
@@ -59,8 +59,7 @@ function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
     }, []);
 
     return (
-        <StyledProductCard>
-            <Link to={`product/${product.id}`} />
+        <StyledProductCard onClick={() => navigate(`product/${product.id}`)}>
             <StyledImage className="containerImg">
                 {showActivity ? (
                     published ? (
