@@ -1,18 +1,15 @@
-import Modal from "react-modal";
 import Button from "../Button";
 import Input from "../Input";
 import TextArea from "../TextArea";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { StyledModalCreate } from "./style";
+import { StyledModalCreate, StyledSuccessModal } from "./style";
 import closeIcon from "../../assets/x_modal.png";
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../providers/product";
 import FeedbackModal from "../FeedbackModal";
 import { FieldValues } from "react-hook-form/dist/types/fields";
-
-Modal.setAppElement("#root");
 
 export interface IProductRequest {
     title: string;
@@ -29,7 +26,7 @@ export interface IProductRequest {
 
 interface IModalCreateAnnouncement {
     modalOpen: boolean;
-    openOrCloseModal: () => void;
+    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function isValidUrl(url: string) {
@@ -46,7 +43,7 @@ function isValidUrl(url: string) {
 
 function ModalCreateAnnouncement({
     modalOpen,
-    openOrCloseModal,
+    setModalOpen,
 }: IModalCreateAnnouncement) {
     const [vehicle_type, setVehicle_type] = useState("Carro");
     const [announcement_type, setAnnouncement_type] = useState("Venda");
@@ -56,7 +53,7 @@ function ModalCreateAnnouncement({
     const { createProduct } = useContext(ProductContext);
 
     function handleResize() {
-        if (window.innerWidth >= 668) {
+        if (window.innerWidth >= 425) {
             return setIsDesktop(true);
         }
         return setIsDesktop(false);
@@ -175,12 +172,13 @@ function ModalCreateAnnouncement({
             images: data.images,
         };
 
+        setModalOpen(false);
+
         await createProduct(RequestData).then((res) => {
             if (res) {
                 setSucess(true);
                 setUrlsCounts([]);
                 reset();
-                openOrCloseModal();
             }
         });
     }
@@ -188,59 +186,29 @@ function ModalCreateAnnouncement({
     return (
         <>
             <FeedbackModal state={sucess} setState={setSucess} title="Sucesso!">
-                <h3>Seu anúncio foi criado com sucesso!</h3>
+                <StyledSuccessModal>
+                    <h3 className="modalSuccess__h3--subtitle">
+                        Seu anúncio foi criado com sucesso!
+                    </h3>
 
-                <p>
-                    Agora você poderá ver seus negócios crescendo em grande
-                    escala
-                </p>
+                    <p className="modalSuccess__p--description">
+                        Agora você poderá ver seus negócios crescendo em grande
+                        escala
+                    </p>
+                </StyledSuccessModal>
             </FeedbackModal>
-            <Modal
-                isOpen={modalOpen}
-                onRequestClose={() => {
-                    openOrCloseModal();
+            <FeedbackModal
+                state={modalOpen}
+                setState={setModalOpen}
+                onClose={() => {
                     setUrlsCounts([]);
                     reset();
                 }}
-                style={{
-                    overlay: {
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        overflow: "auto",
-                        paddingBottom: "80px",
-                        zIndex: 20,
-                    },
-
-                    content: {
-                        position: "relative",
-                        inset: 0,
-                        width: "fit-content",
-                        height: "fit-content",
-                        boxSizing: "border-box",
-                        border: "0",
-                        backgroundColor: "transparent",
-                        borderRadius: "0",
-                        overflow: "initial",
-                        maxHeight: "100vh",
-                        marginTop: "80px",
-                    },
-                }}
+                title="Criar anuncio"
+                closeIconMarginRight="0px"
+                bodyPaddingRight="30px"
             >
                 <StyledModalCreate>
-                    <div className="modal__header">
-                        <h3>Criar anuncio</h3>
-                        <button
-                            onClick={() => {
-                                openOrCloseModal();
-                                setUrlsCounts([]);
-                                reset();
-                            }}
-                        >
-                            <img src={closeIcon} />
-                        </button>
-                    </div>
                     <h4>Tipo de Anuncio</h4>
                     <div className="containerButtons">
                         <Button
@@ -249,7 +217,7 @@ function ModalCreateAnnouncement({
                                     ? "var(--brand-1)"
                                     : "var(--white-fixed)"
                             }
-                            width="239px"
+                            width="100%"
                             height="48px"
                             type="button"
                             border={
@@ -286,7 +254,7 @@ function ModalCreateAnnouncement({
                                     ? "var(--brand-1)"
                                     : "var(--white-fixed)"
                             }
-                            width="239px"
+                            width="100%"
                             height="48px"
                             type="button"
                             border={
@@ -328,22 +296,24 @@ function ModalCreateAnnouncement({
                             register={register}
                             errors={errors}
                         />
-                        <div>
+                        <div className="createProductModal__div--numbersContainer">
                             <Input
                                 label="Ano"
                                 name="year"
                                 placeholder="Digitar ano"
-                                type=""
+                                type="number"
                                 register={register}
                                 errors={errors}
+                                width={isDesktop ? "100%" : "48%"}
                             />
                             <Input
                                 label="Quilometragem"
                                 name="km"
                                 placeholder="0"
-                                type=""
+                                type="number"
                                 register={register}
                                 errors={errors}
+                                width={isDesktop ? "100%" : "48%"}
                             />
                             <Input
                                 label="Preço"
@@ -374,7 +344,7 @@ function ModalCreateAnnouncement({
                                         ? "var(--brand-1)"
                                         : "var(--white-fixed)"
                                 }
-                                width="239px"
+                                width="100%"
                                 height="48px"
                                 type="button"
                                 border={
@@ -411,7 +381,7 @@ function ModalCreateAnnouncement({
                                         ? "var(--brand-1)"
                                         : "var(--white-fixed)"
                                 }
-                                width="239px"
+                                width="100%"
                                 height="48px"
                                 type="button"
                                 border={
@@ -555,7 +525,7 @@ function ModalCreateAnnouncement({
                                 }}
                                 size="big"
                                 onFunction={() => {
-                                    openOrCloseModal();
+                                    setModalOpen(false);
                                     setUrlsCounts([]);
                                     reset();
                                 }}
@@ -587,7 +557,7 @@ function ModalCreateAnnouncement({
                         </div>
                     </form>
                 </StyledModalCreate>
-            </Modal>
+            </FeedbackModal>
         </>
     );
 }

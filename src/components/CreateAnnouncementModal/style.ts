@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const StyledModalCreate = styled.div`
-    padding: 0 16px 25px 16px;
     border-radius: 8px;
     display: flex;
     flex-flow: column nowrap;
@@ -9,42 +8,13 @@ export const StyledModalCreate = styled.div`
     background-color: var(--white-fixed);
     font-family: "Inter";
     font-style: normal;
-    max-width: 520px;
-    width: 100vw;
+    max-width: 472px;
+    width: 83.73vw;
 
     label {
         margin-top: 24px;
     }
 
-    .modal__header {
-        max-width: 487px;
-        width: 100%;
-        height: 56px;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        h3 {
-            color: #212529;
-            font-weight: 500;
-            font-size: 16px;
-            font-family: "Lexend", sans-serif;
-        }
-        button {
-            padding: 0;
-            margin: 0;
-            border: 0;
-            background-color: transparent;
-            line-height: 0;
-            margin-right: 6px;
-
-            img {
-                width: 12px;
-                height: 12px;
-            }
-        }
-    }
     .containerButtons {
         gap: 10px;
         display: flex;
@@ -55,6 +25,30 @@ export const StyledModalCreate = styled.div`
         display: flex;
         justify-content: flex-end;
         margin-top: 40px;
+    }
+
+    .createProductModal__div--numbersContainer {
+        width: 100%;
+        max-width: 472px;
+        flex-flow: row wrap;
+        display: flex;
+        gap: 11px;
+    }
+    .createProductModal__div--numbersContainer div:nth-child(3) {
+        label {
+            margin-top: 13px;
+        }
+    }
+
+    @media (min-width: 425px) {
+        .createProductModal__div--numbersContainer {
+            flex-flow: row nowrap;
+        }
+        .createProductModal__div--numbersContainer div:nth-child(3) {
+            label {
+                margin-top: 24px;
+            }
+        }
     }
 
     #veichleTypeId {
@@ -130,5 +124,28 @@ export const StyledModalCreate = styled.div`
         .disableButtonImage {
             width: 318px;
         }
+    }
+`;
+
+export const StyledSuccessModal = styled.div`
+    margin-top: 22px;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+    max-width: 472px;
+
+    .modalSuccess__h3--subtitle {
+        color: var(--grey-1);
+        font-size: 16px;
+        font-weight: 500;
+        font-family: "Lexend", sans-serif;
+    }
+    .modalSuccess__p--description {
+        color: var(--grey-2);
+        font-size: 16px;
+        font-weight: 400;
+        font-family: "Inter", sans-serif;
+        margin-bottom: 13px;
+        line-height: 28px;
     }
 `;

@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-export const StyledModal = styled.div`
+interface IStyledFeedbackModalProps {
+    closeIconMarginRight?: string;
+    bodyPaddingRight?: string;
+}
+
+export const StyledModal = styled.div<IStyledFeedbackModalProps>`
     padding: 0 16px 25px 16px;
     border-radius: 8px;
 
@@ -11,7 +16,10 @@ export const StyledModal = styled.div`
     background-color: #ffffff;
 
     @media (min-width: 500px) {
-        padding: 0 24px 25px 24px;
+        padding: 0
+            ${({ bodyPaddingRight }) =>
+                bodyPaddingRight ? bodyPaddingRight : "24px"}
+            25px 24px;
     }
 
     .modal__header {
@@ -35,7 +43,8 @@ export const StyledModal = styled.div`
             border: 0;
             background-color: transparent;
             line-height: 0;
-            margin-right: 6px;
+            margin-right: ${({ closeIconMarginRight }) =>
+                closeIconMarginRight ? closeIconMarginRight : "6px"};
 
             img {
                 width: 12px;

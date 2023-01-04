@@ -8,6 +8,9 @@ interface IFeedbackModalProps {
     setState: React.Dispatch<React.SetStateAction<boolean>>;
     children: React.ReactNode;
     title: string;
+    closeIconMarginRight?: string;
+    bodyPaddingRight?: string;
+    onClose?: () => void;
 }
 
 Modal.setAppElement("#root");
@@ -17,11 +20,17 @@ function FeedbackModal({
     setState,
     children,
     title,
+    closeIconMarginRight,
+    bodyPaddingRight,
+    onClose,
 }: IFeedbackModalProps) {
     return (
         <Modal
             isOpen={state}
-            onRequestClose={() => setState(false)}
+            onRequestClose={() => {
+                setState(false);
+                onClose && onClose();
+            }}
             style={{
                 overlay: {
                     minHeight: "100vh",
@@ -45,7 +54,10 @@ function FeedbackModal({
                 },
             }}
         >
-            <StyledModal>
+            <StyledModal
+                closeIconMarginRight={closeIconMarginRight}
+                bodyPaddingRight={bodyPaddingRight}
+            >
                 <div className="modal__header">
                     <h3>{title}</h3>
                     <button onClick={() => setState(false)}>
