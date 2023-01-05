@@ -1,4 +1,7 @@
+import { useState } from "react";
 import Button from "../Button";
+import ModalEditAddress from "../EditAddressModal";
+import ModalEditUser from "../EditUserModal";
 import {
     StyledMobileHeaderModal,
     StyledDesktopHeaderModal,
@@ -15,6 +18,9 @@ interface IAlternateModalIsOpen {
 }
 
 function HeaderModal({ isDesktop, alternateModalIsOpen }: IHeaderModalProps) {
+    const [editUser, setEditUser] = useState(false);
+    const [editAddress, setEditAddress] = useState(false);
+
     return !isDesktop ? (
         <ModalContainer>
             <StyledMobileHeaderModal>
@@ -46,15 +52,27 @@ function HeaderModal({ isDesktop, alternateModalIsOpen }: IHeaderModalProps) {
             <div className="modalBackdrop" onClick={alternateModalIsOpen}></div>
         </ModalContainer>
     ) : (
-        <ModalContainer>
-            <StyledDesktopHeaderModal onClick={(e) => e.stopPropagation()}>
-                <span>Editar Perfil</span>
-                <span>Editar Endereço</span>
-                <span>Minhas compras</span>
-                <span>Sair</span>
-            </StyledDesktopHeaderModal>
-            <div className="modalBackdrop" onClick={alternateModalIsOpen}></div>
-        </ModalContainer>
+        <>
+            <ModalContainer>
+                <StyledDesktopHeaderModal onClick={(e) => e.stopPropagation()}>
+                    <span onClick={() => setEditUser(true)}>Editar Perfil</span>
+                    <span onClick={() => setEditAddress(true)}>
+                        Editar Endereço
+                    </span>
+                    <span>Minhas compras</span>
+                    <span>Sair</span>
+                </StyledDesktopHeaderModal>
+                <div
+                    className="modalBackdrop"
+                    onClick={alternateModalIsOpen}
+                ></div>
+            </ModalContainer>
+            <ModalEditUser modalOpen={editUser} setModalOpen={setEditUser} />
+            <ModalEditAddress
+                modalOpen={editAddress}
+                setModalOpen={setEditAddress}
+            />
+        </>
     );
 }
 

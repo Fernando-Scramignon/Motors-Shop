@@ -65,7 +65,7 @@ function ProductCard({
     }, []);
 
     return (
-        <StyledProductCard onClick={() => navigate(`product/${product.id}`)}>
+        <StyledProductCard onClick={() => navigate(`/product/${product.id}`)}>
             <StyledImage className="containerImg">
                 {showActivity ? (
                     published ? (

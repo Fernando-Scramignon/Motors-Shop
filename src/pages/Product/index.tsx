@@ -136,16 +136,13 @@ function ProductPage() {
                                 {initialLetters}
                             </StyledInitialLetters>
 
-                            <h6>Luccas Queiroz</h6>
+                            <h6>Fernando</h6>
                             <p className="description">Um vendedor</p>
                             <button>Ver todos anuncios</button>
                         </StyledUserDetails>
                     </StyledProductUserDetails>
                 </StyledSectionProduct>
-                <Comments
-                    comments={data}
-                    user={{ username: "Luccas Queiroz" }}
-                />
+                <Comments comments={data} user={{ username: "Fernando" }} />
             </StyledProductPage>
             <Footer />
         </>

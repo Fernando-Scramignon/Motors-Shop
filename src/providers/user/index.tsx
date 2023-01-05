@@ -90,6 +90,7 @@ interface IUserContextProps {
     createUser: (data: IUserCreateRequest) => Promise<ISimpleUser | undefined>;
     login: (data: ILogin) => Promise<ILoginResponse | undefined>;
     getLocalStorage: () => ILoginResponse | undefined;
+    checkLocalStorage: () => ILoginResponse | undefined;
     getUserById: (user_id: string) => Promise<IFullUser | undefined>;
     getUserProfileById: (user_id: string) => Promise<IUserProfile | undefined>;
     updateUser: (
@@ -221,6 +222,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
                 createUser,
                 login,
                 getLocalStorage,
+                checkLocalStorage,
                 getUserById,
                 getUserProfileById,
                 updateUser,
