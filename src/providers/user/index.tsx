@@ -124,11 +124,8 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
             .post("/users/login", data)
             .then((res) => {
                 const body = res.data as ILoginResponse;
-                window.localStorage.setItem("user_id", JSON.stringify(body.id));
-                window.localStorage.setItem(
-                    "user_token",
-                    JSON.stringify(body.token)
-                );
+                window.localStorage.setItem("user_id", body.id);
+                window.localStorage.setItem("user_token", body.token);
                 return body;
             })
             .catch((err: IAxiosError) =>
