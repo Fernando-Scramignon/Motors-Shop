@@ -139,7 +139,7 @@ export const StyledForm = styled.form`
         color: var(--white-fixed);
     }
 
-    textarea {
+    > textarea {
         padding: 8px 16px;
         height: 128px;
         color: var(--grey-2);
@@ -172,14 +172,27 @@ export const StyledForm = styled.form`
         }
     }
 
+    > span {
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-weight: 500;
+        color: var(--alert-1);
+    }
+
     @media (min-width: 1440px) {
         > button {
             position: absolute;
             bottom: 13px;
             right: 11px;
         }
+
         > textarea {
             padding-right: 20%;
+        }
+
+        > span {
+            position: absolute;
+            bottom: -33px;
         }
     }
 `;
@@ -205,5 +218,11 @@ export const StyledSuggestions = styled.div`
         font-weight: 500;
         font-size: 12px;
         color: var(--grey-3);
+    }
+
+    @media (min-width: 1440px) {
+        > p {
+            margin-top: 10px;
+        }
     }
 `;

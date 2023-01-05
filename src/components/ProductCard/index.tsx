@@ -27,14 +27,20 @@ interface IProductCardProps {
     product: IProductCard;
     showActivity: boolean;
     advertise: boolean;
+    username: string;
 }
 
-function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
+function ProductCard({
+    product,
+    showActivity,
+    advertise,
+    username,
+}: IProductCardProps) {
     const {
         cover_image,
         title,
         description,
-        username, // Mudará para user_id
+        // username, Mudará para user_id
         km,
         year,
         price,
@@ -59,7 +65,7 @@ function ProductCard({ product, showActivity, advertise }: IProductCardProps) {
     }, []);
 
     return (
-        <StyledProductCard onClick={() => navigate(`product/${product.id}`)}>
+        <StyledProductCard onClick={() => navigate(`/product/${product.id}`)}>
             <StyledImage className="containerImg">
                 {showActivity ? (
                     published ? (
