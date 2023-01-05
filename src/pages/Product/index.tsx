@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Comments from "../../components/Comments";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { ProductContext } from "../../providers/product";
 import {
     StyledProductPage,
     StyledProductsInfo,
@@ -52,50 +54,39 @@ interface IUserProductPage {
     description: string;
 }
 
-interface IProductPage {
-    cover_image: string;
+export interface IProductPage {
+    id: string;
     title: string;
-    description: string;
-    user: IUserProductPage;
-    km: number;
     year: number;
+    km: number;
     price: number;
+    description: string;
+    vehicle_type: string;
+    announcement_type: string;
     published: boolean;
+    cover_image: string;
     images: string[];
+    // user_id
 }
 
-interface IProductPageProps {
-    product: IProductPage;
-}
-
-function ProductPage({ product }: IProductPageProps) {
-    const {
-        cover_image,
-        title,
-        description,
-        user, // Mudará para user_id
-        km,
-        year,
-        price,
-        published,
-        images,
-    }: IProductPage = product;
-
-    const [initialLetters, setInitialLetters] = useState<string>("");
+function ProductPage() {
+    // Tirar any
+    const [product, setProduct] = useState<any | IProductPage>({});
+    // Mudar esse state mockado
+    const [initialLetters, setInitialLetters] = useState<string>("LQ");
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
+    const { id } = useParams();
+    const { getProductById } = useContext(ProductContext);
 
-    // Adicionar dependencia futuramente, provavelmente o product
+    // Adicionar novas ependencias futuramente
     useEffect(() => {
-        setInitialLetters(
-            user.name
-                .split(" ")
-                .slice(0, 2)
-                .map((elem) => elem[0].toUpperCase())
-                .join("")
-        );
+        getProductById(id!).then((res) => {
+            setProduct(res!);
+            setConvertedPrice(Number(product.price / 100));
+            // Adicionar Initial Letters
+        });
+    }, [convertedPrice]);
 
-        setConvertedPrice(price / 100);
-    }, []);
     return (
         <>
             <Header />
@@ -103,17 +94,20 @@ function ProductPage({ product }: IProductPageProps) {
                 <StyledSectionProduct>
                     <StyledProductsInfo>
                         <StyledProductImage>
-                            <img src={cover_image} alt="Imagem de capa" />
+                            <img
+                                src={product?.cover_image}
+                                alt="Imagem de capa"
+                            />
                         </StyledProductImage>
                         <StyledProductDetail>
-                            <h6>{title}</h6>
+                            <h6>{product?.title}</h6>
                             <StyledYearKmPriceDiv>
                                 <div>
-                                    <p>{year}</p>
-                                    <p>{km} KM</p>
+                                    <p>{product?.year}</p>
+                                    <p>{product?.km} KM</p>
                                 </div>
                                 <p>
-                                    {convertedPrice.toLocaleString("pt-BR", {
+                                    {convertedPrice?.toLocaleString("pt-BR", {
                                         style: "currency",
                                         currency: "BRL",
                                     })}
@@ -123,14 +117,14 @@ function ProductPage({ product }: IProductPageProps) {
                         </StyledProductDetail>
                         <StyledProductDescription>
                             <h6>Descrição</h6>
-                            <p>{description}</p>
+                            <p>{product?.description}</p>
                         </StyledProductDescription>
                     </StyledProductsInfo>
                     <StyledProductUserDetails>
                         <StyledImages>
                             <h6>Fotos</h6>
                             <ul>
-                                {images?.map((img) => (
+                                {product?.images?.map((img: string) => (
                                     <li>
                                         <img src={img} />
                                     </li>
@@ -141,8 +135,9 @@ function ProductPage({ product }: IProductPageProps) {
                             <StyledInitialLetters>
                                 {initialLetters}
                             </StyledInitialLetters>
-                            <h6>{user.name}</h6>
-                            <p className="description">{user.description}</p>
+
+                            <h6>Luccas Queiroz</h6>
+                            <p className="description">Um vendedor</p>
                             <button>Ver todos anuncios</button>
                         </StyledUserDetails>
                     </StyledProductUserDetails>

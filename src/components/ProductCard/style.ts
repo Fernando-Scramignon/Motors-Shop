@@ -10,7 +10,8 @@ export const StyledProductCard = styled.div`
     gap: 16px;
     width: 312px;
     max-width: 312px;
-
+    cursor: grab;
+    /* pointer-events: none; */
     &:hover .containerImg {
         border: 2px solid var(--brand-1);
     }
@@ -19,6 +20,18 @@ export const StyledProductCard = styled.div`
         top: 9px;
         left: 14px;
     }
+
+    position: relative;
+    /* > a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        transition: none;
+        width: 100%;
+        height: 100%;
+        cursor: grab;
+    } */
 `;
 
 export const StyledImage = styled.div`
@@ -33,6 +46,8 @@ export const StyledImage = styled.div`
     > img {
         width: 262px;
         height: 150px;
+        cursor: grabbing;
+        pointer-events: none;
     }
 `;
 

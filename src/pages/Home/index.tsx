@@ -1,20 +1,17 @@
-import {
-    StyledProfileBody,
-    ProfileBackground,
-    ProductListSection,
-} from "./style";
+import { StyledHomeBody, ProductListSection } from "./style";
 
+import UnderHeaderBackground from "../../components/UnderHeaderBackground";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import ProfileCard from "../../components/ProfileCard";
 import ProductCardList from "../../components/ProductCardList";
 
-import { IProductCard } from "../../components/ProductCardList";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 import { APIRequests } from "../../services/api";
 
-function ProfileViewUser() {
+import { IProductCard } from "../../components/ProductCardList";
+
+function Home() {
     const [cars, setCars] = useState([]);
     const [motos, setMotos] = useState([]);
 
@@ -43,27 +40,26 @@ function ProfileViewUser() {
     }, []);
 
     return (
-        <StyledProfileBody>
+        <StyledHomeBody>
             <Header />
-            <ProfileBackground />
-            <ProfileCard isAdvertiser={false} />
+            <UnderHeaderBackground />
             <ProductListSection>
                 <ProductCardList
-                    productList={cars}
                     advertise={false}
                     showActivity={true}
-                    title="Carro"
+                    title={"Carro"}
+                    productList={cars}
                 />
                 <ProductCardList
-                    productList={motos}
                     advertise={false}
                     showActivity={true}
-                    title="Moto"
+                    title={"Moto"}
+                    productList={motos}
                 />
             </ProductListSection>
             <Footer />
-        </StyledProfileBody>
+        </StyledHomeBody>
     );
 }
 
-export default ProfileViewUser;
+export default Home;
