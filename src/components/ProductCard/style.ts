@@ -11,27 +11,27 @@ export const StyledProductCard = styled.div`
     width: 312px;
     max-width: 312px;
     cursor: grab;
-    /* pointer-events: none; */
-    &:hover .containerImg {
-        border: 2px solid var(--brand-1);
-    }
 
     &:hover .activity {
         top: 9px;
         left: 14px;
     }
 
+    &:hover {
+        > .containerImg {
+            border: 2px solid var(--brand-1);
+            > .activity {
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            > img {
+                transform: scale(1.2);
+                transition: transform 0.3s;
+            }
+        }
+    }
+
     position: relative;
-    /* > a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        transition: none;
-        width: 100%;
-        height: 100%;
-        cursor: grab;
-    } */
 `;
 
 export const StyledImage = styled.div`
@@ -42,12 +42,14 @@ export const StyledImage = styled.div`
     align-items: center;
     position: relative;
     background-color: var(--grey-7);
+    overflow: hidden;
 
     > img {
         width: 262px;
         height: 150px;
         cursor: grabbing;
         pointer-events: none;
+        object-fit: contain;
     }
 `;
 
