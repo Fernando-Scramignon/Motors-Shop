@@ -67,9 +67,6 @@ function ModalEditUser({ modalOpen, setModalOpen }: IModalEditUser) {
         console.log(data);
     }
 
-    console.log(errors);
-    console.log(watch());
-
     return (
         <FeedbackModal
             state={modalOpen}

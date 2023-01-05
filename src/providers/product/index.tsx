@@ -1,10 +1,10 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 import api from "../../services/api";
 import { IAxiosError } from "../../interfaces";
 import { showErrors } from "../../utils";
 import ErrorModal from "../../components/ErrorModal";
-import { IBaseUser } from "../user";
+import { IBaseUser, UserContext } from "../user";
 
 export interface ICommentCreateRequest {
     comment: string;
@@ -88,14 +88,23 @@ export const ProductContext = createContext<IProductContextProps>(
 export const ProductProvider = ({ children }: IProductProviderProps) => {
     const [modalError, setModalError] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const { checkLocalStorage } = useContext(UserContext);
 
     async function createProduct(data: IProductCreateRequest) {
-        return await api
-            .post("/products", data)
-            .then((res) => res.data as ISimpleProduct)
-            .catch((err: IAxiosError) =>
-                showErrors(err, setError, setModalError)
-            );
+        const loginResponse = checkLocalStorage();
+
+        return loginResponse
+            ? await api
+                  .post("/products", data, {
+                      headers: {
+                          Authorization: `Bearer ${loginResponse.token}`,
+                      },
+                  })
+                  .then((res) => res.data as ISimpleProduct)
+                  .catch((err: IAxiosError) =>
+                      showErrors(err, setError, setModalError)
+                  )
+            : undefined;
     }
 
     async function listProducts() {
