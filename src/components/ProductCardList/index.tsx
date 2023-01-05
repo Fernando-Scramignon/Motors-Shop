@@ -19,6 +19,7 @@ export interface IProductCardListProps {
     productList: IProductCard[];
     showActivity: boolean;
     advertise: boolean;
+    username: string;
 }
 
 function ProductCardList({
@@ -26,6 +27,7 @@ function ProductCardList({
     productList,
     showActivity,
     advertise,
+    username,
 }: IProductCardListProps) {
     return (
         <StyledProductCardList>
@@ -39,6 +41,7 @@ function ProductCardList({
                                     product={product}
                                     showActivity={showActivity}
                                     advertise={advertise}
+                                    username={username}
                                 />
                             </li>
                         )
