@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     StyledComment,
     StyledCommentInput,
@@ -8,9 +9,9 @@ import {
     StyledUsername,
 } from "./style";
 
-// import { useForm } from "react-hook-form";
-// import * as yup from "yup";
-// import { yupResolver } from "@hookform/resolvers/yup";
+import { FieldValues, useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface IUserComment {
     username: string;
@@ -37,9 +38,7 @@ interface IDataComment {
 function Comments({ comments, user }: ICommentsProps) {
     // ADICIONAR AUTENTICAÇÃO
 
-    // const [textAreaValue, setTextAreaValue] = useState("");
-
-    /* const formSchema = yup.object().shape({
+    const formSchema = yup.object().shape({
         comment: yup.string().required("Comentário obrigatório"),
     });
 
@@ -47,20 +46,34 @@ function Comments({ comments, user }: ICommentsProps) {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm({
         resolver: yupResolver(formSchema),
     });
 
-    function onSubmitFunction(data: IDataComment): SubmitHandler<FieldValues> {
+    function onSubmitFunction(data: FieldValues): void {
+        setValue("comment", "");
         console.log(data);
-    } */
+    }
 
-    function setInitialLetters(username: string) {
+    function addSuggestion(suggestion: string): void {
+        setValue("comment", suggestion);
+    }
+
+    function setInitialLetters(username: string): string {
         return username
             .split(" ")
             .slice(0, 2)
             .map((elem) => elem[0].toUpperCase())
             .join("");
+    }
+
+    function generateRandomColor(name: string): number {
+        const randomNumber = Math.floor(
+            name.length > 12 ? name.length % 12 : name.length
+        );
+
+        return randomNumber <= 0 ? 7 : randomNumber;
     }
 
     return (
@@ -73,7 +86,7 @@ function Comments({ comments, user }: ICommentsProps) {
                             <StyledUsername
                                 background={`var(${
                                     "--random-" +
-                                    Math.floor(Math.random() * 12 + 1)
+                                    generateRandomColor(comment.user.username)
                                 })`}
                             >
                                 <span>
@@ -87,42 +100,31 @@ function Comments({ comments, user }: ICommentsProps) {
                 </ul>
             </StyledComments>
             <StyledCommentInput>
-                <StyledUsername
-                    background={`var(${
-                        "--random-" + Math.floor(Math.random() * 12 + 1)
-                    })`}
-                >
+                <StyledUsername background={"var(--brand-1)"}>
                     <span>{setInitialLetters(user.username)}</span>
                     <p>{user.username}</p>
                 </StyledUsername>
-                {/* <StyledForm onSubmit={handleSubmit(onSubmitFunction)}>
-                    <TextArea
-                        label=""
-                        errors={errors}
-                        register={register}
-                        name="comment"
+                <StyledForm onSubmit={handleSubmit(onSubmitFunction)}>
+                    <textarea
+                        className="teste"
                         placeholder="Automóvel muito confortável, foi uma ótima experiência de compra..."
-                        height="128px"
-                        // width é variavel
-                        width="284px"
+                        {...register("comment")}
                     />
-                    <label>
-                        <input
-                            type="tel"
-                            placeholder="Digite aqui seu número"
-                            {...register("comment")}
-                        />
-                    </label>
+                    <span>{errors.comment?.message as string}</span>
                     <button type="submit">Comentar</button>
-                </StyledForm> */}
-                <StyledForm>
-                    <textarea placeholder="Automóvel muito confortável, foi uma ótima experiência de compra..." />
-                    <button type="button">Comentar</button>
                 </StyledForm>
                 <StyledSuggestions>
-                    <p>Gostei muito!</p>
-                    <p>Incrível</p>
-                    <p>Recomendarei para meus amigos!</p>
+                    <p onClick={() => addSuggestion("Gostei Muito!")}>
+                        Gostei muito!
+                    </p>
+                    <p onClick={() => addSuggestion("Incrível")}>Incrível</p>
+                    <p
+                        onClick={() =>
+                            addSuggestion("Recomendarei para meus amigos!")
+                        }
+                    >
+                        Recomendarei para meus amigos!
+                    </p>
                 </StyledSuggestions>
             </StyledCommentInput>
         </StyledCommentsDiv>

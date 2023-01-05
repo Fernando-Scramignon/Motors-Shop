@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Comments from "../../components/Comments";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
@@ -70,6 +70,7 @@ export interface IProductPage {
 }
 
 function ProductPage() {
+    const navigate = useNavigate();
     // Tirar any
     const [product, setProduct] = useState<any | IProductPage>({});
     // Mudar esse state mockado
@@ -138,7 +139,11 @@ function ProductPage() {
 
                             <h6>Fernando</h6>
                             <p className="description">Um vendedor</p>
-                            <button>Ver todos anuncios</button>
+                            <button
+                                onClick={() => navigate("/profileViewUser")}
+                            >
+                                Ver todos anuncios
+                            </button>
                         </StyledUserDetails>
                     </StyledProductUserDetails>
                 </StyledSectionProduct>
