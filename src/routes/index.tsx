@@ -3,19 +3,11 @@ import ProductPage from "../pages/Product";
 import ProfileViewUser from "../pages/ProfileViewUser";
 import ProfileViewAdmin from "../pages/ProfileViewAdmin";
 import Home from "../pages/Home";
+import Register from "../pages/Register";
 
 function Router() {
-
     return (
         <Routes>
-            <Route
-                path="/"
-                element={
-                    <div>
-                        <h1>Olá, mundo!</h1>   
-                    </div>
-                }
-            />
             <Route path="/" element={<Home />} />
             <Route path="/profileViewUser" element={<ProfileViewUser />} />
             <Route path="/profileViewAdmin" element={<ProfileViewAdmin />} />
@@ -23,6 +15,7 @@ function Router() {
                 path="/profileViewUser/product/:id"
                 element={<ProductPage />}
             />
+            <Route path="/register" element={<Register />} />
         </Routes>
     );
 }
