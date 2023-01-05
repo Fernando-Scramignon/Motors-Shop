@@ -9,7 +9,7 @@ interface IProvidersProps {
 function Providers({ children }: IProvidersProps) {
     return (
         <UserProvider>
-            <ProductProvider>{children}</ProductProvider>;
+            <ProductProvider>{children}</ProductProvider>
         </UserProvider>
     );
 }
