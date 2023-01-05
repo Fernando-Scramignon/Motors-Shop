@@ -12,10 +12,7 @@ function Router() {
             <Route path="/login" element={<Login />} />
             <Route path="/profileViewUser" element={<ProfileViewUser />} />
             <Route path="/profileViewAdmin" element={<ProfileViewAdmin />} />
-            <Route
-                path="/profileViewUser/product/:id"
-                element={<ProductPage />}
-            />
+            <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
     );
 }
