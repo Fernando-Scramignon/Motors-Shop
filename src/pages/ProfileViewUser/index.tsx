@@ -53,12 +53,14 @@ function ProfileViewUser() {
                     advertise={false}
                     showActivity={true}
                     title="Carro"
+                    username="Luccas"
                 />
                 <ProductCardList
                     productList={motos}
                     advertise={false}
                     showActivity={true}
                     title="Moto"
+                    username="Luccas"
                 />
             </ProductListSection>
             <Footer />

@@ -55,12 +55,14 @@ function ProfileViewAdmin() {
                     advertise={true}
                     showActivity={false}
                     productList={cars}
+                    username="Luccas"
                 />
                 <ProductCardList
                     title="Moto"
                     advertise={true}
                     showActivity={false}
                     productList={motos}
+                    username="Luccas"
                 />
             </ProductListSection>
             <Footer />

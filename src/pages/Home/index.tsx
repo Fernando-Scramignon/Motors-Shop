@@ -49,12 +49,14 @@ function Home() {
                     showActivity={true}
                     title={"Carro"}
                     productList={cars}
+                    username="Luccas"
                 />
                 <ProductCardList
                     advertise={false}
                     showActivity={true}
                     title={"Moto"}
                     productList={motos}
+                    username="Luccas"
                 />
             </ProductListSection>
             <Footer />
