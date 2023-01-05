@@ -139,7 +139,11 @@ function ProductPage() {
 
                             <h6>Luccas Queiroz</h6>
                             <p className="description">Um vendedor</p>
-                            <button>Ver todos anuncios</button>
+                            <button
+                                onClick={() => navigate("/profileViewUser")}
+                            >
+                                Ver todos anuncios
+                            </button>
                         </StyledUserDetails>
                     </StyledProductUserDetails>
                 </StyledSectionProduct>
