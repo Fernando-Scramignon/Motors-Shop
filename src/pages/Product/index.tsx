@@ -80,15 +80,13 @@ function ProductPage() {
 
     // Adicionar novas ependencias futuramente
     useEffect(() => {
-        async function getProduct() {
-            await getProductById(id!).then((res) => {
-                setProduct(res!);
-                setConvertedPrice(Number(product.price / 100));
-                // Adicionar Initial Letters
-            });
-        }
-        getProduct();
+        getProductById(id!).then((res) => {
+            setProduct(res!);
+            setConvertedPrice(Number(product.price / 100));
+            // Adicionar Initial Letters
+        });
     }, [convertedPrice]);
+
     return (
         <>
             <Header />

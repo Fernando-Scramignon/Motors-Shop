@@ -14,3 +14,15 @@ export class IAxiosError extends AxiosError {
     }
     declare response?: IAxiosResponse;
 }
+
+export interface IUser {
+    id: string;
+    email: string;
+    password?: string;
+    name: string;
+    cpf: string;
+    phone: string;
+    birthdate: Date;
+    description: string;
+    isAdvertise: boolean;
+}
