@@ -5,6 +5,7 @@ import { IAxiosError } from "../../interfaces";
 import { showErrors } from "../../utils";
 import ErrorModal from "../../components/ErrorModal";
 import { ISimpleProduct } from "../product";
+import { AxiosResponse } from "axios";
 
 export interface IAddressCreateRequest {
     cep: string;
@@ -214,6 +215,11 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
                       showErrors(err, setError, setModalError)
                   )
             : undefined;
+    }
+
+    async function registerUser(userData: ISimpleUser): Promise<AxiosResponse> {
+        const response = await api.post("/users", userData);
+        return response;
     }
 
     return (
