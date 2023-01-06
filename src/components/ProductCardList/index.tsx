@@ -1,9 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
 import {
     IFullProduct,
     ISimpleProduct,
     ProductContext,
 } from "../../providers/product";
+import { useEffect, useRef, useState } from "react";
 import ProductCard from "../ProductCard";
 import { StyledProductCardList } from "./style";
 import { motion } from "framer-motion";
@@ -27,11 +27,6 @@ function ProductCardList({
     const [width, setWidth] = useState(0);
 
     useEffect(() => {
-        console.log(
-            carousel.current?.scrollWidth,
-            carousel.current?.offsetWidth
-        );
-
         setWidth(carousel.current?.scrollWidth - carousel.current?.offsetWidth);
     }, [carousel.current]);
 
