@@ -8,40 +8,34 @@ import Footer from "../../components/Footer";
 import ProfileCard from "../../components/ProfileCard";
 import ProductCardList from "../../components/ProductCardList";
 
-import { IProductCard } from "../../components/ProductCardList";
-
-import { useState, useEffect } from "react";
-
-import { APIRequests } from "../../services/api";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../providers/user";
+import { ISimpleProduct } from "../../providers/product";
 
 function ProfileViewAdmin() {
-    const [cars, setCars] = useState([]);
-    const [motos, setMotos] = useState([]);
+    const [cars, setCars] = useState<ISimpleProduct[]>([]);
+    const [motos, setMotos] = useState<ISimpleProduct[]>([]);
+    const [username, setUsername] = useState<string>("");
+    const { getUserById } = useContext(UserContext);
 
     useEffect(() => {
-        const mockedUserName = "Fernando Scramignon";
+        getUserById(window.localStorage.getItem("user_id")!).then(
+            (response) => {
+                if (response) {
+                    const carsList = response.products.filter(
+                        (vehicle) => vehicle.vehicle_type === "Carro"
+                    );
 
-        APIRequests.getProducts()
-            .then((response: any) => {
-                const vehiclesList = response.data.map(
-                    (vehicle: IProductCard) => {
-                        vehicle.username = vehicle.user.name;
-                        return vehicle;
-                    }
-                );
+                    const bikeList = response.products.filter(
+                        (vehicle) => vehicle.vehicle_type === "Moto"
+                    );
 
-                const carsList = vehiclesList.filter(
-                    (vehicle: IProductCard) => vehicle.vehicle_type === "Carro"
-                );
-
-                const bikeList = vehiclesList.filter(
-                    (vehicle: IProductCard) => vehicle.vehicle_type === "Moto"
-                );
-
-                setCars(carsList);
-                setMotos(bikeList);
-            })
-            .catch((response: any) => console.error(response.message));
+                    setCars(carsList);
+                    setMotos(bikeList);
+                    setUsername(response.name);
+                }
+            }
+        );
     }, []);
 
     return (
@@ -55,14 +49,14 @@ function ProfileViewAdmin() {
                     advertise={true}
                     showActivity={false}
                     productList={cars}
-                    username="Fernando"
+                    username={username}
                 />
                 <ProductCardList
                     title="Moto"
                     advertise={true}
                     showActivity={false}
                     productList={motos}
-                    username="Fernando"
+                    username={username}
                 />
             </ProductListSection>
             <Footer />

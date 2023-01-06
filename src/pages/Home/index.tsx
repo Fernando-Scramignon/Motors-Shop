@@ -5,38 +5,30 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProductCardList from "../../components/ProductCardList";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
-import { APIRequests } from "../../services/api";
-
-import { IProductCard } from "../../components/ProductCardList";
+import { IFullProduct, ProductContext } from "../../providers/product";
 
 function Home() {
-    const [cars, setCars] = useState([]);
-    const [motos, setMotos] = useState([]);
+    const [cars, setCars] = useState<IFullProduct[]>([]);
+    const [motos, setMotos] = useState<IFullProduct[]>([]);
+    const { listProducts } = useContext(ProductContext);
 
     useEffect(() => {
-        APIRequests.getProducts()
-            .then((response: any) => {
-                const vehiclesList = response.data.map(
-                    (vehicle: IProductCard) => {
-                        vehicle.username = vehicle.user.name;
-                        return vehicle;
-                    }
+        listProducts().then((response) => {
+            if (response) {
+                const carsList = response.filter(
+                    (vehicle) => vehicle.vehicle_type === "Carro"
                 );
 
-                const carsList = vehiclesList.filter(
-                    (vehicle: IProductCard) => vehicle.vehicle_type === "Carro"
-                );
-
-                const bikeList = vehiclesList.filter(
-                    (vehicle: IProductCard) => vehicle.vehicle_type === "Moto"
+                const bikeList = response.filter(
+                    (vehicle) => vehicle.vehicle_type === "Moto"
                 );
 
                 setCars(carsList);
                 setMotos(bikeList);
-            })
-            .catch((response: any) => console.error(response.message));
+            }
+        });
     }, []);
 
     return (
@@ -49,14 +41,12 @@ function Home() {
                     showActivity={true}
                     title={"Carro"}
                     productList={cars}
-                    username="Fernando"
                 />
                 <ProductCardList
                     advertise={false}
                     showActivity={true}
                     title={"Moto"}
                     productList={motos}
-                    username="Fernando"
                 />
             </ProductListSection>
             <Footer />

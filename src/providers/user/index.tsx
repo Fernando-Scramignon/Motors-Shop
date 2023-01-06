@@ -56,14 +56,14 @@ export interface ISimpleUser extends IBaseUser {
 }
 
 export interface IFullUser extends ISimpleUser {
-    products: ISimpleProduct;
+    products: ISimpleProduct[];
 }
 
 export interface IUserProfile {
     id: string;
     name: string;
     isAdvertiser: boolean;
-    products: ISimpleProduct;
+    products: ISimpleProduct[];
 }
 
 export interface IUserUpdateRequest {
