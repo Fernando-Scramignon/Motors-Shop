@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MutableRefObject, useState } from "react";
 import Button from "../Button";
 import ModalEditAddress from "../EditAddressModal";
 import ModalEditUser from "../EditUserModal";
@@ -7,6 +7,10 @@ import {
     StyledDesktopHeaderModal,
     ModalContainer,
 } from "./style";
+
+import { useContext, useRef } from "react";
+import { UserContext } from "../../providers/user";
+import { useNavigate } from "react-router-dom";
 
 interface IHeaderModalProps {
     isDesktop: boolean;
@@ -20,6 +24,8 @@ interface IAlternateModalIsOpen {
 function HeaderModal({ isDesktop, alternateModalIsOpen }: IHeaderModalProps) {
     const [editUser, setEditUser] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
+    const { setIsAuthenticated, isAuthenticated } = useContext(UserContext);
+    const navigate = useNavigate();
 
     return !isDesktop ? (
         <ModalContainer>
@@ -29,24 +35,54 @@ function HeaderModal({ isDesktop, alternateModalIsOpen }: IHeaderModalProps) {
                     <span>Motos</span>
                     <span>Leilão</span>
                 </div>
+
                 <div className="mobileHeaderModal__singUp">
-                    <span>Fazer login</span>
-                    <Button
-                        size="small"
-                        type="button"
-                        height="fit-content"
-                        width="100%"
-                        backgroundcolor="transparent"
-                        border="2px solid var(--grey-6)"
-                        color="var(--grey-0)"
-                        hover={{
-                            backgroundColorHover: "var(--grey-1)",
-                            colorHover: "var(--grey-10)",
-                            border: "2px solid var(--grey-1)",
-                        }}
-                    >
-                        Cadastrar
-                    </Button>
+                    {!isAuthenticated ? (
+                        <>
+                            <span onClick={() => navigate("/login")}>
+                                Fazer login
+                            </span>
+                            <Button
+                                onFunction={() => navigate("/register")}
+                                size="small"
+                                type="button"
+                                height="fit-content"
+                                width="100%"
+                                backgroundcolor="transparent"
+                                border="2px solid var(--grey-6)"
+                                color="var(--grey-0)"
+                                hover={{
+                                    backgroundColorHover: "var(--grey-1)",
+                                    colorHover: "var(--grey-10)",
+                                    border: "2px solid var(--grey-1)",
+                                }}
+                            >
+                                Cadastrar
+                            </Button>
+                        </>
+                    ) : (
+                        <Button
+                            onFunction={() => {
+                                localStorage.clear();
+                                setIsAuthenticated(false);
+                                navigate("/login");
+                            }}
+                            size="small"
+                            type="button"
+                            height="fit-content"
+                            width="100%"
+                            backgroundcolor="transparent"
+                            border="2px solid var(--grey-6)"
+                            color="var(--grey-0)"
+                            hover={{
+                                backgroundColorHover: "var(--grey-1)",
+                                colorHover: "var(--grey-10)",
+                                border: "2px solid var(--grey-1)",
+                            }}
+                        >
+                            Sair
+                        </Button>
+                    )}
                 </div>
             </StyledMobileHeaderModal>
             <div className="modalBackdrop" onClick={alternateModalIsOpen}></div>
@@ -60,7 +96,15 @@ function HeaderModal({ isDesktop, alternateModalIsOpen }: IHeaderModalProps) {
                         Editar Endereço
                     </span>
                     <span>Minhas compras</span>
-                    <span>Sair</span>
+                    <span
+                        onClick={() => {
+                            localStorage.clear();
+                            setIsAuthenticated(false);
+                            navigate("/login");
+                        }}
+                    >
+                        Sair
+                    </span>
                 </StyledDesktopHeaderModal>
                 <div
                     className="modalBackdrop"

@@ -7,14 +7,23 @@ import xMark from "../../assets/xMark.svg";
 import HeaderModal from "../HeaderModal";
 import Button from "../Button";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { limitString } from "../../utils";
+import { UserContext } from "../../providers/user";
 
 function Header() {
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isDesktop, setIsDesktop] = useState<boolean>(
+        window.innerWidth > 768
+    );
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>("");
+    const [avatar, setAvatar] = useState<string>("MS");
+    const { isAuthenticated, getUserById, setIsAuthenticated } =
+        useContext(UserContext);
+
+    const navigate = useNavigate();
 
     function alternateModalIsOpen() {
         setModalIsOpen(!modalIsOpen);
@@ -31,10 +40,31 @@ function Header() {
         window.addEventListener("resize", handleResize);
     });
 
+    useEffect(() => {
+        const id = localStorage.getItem("user_id");
+        if (!id) setIsAuthenticated(false);
+        else {
+            getUserById(id).then((res) => {
+                if (res?.name) {
+                    const { name } = res;
+
+                    const nameArray = name.split(" ");
+                    let avatar = nameArray[0][0];
+
+                    if (nameArray.length >= 2) {
+                        avatar += nameArray[1][0];
+                    }
+                    setAvatar(avatar);
+                    setUsername(res.name);
+                }
+            });
+        }
+    }, []);
+
     return (
         <>
             <StyledHeader id="header">
-                <LogoContainer>
+                <LogoContainer onClick={() => navigate("/")}>
                     <img
                         className="colorizedLogo"
                         src={colorizedLogo}
@@ -59,7 +89,7 @@ function Header() {
                         )}
                     </MobileMenu>
                 ) : (
-                    <DesktopMenu isAuthenticated={isAuthenticated}>
+                    <DesktopMenu>
                         <div className="desktopMenu__options">
                             <span>Carros</span>
                             <span>Motos</span>
@@ -72,16 +102,19 @@ function Header() {
                                 onClick={alternateModalIsOpen}
                             >
                                 <div className="desktopMenu__profile--icon">
-                                    FS
+                                    {avatar}
                                 </div>
                                 <div className="desktopMenu__profile--name">
-                                    {limitString("Fernando Scramignon", 19)}
+                                    {limitString(username, 19)}
                                 </div>
                             </div>
                         ) : (
                             <div className="desktopMenu__singUp">
-                                <span>Fazer Login</span>
+                                <span onClick={() => navigate("/login")}>
+                                    Fazer Login
+                                </span>
                                 <Button
+                                    onFunction={() => navigate("/register")}
                                     size="small"
                                     type="button"
                                     height="fit-content"

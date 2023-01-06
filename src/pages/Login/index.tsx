@@ -27,7 +27,7 @@ const schema = yup.object({
 function Login() {
     const [success, setSuccess] = useState<boolean>(false);
     const navigate = useNavigate();
-    const { login } = useContext(UserContext);
+    const { login, setIsAuthenticated } = useContext(UserContext);
 
     const {
         register,
@@ -45,6 +45,7 @@ function Login() {
         login(data).then((res) => {
             if (res) {
                 setSuccess(true);
+                setIsAuthenticated(true);
             }
         });
     }

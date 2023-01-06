@@ -8,11 +8,14 @@ import ProductCardList from "../../components/ProductCardList";
 import { useState, useEffect, useContext } from "react";
 
 import { IFullProduct, ProductContext } from "../../providers/product";
+import { UserContext } from "../../providers/user";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
     const [cars, setCars] = useState<IFullProduct[]>([]);
     const [motos, setMotos] = useState<IFullProduct[]>([]);
     const { listProducts } = useContext(ProductContext);
+    const { isAuthenticated } = useContext(UserContext);
 
     useEffect(() => {
         listProducts().then((response) => {
