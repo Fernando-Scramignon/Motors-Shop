@@ -10,24 +10,13 @@ import {
     StyledTitle,
     StyledUsername,
 } from "./style";
-
-interface IProductCard {
-    id: string;
-    cover_image: string;
-    title: string;
-    description: string;
-    username: string;
-    km: number;
-    year: number;
-    price: number;
-    published: boolean;
-}
+import { IFullProduct, ISimpleProduct } from "../../providers/product";
 
 interface IProductCardProps {
-    product: IProductCard;
+    product: IFullProduct | ISimpleProduct;
     showActivity: boolean;
     advertise: boolean;
-    username: string;
+    username?: string;
 }
 
 function ProductCard({
@@ -36,25 +25,25 @@ function ProductCard({
     advertise,
     username,
 }: IProductCardProps) {
-    const {
-        cover_image,
-        title,
-        description,
-        // username, Mudará para user_id
-        km,
-        year,
-        price,
-        published,
-    }: IProductCard = product;
+    const { cover_image, title, description, km, year, price, published } =
+        product;
     const [initialLetters, setInitialLetters] = useState<string>("");
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
 
     const navigate = useNavigate();
 
+    function getUsername() {
+        return product.user?.name
+            ? product.user.name
+            : username
+            ? username
+            : "Nome não identificado";
+    }
+
     // Adicionar dependencia futuramente, provavelmente o product
     useEffect(() => {
         setInitialLetters(
-            username
+            getUsername()
                 .split(" ")
                 .slice(0, 2)
                 .map((elem) => elem[0].toUpperCase())
@@ -96,7 +85,7 @@ function ProductCard({
                 })`}
             >
                 <span>{initialLetters}</span>
-                <p>{username}</p>
+                <p>{getUsername()}</p>
             </StyledUsername>
             <StyledDetails>
                 <div>

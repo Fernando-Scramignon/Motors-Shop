@@ -1,30 +1,19 @@
+import {
+    IFullProduct,
+    ISimpleProduct,
+    ProductContext,
+} from "../../providers/product";
 import { useEffect, useRef, useState } from "react";
 import ProductCard from "../ProductCard";
 import { StyledProductCardList } from "./style";
 import { motion } from "framer-motion";
 
-import { IUser } from "../../interfaces";
-
-export interface IProductCard {
-    id: string;
-    cover_image: string;
-    title: string;
-    description: string;
-    username: string;
-    km: number;
-    year: number;
-    price: number;
-    user: IUser;
-    published: boolean;
-    vehicle_type: "Carro" | "Moto";
-}
-
 export interface IProductCardListProps {
     title: string;
-    productList: IProductCard[];
+    productList: IFullProduct[] | ISimpleProduct[];
     showActivity: boolean;
     advertise: boolean;
-    username: string;
+    username?: string;
 }
 
 function ProductCardList({
