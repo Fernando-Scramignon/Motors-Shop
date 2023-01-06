@@ -106,3 +106,26 @@ export const PasswordDiv = styled.div`
     flex-direction: column;
     gap: 24px;
 `;
+
+export const StyledSuccessModal = styled.div`
+    margin-top: 22px;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+    max-width: 472px;
+
+    .modalSuccess__h3--subtitle {
+        color: var(--grey-1);
+        font-size: 16px;
+        font-weight: 500;
+        font-family: "Lexend", sans-serif;
+    }
+    .modalSuccess__p--description {
+        color: var(--grey-2);
+        font-size: 16px;
+        font-weight: 400;
+        font-family: "Inter", sans-serif;
+        margin-bottom: 13px;
+        line-height: 28px;
+    }
+`;

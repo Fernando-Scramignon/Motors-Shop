@@ -6,18 +6,24 @@ import {
     AddressInfo,
     TypeInfo,
     PasswordDiv,
+    StyledSuccessModal,
 } from "./style";
 
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import FeedbackModal from "../../components/FeedbackModal";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { useNavigate } from "react-router-dom";
+
+import { IUserCreateRequest, UserContext } from "../../providers/user";
 
 interface IRegisterInputs {
     name: string;
@@ -80,10 +86,19 @@ const schema = yup.object({
 
 function Register() {
     const [isAdvertiser, setIsAdvertiser] = useState<boolean>(false);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] =
+        useState<boolean>(false);
+    const navigate = useNavigate();
 
-    function onSubmit(data: any): void {
+    const { createUser } = useContext(UserContext);
+
+    async function onSubmit(data: any): Promise<void> {
         data.isAdvertiser = isAdvertiser;
-        console.log(data);
+        const userData: IUserCreateRequest = data;
+
+        const response = await createUser(userData);
+
+        if (response) setIsSuccessModalOpen(true);
     }
 
     const {
@@ -293,6 +308,41 @@ function Register() {
                 </InputsDiv>
             </RegisterForm>
             <Footer />
+            <FeedbackModal
+                setState={setIsSuccessModalOpen}
+                state={isSuccessModalOpen}
+                title="Sucesso!"
+                onClose={() => navigate("/")}
+            >
+                <StyledSuccessModal>
+                    <h3 className="modalSuccess__h3--subtitle">
+                        Sua conta foi criada com sucesso
+                    </h3>
+
+                    <p className="modalSuccess__p--description">
+                        Agora você poderá ver seus negócios crescendo em grande
+                        escala
+                    </p>
+
+                    <Button
+                        size="small"
+                        type="button"
+                        height="fit-content"
+                        width="150px"
+                        backgroundcolor="var(--brand-1)"
+                        border="2px solid var(--brand-1)"
+                        color="white"
+                        hover={{
+                            backgroundColorHover: "var(--brand-4)",
+                            colorHover: "var(--brand-1)",
+                            border: "2px solid var(--brand-4)",
+                        }}
+                        onFunction={() => navigate("/login")}
+                    >
+                        Ir para login
+                    </Button>
+                </StyledSuccessModal>
+            </FeedbackModal>
         </ResgisterPage>
     );
 }
