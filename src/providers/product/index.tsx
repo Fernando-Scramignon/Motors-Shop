@@ -45,9 +45,24 @@ export interface ISimpleProduct {
         id: string;
         url: string;
     };
+    user: undefined;
 }
 
-export interface IFullProduct extends ISimpleProduct {
+export interface IFullProduct {
+    id: string;
+    title: string;
+    year: number;
+    km: number;
+    price: number;
+    description: string;
+    vehicle_type: string;
+    announcement_type: string;
+    published: boolean;
+    cover_image: string;
+    images: {
+        id: string;
+        url: string;
+    };
     comments: IComment[];
     user: IBaseUser;
 }
@@ -69,7 +84,7 @@ interface IProductContextProps {
     createProduct: (
         data: IProductCreateRequest
     ) => Promise<ISimpleProduct | undefined>;
-    listProducts: () => Promise<ISimpleProduct[] | undefined>;
+    listProducts: () => Promise<IFullProduct[] | undefined>;
     getProductById: (product_id: string) => Promise<IFullProduct | undefined>;
     updateProduct: (
         product_id: string,
@@ -110,7 +125,7 @@ export const ProductProvider = ({ children }: IProductProviderProps) => {
     async function listProducts() {
         return await api
             .get("/products")
-            .then((res) => res.data as ISimpleProduct[])
+            .then((res) => res.data as IFullProduct[])
             .catch((err: IAxiosError) =>
                 showErrors(err, setError, setModalError)
             );
