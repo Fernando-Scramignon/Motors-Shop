@@ -11,14 +11,17 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { limitString } from "../../utils";
-import { UserContext } from "../../providers/user";
+import { IFullUser, UserContext } from "../../providers/user";
 
 function Header() {
     const [isDesktop, setIsDesktop] = useState<boolean>(
         window.innerWidth > 768
     );
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+
     const [username, setUsername] = useState<string>("");
+    const [isAdvertiser, setIsAdvertiser] = useState<boolean>(false);
+
     const [avatar, setAvatar] = useState<string>("MS");
     const { isAuthenticated, getUserById, setIsAuthenticated } =
         useContext(UserContext);
@@ -44,9 +47,9 @@ function Header() {
         const id = localStorage.getItem("user_id");
         if (!id) setIsAuthenticated(false);
         else {
-            getUserById(id).then((res) => {
+            getUserById(id).then((res: IFullUser | undefined) => {
                 if (res?.name) {
-                    const { name } = res;
+                    const { name, isAdvertiser } = res;
 
                     const nameArray = name.split(" ");
                     let avatar = nameArray[0][0];
@@ -54,6 +57,7 @@ function Header() {
                     if (nameArray.length >= 2) {
                         avatar += nameArray[1][0];
                     }
+                    setIsAdvertiser(isAdvertiser);
                     setAvatar(avatar);
                     setUsername(res.name);
                 }
@@ -137,6 +141,7 @@ function Header() {
             </StyledHeader>
             {modalIsOpen && (
                 <HeaderModal
+                    isAdvertiser={isAdvertiser}
                     isDesktop={isDesktop}
                     alternateModalIsOpen={alternateModalIsOpen}
                 />

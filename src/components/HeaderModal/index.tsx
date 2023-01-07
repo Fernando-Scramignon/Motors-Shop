@@ -8,20 +8,25 @@ import {
     ModalContainer,
 } from "./style";
 
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../providers/user";
 import { useNavigate } from "react-router-dom";
 
 interface IHeaderModalProps {
     isDesktop: boolean;
     alternateModalIsOpen: IAlternateModalIsOpen;
+    isAdvertiser: boolean;
 }
 
 interface IAlternateModalIsOpen {
     (): void;
 }
 
-function HeaderModal({ isDesktop, alternateModalIsOpen }: IHeaderModalProps) {
+function HeaderModal({
+    isDesktop,
+    alternateModalIsOpen,
+    isAdvertiser,
+}: IHeaderModalProps) {
     const [editUser, setEditUser] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
     const { setIsAuthenticated, isAuthenticated } = useContext(UserContext);
@@ -95,7 +100,13 @@ function HeaderModal({ isDesktop, alternateModalIsOpen }: IHeaderModalProps) {
                     <span onClick={() => setEditAddress(true)}>
                         Editar Endereço
                     </span>
-                    <span>Minhas compras</span>
+                    {isAdvertiser ? (
+                        <span onClick={() => navigate("/profileViewAdmin")}>
+                            Meus anúncios
+                        </span>
+                    ) : (
+                        <span>Minhas compras</span>
+                    )}
                     <span
                         onClick={() => {
                             localStorage.clear();

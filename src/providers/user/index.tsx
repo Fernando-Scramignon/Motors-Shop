@@ -119,7 +119,9 @@ export const UserContext = createContext<IUserContextProps>(
 export const UserProvider = ({ children }: IUserProviderProps) => {
     const [modalError, setModalError] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+        !!window.localStorage.getItem("user_token")
+    );
 
     async function createUser(data: IUserCreateRequest) {
         return await api
