@@ -44,7 +44,7 @@ function ProfileViewUser() {
 
     return (
         <StyledProfileBody>
-            <Header />
+            <Header yPositions={{ carsY: 450, bikesY: 1000 }} />
             <ProfileBackground />
             <ProfileCard isAdvertiser={false} />
             <ProductListSection>

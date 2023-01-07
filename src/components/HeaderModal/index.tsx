@@ -11,11 +11,13 @@ import {
 import { useContext } from "react";
 import { UserContext } from "../../providers/user";
 import { useNavigate } from "react-router-dom";
+import { IProductsListYPositions } from "../../interfaces/header";
 
 interface IHeaderModalProps {
     isDesktop: boolean;
     alternateModalIsOpen: IAlternateModalIsOpen;
     isAdvertiser: boolean;
+    yPositions?: IProductsListYPositions;
 }
 
 interface IAlternateModalIsOpen {
@@ -26,6 +28,7 @@ function HeaderModal({
     isDesktop,
     alternateModalIsOpen,
     isAdvertiser,
+    yPositions,
 }: IHeaderModalProps) {
     const [editUser, setEditUser] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
@@ -36,8 +39,32 @@ function HeaderModal({
         <ModalContainer>
             <StyledMobileHeaderModal>
                 <div className="mobileHeaderModal__option">
-                    <span>Carros</span>
-                    <span>Motos</span>
+                    <span
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            alternateModalIsOpen();
+                            yPositions?.carsY &&
+                                window.scrollTo({
+                                    top: yPositions?.carsY,
+                                    behavior: "smooth",
+                                });
+                        }}
+                    >
+                        Carros
+                    </span>
+                    <span
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            alternateModalIsOpen();
+                            yPositions?.bikesY &&
+                                window.scrollTo({
+                                    top: yPositions?.bikesY,
+                                    behavior: "smooth",
+                                });
+                        }}
+                    >
+                        Motos
+                    </span>
                     <span>Leilão</span>
                 </div>
 

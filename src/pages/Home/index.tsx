@@ -11,6 +11,13 @@ import { IFullProduct, ProductContext } from "../../providers/product";
 import { UserContext } from "../../providers/user";
 import { useNavigate } from "react-router-dom";
 
+// Criar interface e o objeto onde vão ficar as cordenadas y
+// Criar interface do header que aceita o objeto acima
+// Fazer ele ser opcional
+// Passar para o header como props
+// Adicinar função on click nos links de navegação
+//    Se a posição y correspondente existir, navege para ela, se não, faça nada
+
 function Home() {
     const [cars, setCars] = useState<IFullProduct[]>([]);
     const [motos, setMotos] = useState<IFullProduct[]>([]);
@@ -36,7 +43,7 @@ function Home() {
 
     return (
         <StyledHomeBody>
-            <Header />
+            <Header yPositions={{ carsY: 400, bikesY: 950 }} />
             <UnderHeaderBackground />
             <ProductListSection>
                 <ProductCardList

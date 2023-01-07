@@ -48,7 +48,7 @@ function ProfileViewAdmin() {
 
     return (
         <StyledAdminProfileBody>
-            <Header />
+            <Header yPositions={{ carsY: 540, bikesY: 1125 }} />
             <ProfileBackground />
             <ProfileCard isAdvertiser={true} />
             <ProductListSection>

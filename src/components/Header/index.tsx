@@ -12,8 +12,9 @@ import { useNavigate } from "react-router-dom";
 
 import { limitString } from "../../utils";
 import { IFullUser, UserContext } from "../../providers/user";
+import { IHeaderProps } from "../../interfaces/header";
 
-function Header() {
+function Header({ yPositions }: IHeaderProps) {
     const [isDesktop, setIsDesktop] = useState<boolean>(
         window.innerWidth > 768
     );
@@ -95,8 +96,28 @@ function Header() {
                 ) : (
                     <DesktopMenu>
                         <div className="desktopMenu__options">
-                            <span>Carros</span>
-                            <span>Motos</span>
+                            <span
+                                onClick={() =>
+                                    yPositions?.carsY &&
+                                    window.scrollTo({
+                                        top: yPositions.carsY,
+                                        behavior: "smooth",
+                                    })
+                                }
+                            >
+                                Carros
+                            </span>
+                            <span
+                                onClick={() => {
+                                    yPositions?.bikesY &&
+                                        window.scrollTo({
+                                            top: yPositions.bikesY,
+                                            behavior: "smooth",
+                                        });
+                                }}
+                            >
+                                Motos
+                            </span>
                             <span>Leilão</span>
                         </div>
                         <div className="desktopMenu__separator"></div>
@@ -144,6 +165,7 @@ function Header() {
                     isAdvertiser={isAdvertiser}
                     isDesktop={isDesktop}
                     alternateModalIsOpen={alternateModalIsOpen}
+                    yPositions={yPositions}
                 />
             )}
         </>
