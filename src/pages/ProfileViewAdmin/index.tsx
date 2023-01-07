@@ -11,6 +11,7 @@ import ProductCardList from "../../components/ProductCardList";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../providers/user";
 import { ISimpleProduct } from "../../providers/product";
+import { useNavigate } from "react-router-dom";
 
 function ProfileViewAdmin() {
     const [cars, setCars] = useState<ISimpleProduct[]>([]);
@@ -18,9 +19,16 @@ function ProfileViewAdmin() {
     const [username, setUsername] = useState<string>("");
     const { getUserById } = useContext(UserContext);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         getUserById(window.localStorage.getItem("user_id")!).then(
             (response) => {
+                if (response?.isAdvertiser == false) {
+                    navigate("/");
+                    return;
+                }
+
                 if (response) {
                     const carsList = response.products.filter(
                         (vehicle) => vehicle.vehicle_type === "Carro"
@@ -40,7 +48,7 @@ function ProfileViewAdmin() {
 
     return (
         <StyledAdminProfileBody>
-            <Header />
+            <Header yPositions={{ carsY: 540, bikesY: 1125 }} />
             <ProfileBackground />
             <ProfileCard isAdvertiser={true} />
             <ProductListSection>

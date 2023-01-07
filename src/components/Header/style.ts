@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-export interface IDesktopMenuProps {
-    isAuthenticated: boolean;
-}
-
 export const StyledHeader = styled.header`
     height: 80px;
     width: 100%;
@@ -19,7 +15,9 @@ export const StyledHeader = styled.header`
     justify-content: space-between;
 `;
 
-export const LogoContainer = styled.section``;
+export const LogoContainer = styled.section`
+    cursor: pointer;
+`;
 
 export const MobileMenu = styled.section`
     cursor: pointer;
@@ -30,7 +28,7 @@ export const MobileMenu = styled.section`
     }
 `;
 
-export const DesktopMenu = styled.section<IDesktopMenuProps>`
+export const DesktopMenu = styled.section`
     display: flex;
     gap: 44px;
 

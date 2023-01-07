@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useState } from "react";
+import {
+    createContext,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useState,
+} from "react";
 
 import api from "../../services/api";
 import { IAxiosError } from "../../interfaces";
@@ -99,6 +105,8 @@ interface IUserContextProps {
         data: IUserUpdateRequest
     ) => Promise<ISimpleUser | undefined>;
     deleteUser: (user_id: string) => Promise<boolean | undefined>;
+    isAuthenticated: boolean;
+    setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
 }
 interface IUserProviderProps {
     children: ReactNode;
@@ -111,6 +119,9 @@ export const UserContext = createContext<IUserContextProps>(
 export const UserProvider = ({ children }: IUserProviderProps) => {
     const [modalError, setModalError] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+        !!window.localStorage.getItem("user_token")
+    );
 
     async function createUser(data: IUserCreateRequest) {
         return await api
@@ -233,6 +244,8 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
                 getUserProfileById,
                 updateUser,
                 deleteUser,
+                setIsAuthenticated,
+                isAuthenticated,
             }}
         >
             {children}
