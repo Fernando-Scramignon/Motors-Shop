@@ -69,7 +69,7 @@ function Login() {
                     name="password"
                     placeholder="Digitar senha"
                     register={register}
-                    type="text"
+                    type="password"
                 />
                 <a>Esqueci minha senha</a>
                 <Button
