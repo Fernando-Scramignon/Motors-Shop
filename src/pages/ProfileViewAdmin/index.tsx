@@ -17,6 +17,8 @@ function ProfileViewAdmin() {
     const [cars, setCars] = useState<ISimpleProduct[]>([]);
     const [motos, setMotos] = useState<ISimpleProduct[]>([]);
     const [username, setUsername] = useState<string>("");
+    const [avatar, setAvatar] = useState<string>("...");
+    const [description, setDescription] = useState<string>("");
     const { getUserById } = useContext(UserContext);
 
     const navigate = useNavigate();
@@ -38,8 +40,19 @@ function ProfileViewAdmin() {
                         (vehicle) => vehicle.vehicle_type === "Moto"
                     );
 
+                    const { name } = response;
+
+                    const nameArray = name.split(" ");
+                    let avatar = nameArray[0][0];
+
+                    if (nameArray.length >= 2) {
+                        avatar += nameArray[1][0];
+                    }
+
                     setCars(carsList);
                     setMotos(bikeList);
+                    setAvatar(avatar);
+                    setDescription(response.description);
                     setUsername(response.name);
                 }
             }
@@ -50,7 +63,12 @@ function ProfileViewAdmin() {
         <StyledAdminProfileBody>
             <Header yPositions={{ carsY: 540, bikesY: 1125 }} />
             <ProfileBackground />
-            <ProfileCard isAdvertiser={true} />
+            <ProfileCard
+                isAdvertiser={true}
+                username={username}
+                avatar={avatar}
+                description={description}
+            />
             <ProductListSection>
                 <ProductCardList
                     title="Carro"

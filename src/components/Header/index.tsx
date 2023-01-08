@@ -20,7 +20,7 @@ function Header({ yPositions }: IHeaderProps) {
     );
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-    const [username, setUsername] = useState<string>("");
+    const [username, setUsername] = useState<string>("...");
     const [isAdvertiser, setIsAdvertiser] = useState<boolean>(false);
 
     const [avatar, setAvatar] = useState<string>("...");

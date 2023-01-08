@@ -7,18 +7,26 @@ import { limitString } from "../../utils";
 
 interface IProfileProps {
     isAdvertiser: boolean;
+    description: string;
+    username: string;
+    avatar: string;
 }
 
-function ProfileCard({ isAdvertiser }: IProfileProps) {
+function ProfileCard({
+    isAdvertiser,
+    avatar,
+    description,
+    username,
+}: IProfileProps) {
     const [modal, setModal] = useState(false);
 
     return (
         <>
             <StyledCard>
                 <div className="profileNameDiv">
-                    <div className="profileNameDiv__icon">FS</div>
+                    <div className="profileNameDiv__icon">{avatar}</div>
                     <div className="profileNameDiv__name">
-                        <h2>{limitString("Fernando Scramignon", 19)}</h2>
+                        <h2>{username && limitString(username, 19)}</h2>
                         <Button
                             size="small"
                             type="button"
@@ -30,18 +38,14 @@ function ProfileCard({ isAdvertiser }: IProfileProps) {
                             hover={{
                                 backgroundColorHover: "var(--brand-2)",
                                 colorHover: "#ffffff",
-                                border: "1.5px solid var(--brand-4)",
+                                border: "2px solid var(--brand-4)",
                             }}
                         >
                             Anunciante
                         </Button>
                     </div>
                 </div>
-                <p className="profileDescription">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s
-                </p>
+                <p className="profileDescription">{description}</p>
                 {isAdvertiser && (
                     <Button
                         size="small"
