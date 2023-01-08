@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { appearFromLeft } from "../../styles/animations";
 
 export const ResgisterPage = styled.div`
     background: var(--grey-8);
@@ -13,6 +14,8 @@ export const ResgisterPage = styled.div`
 `;
 
 export const RegisterForm = styled.form`
+    animation: ${appearFromLeft} 1s;
+
     min-height: 300px;
     width: 90%;
     max-width: 420px;

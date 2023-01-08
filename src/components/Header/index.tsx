@@ -23,7 +23,7 @@ function Header({ yPositions }: IHeaderProps) {
     const [username, setUsername] = useState<string>("");
     const [isAdvertiser, setIsAdvertiser] = useState<boolean>(false);
 
-    const [avatar, setAvatar] = useState<string>("MS");
+    const [avatar, setAvatar] = useState<string>("...");
     const { isAuthenticated, getUserById, setIsAuthenticated } =
         useContext(UserContext);
 

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { fadeIn, appearFromRight } from "../../styles/animations";
 
 export const StyledCard = styled.div`
     z-index: 2;
@@ -42,6 +43,8 @@ export const StyledCard = styled.div`
         font-family: "Inter", sans-serif;
         font-size: 36px;
         font-weight: 500;
+
+        animation: ${appearFromRight} 500ms;
     }
     .profileNameDiv__name {
         display: flex;
@@ -54,10 +57,14 @@ export const StyledCard = styled.div`
             font-size: 16px;
             display: flex;
             width: 130px;
+
+            animation: ${fadeIn} 1000ms;
         }
 
         button {
             padding: 4px 8px;
+
+            animation: ${fadeIn} 1000ms;
         }
     }
 
@@ -66,5 +73,7 @@ export const StyledCard = styled.div`
         font-size: 16px;
         line-height: 28px;
         color: var(--grey-2);
+
+        animation: ${appearFromRight} 1300ms;
     }
 `;
