@@ -140,7 +140,10 @@ function ProductPage() {
                             <h6>Fernando</h6>
                             <p className="description">Um vendedor</p>
                             <button
-                                onClick={() => navigate("/profileViewUser")}
+                                onClick={() => {
+                                    window.scrollTo({ top: 0 });
+                                    navigate("/profileViewUser");
+                                }}
                             >
                                 Ver todos anuncios
                             </button>

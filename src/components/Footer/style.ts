@@ -14,6 +14,10 @@ export const StyledFooter = styled.footer`
 
     font-family: "Inter", sans-serif;
 
+    img {
+        cursor: pointer;
+    }
+
     @media (min-width: 768px) {
         flex-direction: row;
         height: 140px;

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { appearFromLeft } from "../../styles/animations";
 
 export const StyledLogin = styled.div`
     height: fit-content;
@@ -21,6 +22,16 @@ export const StyledLogin = styled.div`
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
+
+        animation: ${appearFromLeft} 1s;
+
+        a {
+            text-decoration: underline 0.05em rgba(0, 0, 0, 0);
+            transition: text-decoration-color 300ms;
+            &:hover {
+                text-decoration-color: rgba(0, 0, 0, 1);
+            }
+        }
     }
 
     form div:nth-child(2) {

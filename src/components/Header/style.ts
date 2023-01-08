@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { appearFromTop, fadeIn } from "../../styles/animations";
 
 export const StyledHeader = styled.header`
     height: 80px;
@@ -17,6 +18,7 @@ export const StyledHeader = styled.header`
 
 export const LogoContainer = styled.section`
     cursor: pointer;
+    animation: ${fadeIn} 300ms;
 `;
 
 export const MobileMenu = styled.section`

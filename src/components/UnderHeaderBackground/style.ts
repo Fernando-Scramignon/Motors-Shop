@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { fadeIn, appearFromLeft } from "../../styles/animations";
 
 export const StyledBackground = styled.div`
     width: 100%;
@@ -22,6 +23,8 @@ export const StyledBackground = styled.div`
 
         text-align: center;
         color: var(--grey-10);
+
+        animation: ${fadeIn} 1000ms;
     }
 
     p {
@@ -30,6 +33,8 @@ export const StyledBackground = styled.div`
 
         text-align: center;
         color: var(--grey-9);
+
+        animation: ${appearFromLeft} 3000ms;
     }
 `;
 
@@ -41,6 +46,7 @@ export const ButtonDiv = styled.div`
     gap: 16px;
 
     button {
+        animation: ${fadeIn} 3000ms;
         width: 100%;
     }
 
