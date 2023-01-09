@@ -62,7 +62,7 @@ export interface IFullProduct {
     images: {
         id: string;
         url: string;
-    };
+    }[];
     comments: IComment[];
     user: IBaseUser;
 }

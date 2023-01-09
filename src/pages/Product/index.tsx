@@ -3,7 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import Comments from "../../components/Comments";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import { ProductContext } from "../../providers/product";
+import UserProfilePicture from "../../components/userProfilePicture";
+import {
+    IComment,
+    IFullProduct,
+    ProductContext,
+} from "../../providers/product";
 import {
     StyledProductPage,
     StyledProductsInfo,
@@ -15,76 +20,40 @@ import {
     StyledYearKmPriceDiv,
     StyledImages,
     StyledUserDetails,
-    StyledInitialLetters,
 } from "./style";
 
-let data = [
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Júlia Lima",
-        },
-    },
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Marcos Antônio",
-        },
-    },
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Camila Silva",
-        },
-    },
-    {
-        comment:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        user: {
-            username: "Camila Silva",
-        },
-    },
-];
-
-interface IUserProductPage {
+interface ISellerProductPage {
     name: string;
     description: string;
+    id: string;
 }
 
-export interface IProductPage {
-    id: string;
-    title: string;
-    year: number;
-    km: number;
-    price: number;
-    description: string;
-    vehicle_type: string;
-    announcement_type: string;
-    published: boolean;
-    cover_image: string;
-    images: string[];
-    // user_id
+interface IImageResponse {
+    url: string;
 }
 
 function ProductPage() {
     const navigate = useNavigate();
-    // Tirar any
-    const [product, setProduct] = useState<any | IProductPage>({});
-    // Mudar esse state mockado
-    const [initialLetters, setInitialLetters] = useState<string>("LQ");
+
+    const [product, setProduct] = useState<IFullProduct>({} as IFullProduct);
+    const [comments, setComments] = useState<IComment[]>([]);
+    const [seller, setSeller] = useState<ISellerProductPage>(
+        {} as ISellerProductPage
+    );
+    const [name, setName] = useState<string>("");
+
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
 
-    // Adicionar novas ependencias futuramente
+    console.log(seller);
     useEffect(() => {
         getProductById(id!).then((res) => {
             setProduct(res!);
             setConvertedPrice(Number(product.price / 100));
-            // Adicionar Initial Letters
+            setComments(res!.comments);
+            setSeller(res!.user);
+            setName(res!.user.name);
         });
     }, [convertedPrice]);
 
@@ -125,29 +94,35 @@ function ProductPage() {
                         <StyledImages>
                             <h6>Fotos</h6>
                             <ul>
-                                {product?.images?.map((img: string) => (
-                                    <li>
-                                        <img src={img} />
-                                    </li>
-                                ))}
+                                {product?.images?.map(
+                                    ({ url }: IImageResponse) => (
+                                        <li>
+                                            <img src={url} />
+                                        </li>
+                                    )
+                                )}
                             </ul>
                         </StyledImages>
                         <StyledUserDetails>
-                            <StyledInitialLetters>
-                                {initialLetters}
-                            </StyledInitialLetters>
+                            <UserProfilePicture
+                                name={name}
+                                widthAndHeight="77px"
+                                fontSize="26.6538px"
+                            />
 
-                            <h6>Fernando</h6>
-                            <p className="description">Um vendedor</p>
+                            <h6>{name}</h6>
+                            <p className="description">{seller.description}</p>
                             <button
-                                onClick={() => navigate("/profileViewUser")}
+                                onClick={() =>
+                                    navigate(`/profileViewUser/${seller.id}`)
+                                }
                             >
                                 Ver todos anuncios
                             </button>
                         </StyledUserDetails>
                     </StyledProductUserDetails>
                 </StyledSectionProduct>
-                <Comments comments={data} user={{ username: "Fernando" }} />
+                <Comments comments={comments} user={{ username: "Fernando" }} />
             </StyledProductPage>
             <Footer />
         </>
