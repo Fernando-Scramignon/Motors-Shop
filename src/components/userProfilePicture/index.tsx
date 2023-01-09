@@ -16,8 +16,14 @@ function UserProfilePicture({
     }
 
     const names = name.split(" ");
+
     const firstNameLetter = names[0].charAt(0);
-    const secondNameLetter = names[1].charAt(0);
+
+    let secondNameLetter = "";
+
+    if (names[1]) {
+        secondNameLetter = names[1].charAt(0);
+    }
 
     return (
         <StyledBackgroundPicture
