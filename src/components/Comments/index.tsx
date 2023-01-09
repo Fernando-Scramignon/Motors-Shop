@@ -14,7 +14,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 interface IUserComment {
-    username: string;
+    name: string;
 }
 
 interface IUserLogged {
@@ -86,13 +86,13 @@ function Comments({ comments, user }: ICommentsProps) {
                             <StyledUsername
                                 background={`var(${
                                     "--random-" +
-                                    generateRandomColor(comment.user.username)
+                                    generateRandomColor(comment.user.name)
                                 })`}
                             >
                                 <span>
-                                    {setInitialLetters(comment.user.username)}
+                                    {setInitialLetters(comment.user.name)}
                                 </span>
-                                <p>{comment.user.username}</p>
+                                <p>{comment.user.name}</p>
                             </StyledUsername>
                             <p>{comment.comment}</p>
                         </StyledComment>
