@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { appearFromTop } from "../../styles/animations";
 
 export const StyledMobileHeaderModal = styled.div`
     height: fit-content;

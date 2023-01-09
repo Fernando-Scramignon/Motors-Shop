@@ -7,14 +7,27 @@ import xMark from "../../assets/xMark.svg";
 import HeaderModal from "../HeaderModal";
 import Button from "../Button";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { limitString } from "../../utils";
+import { IFullUser, UserContext } from "../../providers/user";
+import { IHeaderProps } from "../../interfaces/header";
 
-function Header() {
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+function Header({ yPositions }: IHeaderProps) {
+    const [isDesktop, setIsDesktop] = useState<boolean>(
+        window.innerWidth > 768
+    );
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+
+    const [username, setUsername] = useState<string>("...");
+    const [isAdvertiser, setIsAdvertiser] = useState<boolean>(false);
+
+    const [avatar, setAvatar] = useState<string>("...");
+    const { isAuthenticated, getUserById, setIsAuthenticated } =
+        useContext(UserContext);
+
+    const navigate = useNavigate();
 
     function alternateModalIsOpen() {
         setModalIsOpen(!modalIsOpen);
@@ -31,10 +44,32 @@ function Header() {
         window.addEventListener("resize", handleResize);
     });
 
+    useEffect(() => {
+        const id = localStorage.getItem("user_id");
+        if (!id) setIsAuthenticated(false);
+        else {
+            getUserById(id).then((res: IFullUser | undefined) => {
+                if (res?.name) {
+                    const { name, isAdvertiser } = res;
+
+                    const nameArray = name.split(" ");
+                    let avatar = nameArray[0][0];
+
+                    if (nameArray.length >= 2) {
+                        avatar += nameArray[1][0];
+                    }
+                    setIsAdvertiser(isAdvertiser);
+                    setAvatar(avatar);
+                    setUsername(res.name);
+                }
+            });
+        }
+    }, []);
+
     return (
         <>
             <StyledHeader id="header">
-                <LogoContainer>
+                <LogoContainer onClick={() => navigate("/")}>
                     <img
                         className="colorizedLogo"
                         src={colorizedLogo}
@@ -59,10 +94,30 @@ function Header() {
                         )}
                     </MobileMenu>
                 ) : (
-                    <DesktopMenu isAuthenticated={isAuthenticated}>
+                    <DesktopMenu>
                         <div className="desktopMenu__options">
-                            <span>Carros</span>
-                            <span>Motos</span>
+                            <span
+                                onClick={() =>
+                                    yPositions?.carsY &&
+                                    window.scrollTo({
+                                        top: yPositions.carsY,
+                                        behavior: "smooth",
+                                    })
+                                }
+                            >
+                                Carros
+                            </span>
+                            <span
+                                onClick={() => {
+                                    yPositions?.bikesY &&
+                                        window.scrollTo({
+                                            top: yPositions.bikesY,
+                                            behavior: "smooth",
+                                        });
+                                }}
+                            >
+                                Motos
+                            </span>
                             <span>Leilão</span>
                         </div>
                         <div className="desktopMenu__separator"></div>
@@ -72,16 +127,19 @@ function Header() {
                                 onClick={alternateModalIsOpen}
                             >
                                 <div className="desktopMenu__profile--icon">
-                                    FS
+                                    {avatar}
                                 </div>
                                 <div className="desktopMenu__profile--name">
-                                    {limitString("Fernando Scramignon", 19)}
+                                    {limitString(username, 19)}
                                 </div>
                             </div>
                         ) : (
                             <div className="desktopMenu__singUp">
-                                <span>Fazer Login</span>
+                                <span onClick={() => navigate("/login")}>
+                                    Fazer Login
+                                </span>
                                 <Button
+                                    onFunction={() => navigate("/register")}
                                     size="small"
                                     type="button"
                                     height="fit-content"
@@ -104,8 +162,10 @@ function Header() {
             </StyledHeader>
             {modalIsOpen && (
                 <HeaderModal
+                    isAdvertiser={isAdvertiser}
                     isDesktop={isDesktop}
                     alternateModalIsOpen={alternateModalIsOpen}
+                    yPositions={yPositions}
                 />
             )}
         </>

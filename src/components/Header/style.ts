@@ -1,8 +1,5 @@
 import styled from "styled-components";
-
-export interface IDesktopMenuProps {
-    isAuthenticated: boolean;
-}
+import { appearFromTop, fadeIn } from "../../styles/animations";
 
 export const StyledHeader = styled.header`
     height: 80px;
@@ -19,7 +16,10 @@ export const StyledHeader = styled.header`
     justify-content: space-between;
 `;
 
-export const LogoContainer = styled.section``;
+export const LogoContainer = styled.section`
+    cursor: pointer;
+    animation: ${fadeIn} 300ms;
+`;
 
 export const MobileMenu = styled.section`
     cursor: pointer;
@@ -30,7 +30,7 @@ export const MobileMenu = styled.section`
     }
 `;
 
-export const DesktopMenu = styled.section<IDesktopMenuProps>`
+export const DesktopMenu = styled.section`
     display: flex;
     gap: 44px;
 

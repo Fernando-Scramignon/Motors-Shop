@@ -114,8 +114,9 @@ function ProductPage() {
                             <p className="description">{seller.description}</p>
                             <button
                                 onClick={() =>
+                                    window.scrollTo({ top: 0 });
                                     navigate(`/profileViewUser/${seller.id}`)
-                                }
+                                }}
                             >
                                 Ver todos anuncios
                             </button>

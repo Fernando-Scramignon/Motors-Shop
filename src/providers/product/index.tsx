@@ -5,17 +5,7 @@ import { IAxiosError } from "../../interfaces";
 import { showErrors } from "../../utils";
 import ErrorModal from "../../components/ErrorModal";
 import { IBaseUser, UserContext } from "../user";
-
-export interface ICommentCreateRequest {
-    comment: string;
-}
-
-export interface IComment {
-    id: string;
-    comment: string;
-    created_at: Date;
-    user: IBaseUser;
-}
+import { IComment } from "../comment";
 
 export interface IProductCreateRequest {
     title: string;

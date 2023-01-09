@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { CommentProvider } from "./comment";
 import { ProductProvider } from "./product";
 import { UserProvider } from "./user";
 
@@ -9,7 +10,9 @@ interface IProvidersProps {
 function Providers({ children }: IProvidersProps) {
     return (
         <UserProvider>
-            <ProductProvider>{children}</ProductProvider>
+            <CommentProvider>
+                <ProductProvider>{children}</ProductProvider>
+            </CommentProvider>
         </UserProvider>
     );
 }

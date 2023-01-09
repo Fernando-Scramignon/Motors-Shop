@@ -44,9 +44,16 @@ function ProfileViewUser() {
 
     return (
         <StyledProfileBody>
-            <Header />
+            <Header yPositions={{ carsY: 450, bikesY: 1000 }} />
             <ProfileBackground />
-            <ProfileCard isAdvertiser={false} />
+            <ProfileCard
+                isAdvertiser={false}
+                username={"Fernando Scramignon"}
+                description={
+                    "lorem ipsum ipsum lorem espadis cordis cardore cat lorem"
+                }
+                avatar={"FS"}
+            />
             <ProductListSection>
                 <ProductCardList
                     productList={cars}
