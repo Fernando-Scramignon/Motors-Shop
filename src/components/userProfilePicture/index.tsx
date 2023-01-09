@@ -4,12 +4,14 @@ export interface IProfilePictureProps {
     name: string;
     widthAndHeight: string;
     fontSize: string;
+    backgroundColor?: string;
 }
 
 function UserProfilePicture({
     name,
     widthAndHeight,
     fontSize,
+    backgroundColor,
 }: IProfilePictureProps) {
     function RandonNumber(max: number) {
         return Math.floor(Math.random() * max);
@@ -29,7 +31,11 @@ function UserProfilePicture({
         <StyledBackgroundPicture
             fontSize={fontSize}
             widthAndHeight={widthAndHeight}
-            BackGroundcolor={`--random-${RandonNumber(12)}`}
+            backgroundColor={
+                backgroundColor
+                    ? backgroundColor
+                    : `--random-${RandonNumber(12)}`
+            }
         >
             <p>{firstNameLetter + secondNameLetter}</p>
         </StyledBackgroundPicture>

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export interface IProfilePictureProps {
-    BackGroundcolor: string;
     widthAndHeight: string;
-    fontSize:string
+    fontSize: string;
+    backgroundColor: string;
 }
 
 export const StyledBackgroundPicture = styled.div<IProfilePictureProps>`
@@ -13,8 +13,8 @@ export const StyledBackgroundPicture = styled.div<IProfilePictureProps>`
     border-radius: 100%;
     font-family: "Inter";
     font-style: normal;
-    color: #FFFFFF;
-    background-color: var(${(props) => props.BackGroundcolor});
+    color: #ffffff;
+    background-color: var(${(props) => props.backgroundColor});
     width: ${(props) => props.widthAndHeight};
     height: ${(props) => props.widthAndHeight};
     font-size: ${(props) => props.fontSize};

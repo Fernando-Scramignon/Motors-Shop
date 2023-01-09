@@ -4,6 +4,7 @@ import ModalCreateAnnouncement from "../CreateAnnouncementModal";
 import { useState } from "react";
 
 import { limitString } from "../../utils";
+import UserProfilePicture from "../userProfilePicture";
 
 interface IProfileProps {
     isAdvertiser: boolean;
@@ -24,7 +25,11 @@ function ProfileCard({
         <>
             <StyledCard>
                 <div className="profileNameDiv">
-                    <div className="profileNameDiv__icon">{avatar}</div>
+                    <UserProfilePicture
+                        widthAndHeight="104px"
+                        fontSize="36px"
+                        name={avatar}
+                    />
                     <div className="profileNameDiv__name">
                         <h2>{username && limitString(username, 19)}</h2>
                         <Button

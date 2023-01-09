@@ -4,11 +4,8 @@ import Comments from "../../components/Comments";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import UserProfilePicture from "../../components/userProfilePicture";
-import {
-    IComment,
-    IFullProduct,
-    ProductContext,
-} from "../../providers/product";
+import { IComment } from "../../providers/comment";
+import { IFullProduct, ProductContext } from "../../providers/product";
 import {
     StyledProductPage,
     StyledProductsInfo,
@@ -46,7 +43,6 @@ function ProductPage() {
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
 
-    console.log(seller);
     useEffect(() => {
         getProductById(id!).then((res) => {
             setProduct(res!);
@@ -115,7 +111,9 @@ function ProductPage() {
                             <button
                                 onClick={() => {
                                     window.scrollTo({ top: 0 });
-                                    navigate("/profileViewUser");
+                                    navigate(
+                                        `/profileViewUser/${product.user.id}`
+                                    );
                                 }}
                             >
                                 Ver todos anuncios

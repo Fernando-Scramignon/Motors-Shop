@@ -69,6 +69,7 @@ export interface IFullUser extends ISimpleUser {
 export interface IUserProfile {
     id: string;
     name: string;
+    description: string;
     isAdvertiser: boolean;
     products: ISimpleProduct[];
 }
