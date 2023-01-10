@@ -4,13 +4,11 @@ import UnderHeaderBackground from "../../components/UnderHeaderBackground";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProductCardList from "../../components/ProductCardList";
-import ProductCardAuction from "../../components/ProductCardAuction";
 
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { IFullProduct, ProductContext } from "../../providers/product";
 import { UserContext } from "../../providers/user";
-import { useNavigate } from "react-router-dom";
 import ProductCardAuctionList from "../../components/ProductCardAuctionList";
 
 function Home() {
@@ -18,8 +16,6 @@ function Home() {
     const [motos, setMotos] = useState<IFullProduct[]>([]);
     const { listProducts } = useContext(ProductContext);
     const { isAuthenticated } = useContext(UserContext);
-
-    // const leilao: any = useRef();
 
     useEffect(() => {
         listProducts().then((response) => {
@@ -39,8 +35,6 @@ function Home() {
             }
         });
     }, []);
-
-    // console.log(leilao.current.getBoundingClientRect());
 
     return (
         <StyledHomeBody>

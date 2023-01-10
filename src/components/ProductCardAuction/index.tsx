@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 function ProductCardAuction() {
     const navigator = useNavigate();
+
     const [hour, setHour] = useState(Math.floor(Math.random() * 24));
     const [minutes, setMinutes] = useState(Math.floor(Math.random() * 60));
     const [seconds, setSeconds] = useState(Math.floor(Math.random() * 60));
