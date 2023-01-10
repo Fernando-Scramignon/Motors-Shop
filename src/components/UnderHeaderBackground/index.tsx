@@ -1,9 +1,8 @@
 import { StyledBackground, ButtonDiv } from "./style";
 
 import Button from "../Button";
-import { IHeaderProps } from "../../interfaces/header";
 
-function UnderHeaderBackground({ yPositions }: IHeaderProps) {
+function UnderHeaderBackground() {
     return (
         <StyledBackground>
             <h1>Velocidade e experiência em um lugar perfeito para você</h1>
