@@ -19,6 +19,7 @@ import {
     StyledUserDetails,
 } from "./style";
 
+
 interface ISellerProductPage {
     name: string;
     description: string;
@@ -31,14 +32,15 @@ interface IImageResponse {
 
 function ProductPage() {
     const navigate = useNavigate();
-
     const [product, setProduct] = useState<IFullProduct>({} as IFullProduct);
     const [comments, setComments] = useState<IComment[]>([]);
     const [seller, setSeller] = useState<ISellerProductPage>(
         {} as ISellerProductPage
     );
     const [name, setName] = useState<string>("");
-
+    const [convertedPrice, setConvertedPrice] = useState<number>(0);
+    const { id } = useParams();
+    const { getProductById } = useContext(ProductContext);
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
@@ -52,7 +54,7 @@ function ProductPage() {
             setName(res!.user.name);
         });
     }, [convertedPrice]);
-
+    
     return (
         <>
             <Header />
@@ -127,5 +129,4 @@ function ProductPage() {
         </>
     );
 }
-
 export default ProductPage;

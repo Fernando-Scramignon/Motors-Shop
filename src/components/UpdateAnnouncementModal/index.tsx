@@ -4,34 +4,26 @@ import TextArea from "../TextArea";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { StyledModalCreate, StyledSuccessModal } from "./style";
+import {
+    StyledConfirmDeleteModal,
+    StyledModalUpdate,
+    StyledSuccessModal,
+} from "./style";
 import closeIcon from "../../assets/x_modal.png";
 import { useContext, useEffect, useState } from "react";
-import { ProductContext } from "../../providers/product";
+import { ProductContext, IFullProduct } from "../../providers/product";
 import FeedbackModal from "../FeedbackModal";
 import { FieldValues } from "react-hook-form/dist/types/fields";
 
-export interface IProductRequest {
-    title: string;
-    year: number;
-    km: number;
-    price: number;
-    description: string;
-    vehicle_type: string;
-    announcement_type: string;
-    published: boolean;
-    cover_image: string;
-    images: string[];
-}
-
-interface IModalCreateAnnouncement {
+interface IUpdateAnnouncementModalProps {
     modalOpen: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    product_id: string;
 }
 
 function isValidUrl(url: string) {
     try {
-        if (url == undefined) {
+        if (url == undefined || url == "") {
             return true;
         }
         new URL(url);
@@ -41,19 +33,25 @@ function isValidUrl(url: string) {
     return true;
 }
 
-function ModalCreateAnnouncement({
+function UpdateAnnouncementModal({
     modalOpen,
     setModalOpen,
-}: IModalCreateAnnouncement) {
+    product_id,
+}: IUpdateAnnouncementModalProps) {
     const [vehicle_type, setVehicle_type] = useState("Carro");
     const [announcement_type, setAnnouncement_type] = useState("Venda");
+    const [published, setPublished] = useState<boolean>(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
-    const [sucess, setSucess] = useState(false);
+    const [successUpdate, setSuccessUpdate] = useState(false);
+    const [successDelete, setSuccessDelete] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState(false);
     const [urlsCounts, setUrlsCounts] = useState<number[]>([]);
-    const { createProduct, generateChange } = useContext(ProductContext);
+    const { updateProduct, deleteProduct, getProductById, generateChange } =
+        useContext(ProductContext);
+    const [product, setProduct] = useState<IFullProduct>({} as IFullProduct);
 
     function handleResize() {
-        if (window.innerWidth >= 425) {
+        if (window.innerWidth >= 426) {
             return setIsDesktop(true);
         }
         return setIsDesktop(false);
@@ -63,40 +61,55 @@ function ModalCreateAnnouncement({
         window.addEventListener("resize", handleResize);
     });
 
+    useEffect(() => {
+        modalOpen &&
+            getProductById(product_id).then((res) => {
+                if (res) {
+                    setProduct(res);
+                    setAnnouncement_type(res.announcement_type);
+                    setVehicle_type(res.vehicle_type);
+                    setPublished(res.published);
+                }
+            });
+    }, [modalOpen]);
+
     const formSchema = yup.object().shape({
-        title: yup.string().required("Título é um campo obrigatório"),
+        title: yup.string().notRequired(),
         year: yup
             .number()
             .typeError("O campo Ano deve conter apenas números")
-            .required("Ano é um campo obrigatório")
             .positive("O campo Ano deve conter apenas números positivos")
-            .integer("O campo Ano deve conter apenas números inteiros"),
+            .integer("O campo Ano deve conter apenas números inteiros")
+            .nullable()
+            .transform((_, val) => (val !== "" ? Number(val) : null)),
         km: yup
             .number()
             .typeError("O campo Quilometragem deve conter apenas números")
-            .required("Quilometragem é um campo obrigatório")
+            .nullable()
             .positive(
                 "O campo Quilometragem deve conter apenas números positivos"
-            ),
+            )
+            .transform((_, val) => (val !== "" ? Number(val) : null)),
         price: yup
             .number()
             .typeError("O campo Preço deve conter apenas números")
-            .required("Preço é um campo obrigatório")
             .positive("O campo Preço deve conter apenas números positivos")
-            .integer("O campo Preço deve conter apenas números inteiros"),
-        description: yup.string().required("Descrição é um campo obrigatório"),
+            .integer("O campo Preço deve conter apenas números inteiros")
+            .nullable()
+            .transform((_, val) => (val !== "" ? Number(val) : null)),
+        description: yup.string().notRequired(),
         cover_image: yup
             .string()
-            .required("Imagem da Capa é um campo obrigatório")
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
-            ),
+            )
+            .notRequired(),
         images: yup
             .string()
-            .required("1º Imagem da galeria é um campo obrigatório")
             .test("is-url-valid", "A URL não é válida", (value) =>
                 isValidUrl(value as string)
-            ),
+            )
+            .notRequired(),
         images0: yup
             .string()
             .test("is-url-valid", "A URL não é válida", (value) =>
@@ -133,8 +146,8 @@ function ModalCreateAnnouncement({
         register,
         handleSubmit,
         formState: { errors },
-        watch,
         reset,
+        watch,
     } = useForm({
         resolver: yupResolver(formSchema),
     });
@@ -143,7 +156,10 @@ function ModalCreateAnnouncement({
         return (
             Object.keys(errors).length == 0 &&
             JSON.stringify(watch()) !== "{}" &&
-            Object.values(watch()).every((value) => value !== "")
+            (Object.values(watch()).some((value) => value !== "") ||
+                product.announcement_type !== announcement_type ||
+                product.published !== published ||
+                product.vehicle_type !== vehicle_type)
         );
     }
 
@@ -156,10 +172,10 @@ function ModalCreateAnnouncement({
             data.images3,
             data.images4,
         ].filter((img: string | undefined) => {
-            return img != undefined;
+            return img != undefined && img !== "";
         });
 
-        const RequestData = {
+        const fieldValues = {
             title: data.title,
             year: data.year,
             km: data.km,
@@ -167,16 +183,24 @@ function ModalCreateAnnouncement({
             description: data.description,
             vehicle_type: vehicle_type,
             announcement_type: announcement_type,
-            published: false,
+            published: published,
             cover_image: data.cover_image,
             images: data.images,
         };
 
+        const requestData = Object.entries(fieldValues).reduce(
+            (acc, value) =>
+                value[1] !== "" && value[1] !== null && value[1].length !== 0
+                    ? { ...acc, [value[0]]: value[1] }
+                    : acc,
+            {}
+        );
+
         setModalOpen(false);
 
-        await createProduct(RequestData).then((res) => {
+        await updateProduct(product_id, requestData).then((res) => {
             if (res) {
-                setSucess(true);
+                setSuccessUpdate(true);
                 setUrlsCounts([]);
                 reset();
                 generateChange();
@@ -184,12 +208,99 @@ function ModalCreateAnnouncement({
         });
     }
 
+    function deleteAd() {
+        setConfirmDelete(false);
+
+        deleteProduct(product_id).then((res) => {
+            if (res) {
+                setSuccessDelete(true);
+            }
+        });
+    }
+
     return (
         <>
-            <FeedbackModal state={sucess} setState={setSucess} title="Sucesso!">
+            <FeedbackModal
+                state={confirmDelete}
+                setState={setConfirmDelete}
+                title="Excluir anúncio"
+            >
+                <StyledConfirmDeleteModal>
+                    <h3 className="modalConfirmDelete__h3--subtitle">
+                        Tem certeza que deseja remover este anúncio?
+                    </h3>
+
+                    <p className="modalConfirmDelete__p--description">
+                        Essa ação não pode ser desfeita. Isso excluirá
+                        permanentemente seu anúncio e removerá esses dados de
+                        nossos servidores.
+                    </p>
+
+                    <div className="modalConfirmDelete__div--container">
+                        <Button
+                            backgroundcolor="var(--grey-6)"
+                            width="26.7%"
+                            height="48px"
+                            type="button"
+                            border="none"
+                            color="var(--grey-2)"
+                            hover={{
+                                backgroundColorHover: "var(--grey-5)",
+                                colorHover: "var(--grey-2)",
+                                border: "none",
+                            }}
+                            size={isDesktop ? "big" : "small"}
+                            onFunction={() => {
+                                setConfirmDelete(false);
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            backgroundcolor="var(--alert-3)"
+                            width="44.8%"
+                            height="48px"
+                            type="button"
+                            border="none"
+                            color="var(--alert-1)"
+                            hover={{
+                                backgroundColorHover: "var(--alert-2)",
+                                colorHover: "var(--alert-1)",
+                                border: "none",
+                            }}
+                            size={isDesktop ? "big" : "small"}
+                            onFunction={() => deleteAd()}
+                        >
+                            Sim, excluir anúncio
+                        </Button>
+                    </div>
+                </StyledConfirmDeleteModal>
+            </FeedbackModal>
+            <FeedbackModal
+                state={successDelete}
+                setState={setSuccessDelete}
+                title="Sucesso!"
+                onClose={() => generateChange()}
+            >
                 <StyledSuccessModal>
                     <h3 className="modalSuccess__h3--subtitle">
-                        Seu anúncio foi criado com sucesso!
+                        Seu anúncio foi excluído com sucesso!
+                    </h3>
+
+                    <p className="modalSuccess__p--description">
+                        Agora você poderá fazer novos anúncios e ver seus
+                        negócios crescendo em grande escala
+                    </p>
+                </StyledSuccessModal>
+            </FeedbackModal>
+            <FeedbackModal
+                state={successUpdate}
+                setState={setSuccessUpdate}
+                title="Sucesso!"
+            >
+                <StyledSuccessModal>
+                    <h3 className="modalSuccess__h3--subtitle">
+                        Seu anúncio foi atualizado com sucesso!
                     </h3>
 
                     <p className="modalSuccess__p--description">
@@ -205,11 +316,11 @@ function ModalCreateAnnouncement({
                     setUrlsCounts([]);
                     reset();
                 }}
-                title="Criar anuncio"
+                title="Editar anúncio"
                 closeIconMarginRight="0px"
                 bodyPaddingRight="30px"
             >
-                <StyledModalCreate>
+                <StyledModalUpdate>
                     <h4>Tipo de Anuncio</h4>
                     <div className="containerButtons">
                         <Button
@@ -292,17 +403,21 @@ function ModalCreateAnnouncement({
                         <Input
                             label="Título"
                             name="title"
-                            placeholder="Digitar título"
+                            placeholder={product.title ? product.title : "..."}
                             type="text"
                             register={register}
                             errors={errors}
                         />
-                        <div className="createProductModal__div--numbersContainer">
+                        <div className="updateProductModal__div--numbersContainer">
                             <Input
                                 label="Ano"
                                 name="year"
-                                placeholder="Digitar ano"
-                                type="number"
+                                placeholder={
+                                    product.year
+                                        ? product.year.toString()
+                                        : "..."
+                                }
+                                type="text"
                                 register={register}
                                 errors={errors}
                                 width={isDesktop ? "100%" : "48%"}
@@ -310,8 +425,10 @@ function ModalCreateAnnouncement({
                             <Input
                                 label="Quilometragem"
                                 name="km"
-                                placeholder="0"
-                                type="number"
+                                placeholder={
+                                    product.km ? product.km.toString() : "..."
+                                }
+                                type="text"
                                 register={register}
                                 errors={errors}
                                 width={isDesktop ? "100%" : "48%"}
@@ -319,7 +436,17 @@ function ModalCreateAnnouncement({
                             <Input
                                 label="Preço"
                                 name="price"
-                                placeholder="Digitar preço"
+                                placeholder={
+                                    product.price
+                                        ? (product.price / 100).toLocaleString(
+                                              "pt-br",
+                                              {
+                                                  style: "currency",
+                                                  currency: "BRL",
+                                              }
+                                          )
+                                        : "..."
+                                }
                                 type="text"
                                 register={register}
                                 errors={errors}
@@ -330,7 +457,11 @@ function ModalCreateAnnouncement({
                             label="Descrição"
                             width=""
                             height="50px"
-                            placeholder="Digitar descrição"
+                            placeholder={
+                                product.description
+                                    ? product.description
+                                    : "..."
+                            }
                             name="description"
                             register={register}
                             errors={errors}
@@ -414,11 +545,88 @@ function ModalCreateAnnouncement({
                                 Moto
                             </Button>
                         </div>
+                        <h4 className="published">Publicado</h4>
+                        <div className="containerButtons">
+                            <Button
+                                backgroundcolor={
+                                    published
+                                        ? "var(--brand-1)"
+                                        : "var(--white-fixed)"
+                                }
+                                width="100%"
+                                height="48px"
+                                type="button"
+                                border={
+                                    published
+                                        ? "none"
+                                        : "1.5px solid var(--grey-4)"
+                                }
+                                color={
+                                    published
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-0)"
+                                }
+                                hover={{
+                                    backgroundColorHover: published
+                                        ? "var(--brand-2)"
+                                        : "var(--grey-1)",
+                                    colorHover: published
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-10)",
+                                    border: "none",
+                                }}
+                                size="big"
+                                onFunction={() => {
+                                    setPublished(true);
+                                }}
+                            >
+                                Sim
+                            </Button>
+                            <Button
+                                backgroundcolor={
+                                    !published
+                                        ? "var(--brand-1)"
+                                        : "var(--white-fixed)"
+                                }
+                                width="100%"
+                                height="48px"
+                                type="button"
+                                border={
+                                    !published
+                                        ? "none"
+                                        : "1.5px solid var(--grey-4)"
+                                }
+                                color={
+                                    !published
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-0)"
+                                }
+                                hover={{
+                                    backgroundColorHover: !published
+                                        ? "var(--brand-2)"
+                                        : "var(--grey-1)",
+                                    colorHover: !published
+                                        ? "var(--white-fixed)"
+                                        : "var(--grey-10)",
+                                    border: "none",
+                                }}
+                                size="big"
+                                onFunction={() => {
+                                    setPublished(false);
+                                }}
+                            >
+                                Não
+                            </Button>
+                        </div>
 
                         <Input
                             label="Imagem da Capa"
                             name="cover_image"
-                            placeholder="Inserir URL da imagem"
+                            placeholder={
+                                product.cover_image
+                                    ? product.cover_image
+                                    : "..."
+                            }
                             type="text"
                             register={register}
                             errors={errors}
@@ -427,13 +635,17 @@ function ModalCreateAnnouncement({
                         <Input
                             label="1º Imagem da galeria"
                             name="images"
-                            placeholder="Inserir URL da imagem"
+                            placeholder={
+                                product.images
+                                    ? product.images[0].url
+                                    : "Inserir URL da imagem"
+                            }
                             type="text"
                             register={register}
                             errors={errors}
                         />
 
-                        {urlsCounts.map((element, index) => {
+                        {urlsCounts.map((_, index) => {
                             return (
                                 <>
                                     {index ==
@@ -468,7 +680,12 @@ function ModalCreateAnnouncement({
                                             index + 2
                                         }º Imagem da galeria`}
                                         name={`images${index}`}
-                                        placeholder="Inserir URL da imagem"
+                                        placeholder={
+                                            product.images &&
+                                            product.images[index + 1]
+                                                ? product.images[index + 1].url
+                                                : "Inserir URL da imagem"
+                                        }
                                         type="text"
                                         register={register}
                                         errors={errors}
@@ -514,7 +731,7 @@ function ModalCreateAnnouncement({
                         <div className="containerButtonsFinal">
                             <Button
                                 backgroundcolor="var(--grey-6)"
-                                width="126px"
+                                width={isDesktop ? "56%" : "50%"}
                                 height="48px"
                                 type="button"
                                 border="none"
@@ -524,19 +741,20 @@ function ModalCreateAnnouncement({
                                     colorHover: "var(--grey-2)",
                                     border: "none",
                                 }}
-                                size="big"
+                                size={isDesktop ? "big" : "small"}
                                 onFunction={() => {
                                     setModalOpen(false);
+                                    setConfirmDelete(true);
                                     setUrlsCounts([]);
                                     reset();
                                 }}
                             >
-                                Cancelar
+                                Excluir anúncio
                             </Button>
                             {buttonIsAble() ? (
                                 <Button
                                     backgroundcolor="var(--brand-1)"
-                                    width="193px"
+                                    width={isDesktop ? "41%" : "50%"}
                                     height="48px"
                                     type="submit"
                                     border="none"
@@ -546,21 +764,21 @@ function ModalCreateAnnouncement({
                                         colorHover: "var(--white-fixed)",
                                         border: "none",
                                     }}
-                                    size="big"
+                                    size={isDesktop ? "big" : "small"}
                                 >
-                                    Criar anúncio
+                                    Salvar alterações
                                 </Button>
                             ) : (
                                 <button className="disableButton" disabled>
-                                    Criar anúncio
+                                    Salvar alterações
                                 </button>
                             )}
                         </div>
                     </form>
-                </StyledModalCreate>
+                </StyledModalUpdate>
             </FeedbackModal>
         </>
     );
 }
 
-export default ModalCreateAnnouncement;
+export default UpdateAnnouncementModal;

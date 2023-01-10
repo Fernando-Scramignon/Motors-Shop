@@ -10,7 +10,7 @@ import ProductCardList from "../../components/ProductCardList";
 
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../providers/user";
-import { ISimpleProduct } from "../../providers/product";
+import { ISimpleProduct, ProductContext } from "../../providers/product";
 import { useNavigate } from "react-router-dom";
 
 function ProfileViewAdmin() {
@@ -20,6 +20,7 @@ function ProfileViewAdmin() {
     const [avatar, setAvatar] = useState<string>("...");
     const [description, setDescription] = useState<string>("");
     const { getUserById } = useContext(UserContext);
+    const { change } = useContext(ProductContext);
 
     const navigate = useNavigate();
 
@@ -57,7 +58,7 @@ function ProfileViewAdmin() {
                 }
             }
         );
-    }, []);
+    }, [change]);
 
     return (
         <StyledAdminProfileBody>
