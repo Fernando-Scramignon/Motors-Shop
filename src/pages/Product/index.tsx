@@ -4,11 +4,8 @@ import Comments from "../../components/Comments";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import UserProfilePicture from "../../components/userProfilePicture";
-import {
-    IComment,
-    IFullProduct,
-    ProductContext,
-} from "../../providers/product";
+import { IComment } from "../../providers/comment";
+import { IFullProduct, ProductContext } from "../../providers/product";
 import {
     StyledProductPage,
     StyledProductsInfo,
@@ -21,32 +18,25 @@ import {
     StyledImages,
     StyledUserDetails,
 } from "./style";
-
 interface ISellerProductPage {
     name: string;
     description: string;
     id: string;
 }
-
 interface IImageResponse {
     url: string;
 }
-
 function ProductPage() {
     const navigate = useNavigate();
-
     const [product, setProduct] = useState<IFullProduct>({} as IFullProduct);
     const [comments, setComments] = useState<IComment[]>([]);
     const [seller, setSeller] = useState<ISellerProductPage>(
         {} as ISellerProductPage
     );
     const [name, setName] = useState<string>("");
-
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
-
-    console.log(seller);
     useEffect(() => {
         getProductById(id!).then((res) => {
             setProduct(res!);
@@ -56,7 +46,6 @@ function ProductPage() {
             setName(res!.user.name);
         });
     }, [convertedPrice]);
-
     return (
         <>
             <Header />
@@ -109,13 +98,14 @@ function ProductPage() {
                                 widthAndHeight="77px"
                                 fontSize="26.6538px"
                             />
-
                             <h6>{name}</h6>
                             <p className="description">{seller.description}</p>
                             <button
-                                onClick={() =>
+                                onClick={() => {
                                     window.scrollTo({ top: 0 });
-                                    navigate(`/profileViewUser/${seller.id}`)
+                                    navigate(
+                                        `/profileViewUser/${product.user.id}`
+                                    );
                                 }}
                             >
                                 Ver todos anuncios
@@ -129,5 +119,4 @@ function ProductPage() {
         </>
     );
 }
-
 export default ProductPage;
