@@ -4,13 +4,12 @@ import UnderHeaderBackground from "../../components/UnderHeaderBackground";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProductCardList from "../../components/ProductCardList";
-import ProductCardAuction from "../../components/ProductCardAuction";
 
 import { useState, useEffect, useContext } from "react";
 
 import { IFullProduct, ProductContext } from "../../providers/product";
 import { UserContext } from "../../providers/user";
-import { useNavigate } from "react-router-dom";
+import ProductCardAuctionList from "../../components/ProductCardAuctionList";
 
 function Home() {
     const [cars, setCars] = useState<IFullProduct[]>([]);
@@ -22,11 +21,13 @@ function Home() {
         listProducts().then((response) => {
             if (response) {
                 const carsList = response.filter(
-                    (vehicle) => vehicle.vehicle_type === "Carro"
+                    (vehicle) =>
+                        vehicle.vehicle_type === "Carro" && vehicle.published
                 );
 
                 const bikeList = response.filter(
-                    (vehicle) => vehicle.vehicle_type === "Moto"
+                    (vehicle) =>
+                        vehicle.vehicle_type === "Moto" && vehicle.published
                 );
 
                 setCars(carsList);
@@ -39,17 +40,19 @@ function Home() {
         <StyledHomeBody>
             <Header yPositions={{ carsY: 400, bikesY: 950 }} />
             <UnderHeaderBackground />
-            <ProductCardAuction />
+            <ProductCardAuctionList />
             <ProductListSection>
                 <ProductCardList
+                    id="cars"
                     advertise={false}
-                    showActivity={true}
+                    showActivity={false}
                     title={"Carro"}
                     productList={cars}
                 />
                 <ProductCardList
+                    id="motorcycles"
                     advertise={false}
-                    showActivity={true}
+                    showActivity={false}
                     title={"Moto"}
                     productList={motos}
                 />
