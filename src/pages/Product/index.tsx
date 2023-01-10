@@ -19,7 +19,6 @@ import {
     StyledUserDetails,
 } from "./style";
 
-
 interface ISellerProductPage {
     name: string;
     description: string;
@@ -41,9 +40,6 @@ function ProductPage() {
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
-    const [convertedPrice, setConvertedPrice] = useState<number>(0);
-    const { id } = useParams();
-    const { getProductById } = useContext(ProductContext);
 
     useEffect(() => {
         getProductById(id!).then((res) => {
@@ -54,7 +50,7 @@ function ProductPage() {
             setName(res!.user.name);
         });
     }, [convertedPrice]);
-    
+
     return (
         <>
             <Header />
