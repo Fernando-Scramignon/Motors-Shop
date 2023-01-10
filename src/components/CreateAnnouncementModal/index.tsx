@@ -50,7 +50,7 @@ function ModalCreateAnnouncement({
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 668);
     const [sucess, setSucess] = useState(false);
     const [urlsCounts, setUrlsCounts] = useState<number[]>([]);
-    const { createProduct } = useContext(ProductContext);
+    const { createProduct, generateChange } = useContext(ProductContext);
 
     function handleResize() {
         if (window.innerWidth >= 425) {
@@ -163,7 +163,7 @@ function ModalCreateAnnouncement({
             title: data.title,
             year: data.year,
             km: data.km,
-            price: data.price,
+            price: data.price * 100,
             description: data.description,
             vehicle_type: vehicle_type,
             announcement_type: announcement_type,
@@ -179,6 +179,7 @@ function ModalCreateAnnouncement({
                 setSucess(true);
                 setUrlsCounts([]);
                 reset();
+                generateChange();
             }
         });
     }
