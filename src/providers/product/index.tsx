@@ -34,7 +34,7 @@ export interface ISimpleProduct {
     images: {
         id: string;
         url: string;
-    };
+    }[];
     user: undefined;
 }
 
@@ -81,6 +81,8 @@ interface IProductContextProps {
         data: IProductUpdateRequest
     ) => Promise<ISimpleProduct | undefined>;
     deleteProduct: (product_id: string) => Promise<boolean | undefined>;
+    change: boolean;
+    generateChange: () => void;
 }
 interface IProductProviderProps {
     children: ReactNode;
@@ -93,7 +95,12 @@ export const ProductContext = createContext<IProductContextProps>(
 export const ProductProvider = ({ children }: IProductProviderProps) => {
     const [modalError, setModalError] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const [change, setChange] = useState<boolean>(true);
     const { checkLocalStorage } = useContext(UserContext);
+
+    function generateChange() {
+        setChange(!change);
+    }
 
     async function createProduct(data: IProductCreateRequest) {
         const loginResponse = checkLocalStorage();
@@ -134,21 +141,37 @@ export const ProductProvider = ({ children }: IProductProviderProps) => {
         product_id: string,
         data: IProductUpdateRequest
     ) {
-        return await api
-            .patch(`/products/${product_id}`, data)
-            .then((res) => res.data as ISimpleProduct)
-            .catch((err: IAxiosError) =>
-                showErrors(err, setError, setModalError)
-            );
+        const loginResponse = checkLocalStorage();
+
+        return loginResponse
+            ? await api
+                  .patch(`/products/${product_id}`, data, {
+                      headers: {
+                          Authorization: `Bearer ${loginResponse.token}`,
+                      },
+                  })
+                  .then((res) => res.data as ISimpleProduct)
+                  .catch((err: IAxiosError) =>
+                      showErrors(err, setError, setModalError)
+                  )
+            : undefined;
     }
 
     async function deleteProduct(product_id: string) {
-        return await api
-            .delete(`/products/${product_id}`)
-            .then(() => true)
-            .catch((err: IAxiosError) =>
-                showErrors(err, setError, setModalError)
-            );
+        const loginResponse = checkLocalStorage();
+
+        return loginResponse
+            ? await api
+                  .delete(`/products/${product_id}`, {
+                      headers: {
+                          Authorization: `Bearer ${loginResponse.token}`,
+                      },
+                  })
+                  .then(() => true)
+                  .catch((err: IAxiosError) =>
+                      showErrors(err, setError, setModalError)
+                  )
+            : undefined;
     }
 
     return (
@@ -159,6 +182,8 @@ export const ProductProvider = ({ children }: IProductProviderProps) => {
                 getProductById,
                 updateProduct,
                 deleteProduct,
+                change,
+                generateChange,
             }}
         >
             {children}
