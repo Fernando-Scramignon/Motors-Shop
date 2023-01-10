@@ -42,17 +42,14 @@ function Home() {
             <UnderHeaderBackground />
             <ProductCardAuctionList />
             <ProductListSection>
-                {cars.length === 0 ? (
-                    true
-                ) : (
-                    <ProductCardList
-                        id="cars"
-                        advertise={false}
-                        showActivity={false}
-                        title={"Carro"}
-                        productList={cars}
-                    />
-                )}
+                <ProductCardList
+                    id="cars"
+                    advertise={false}
+                    showActivity={false}
+                    title={"Carro"}
+                    productList={cars}
+                />
+
                 {
                     <ProductCardList
                         id="motorcycles"
