@@ -9,37 +9,48 @@ import Footer from "../../components/Footer";
 import ProfileCard from "../../components/ProfileCard";
 import ProductCardList from "../../components/ProductCardList";
 
-import { IProductCard } from "../../components/ProductCardList";
-import { useEffect, useState } from "react";
+/* import { IProductCard } from "../../components/ProductCardList"; */
+import { useContext, useEffect, useState } from "react";
 
 import { APIRequests } from "../../services/api";
+import { useParams } from "react-router-dom";
+import { IUserProfile, UserContext } from "../../providers/user";
+import { ISimpleProduct } from "../../providers/product";
 
 function ProfileViewUser() {
-    const [cars, setCars] = useState([]);
-    const [motos, setMotos] = useState([]);
+    const [cars, setCars] = useState<ISimpleProduct[]>([]);
+    const [motos, setMotos] = useState<ISimpleProduct[]>([]);
+    const [userView, setUserView] = useState<IUserProfile>({
+        name: "",
+        description: "",
+    } as IUserProfile);
+    const { getUserProfileById } = useContext(UserContext);
+    const { id } = useParams();
+
+    console.log(id);
 
     useEffect(() => {
-        APIRequests.getProducts()
-            .then((response: any) => {
-                const vehiclesList = response.data.map(
-                    (vehicle: IProductCard) => {
-                        vehicle.username = vehicle.user.name;
-                        return vehicle;
-                    }
-                );
+        getUserProfileById(id!)
+            .then((response) => {
+                if (response) {
+                    console.log(response);
+                    const vehiclesList = response!.products;
 
-                const carsList = vehiclesList.filter(
-                    (vehicle: IProductCard) => vehicle.vehicle_type === "Carro"
-                );
+                    const carsList = vehiclesList.filter(
+                        (vehicle) => vehicle.vehicle_type === "Carro"
+                    );
 
-                const bikeList = vehiclesList.filter(
-                    (vehicle: IProductCard) => vehicle.vehicle_type === "Moto"
-                );
+                    const bikeList = vehiclesList.filter(
+                        (vehicle) => vehicle.vehicle_type === "Moto"
+                    );
 
-                setCars(carsList);
-                setMotos(bikeList);
+                    setCars(carsList);
+                    setMotos(bikeList);
+                    setUserView(response);
+                    console.log(response);
+                }
             })
-            .catch((response: any) => console.error(response.message));
+            .catch((response) => console.error(response.message));
     }, []);
 
     return (
@@ -48,11 +59,9 @@ function ProfileViewUser() {
             <ProfileBackground />
             <ProfileCard
                 isAdvertiser={false}
-                username={"Fernando Scramignon"}
-                description={
-                    "lorem ipsum ipsum lorem espadis cordis cardore cat lorem"
-                }
-                avatar={"FS"}
+                username={userView.name}
+                description={userView.description}
+                avatar={userView.name}
             />
             <ProductListSection>
                 <ProductCardList

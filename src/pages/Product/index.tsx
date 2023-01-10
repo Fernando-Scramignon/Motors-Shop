@@ -18,14 +18,18 @@ import {
     StyledImages,
     StyledUserDetails,
 } from "./style";
+
+
 interface ISellerProductPage {
     name: string;
     description: string;
     id: string;
 }
+
 interface IImageResponse {
     url: string;
 }
+
 function ProductPage() {
     const navigate = useNavigate();
     const [product, setProduct] = useState<IFullProduct>({} as IFullProduct);
@@ -37,6 +41,10 @@ function ProductPage() {
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
+    const [convertedPrice, setConvertedPrice] = useState<number>(0);
+    const { id } = useParams();
+    const { getProductById } = useContext(ProductContext);
+
     useEffect(() => {
         getProductById(id!).then((res) => {
             setProduct(res!);
@@ -46,6 +54,7 @@ function ProductPage() {
             setName(res!.user.name);
         });
     }, [convertedPrice]);
+    
     return (
         <>
             <Header />
@@ -98,6 +107,7 @@ function ProductPage() {
                                 widthAndHeight="77px"
                                 fontSize="26.6538px"
                             />
+
                             <h6>{name}</h6>
                             <p className="description">{seller.description}</p>
                             <button
