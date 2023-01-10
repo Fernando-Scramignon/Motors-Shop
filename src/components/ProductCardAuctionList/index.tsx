@@ -9,7 +9,6 @@ function ProductCardAuctionList() {
     const [productCardAuctionList, setProductCardAuctionList] = useState([
         1, 2, 3, 4, 5, 6,
     ]);
-
     useEffect(() => {
         setWidth(carousel.current?.scrollWidth - carousel.current?.offsetWidth);
     }, [carousel.current]);
