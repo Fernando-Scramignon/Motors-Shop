@@ -14,6 +14,7 @@ export interface IProductCardListProps {
     showActivity: boolean;
     advertise: boolean;
     username?: string;
+    id?: string;
 }
 
 function ProductCardList({
@@ -22,6 +23,7 @@ function ProductCardList({
     showActivity,
     advertise,
     username,
+    id,
 }: IProductCardListProps) {
     const carousel: any = useRef();
     const [width, setWidth] = useState(0);
@@ -31,7 +33,7 @@ function ProductCardList({
     }, [carousel.current]);
 
     return (
-        <StyledProductCardList>
+        <StyledProductCardList id={id}>
             <h5>{title}s</h5>
             <motion.ul
                 ref={carousel}

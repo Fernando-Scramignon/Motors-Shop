@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 
 function ProductCardAuction() {
     const navigator = useNavigate();
-    const [hour, setHour] = useState(0);
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(5);
+    const [hour, setHour] = useState(Math.floor(Math.random() * 24));
+    const [minutes, setMinutes] = useState(Math.floor(Math.random() * 60));
+    const [seconds, setSeconds] = useState(Math.floor(Math.random() * 60));
 
     useEffect(() => {
         startTime();
@@ -33,8 +33,6 @@ function ProductCardAuction() {
             }
         }, 1000);
     }
-
-    useEffect(() => {}, []);
 
     return (
         <StyledCard>

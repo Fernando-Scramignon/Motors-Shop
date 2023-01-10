@@ -45,9 +45,11 @@ export const ButtonDiv = styled.div`
 
     gap: 16px;
 
+    a,
     button {
         animation: ${fadeIn} 3000ms;
         width: 100%;
+        text-decoration: none;
     }
 
     @media (min-width: 768px) {

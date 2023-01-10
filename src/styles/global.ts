@@ -57,7 +57,13 @@ export const GlobalStyle = createGlobalStyle`
             display: none;
         }
     }
-    
+    html {
+        scroll-behavior: smooth;
+    }
+    :target {
+        scroll-margin-top: .8em;
+    }
+
     :root {
         --brand-1: #4529E6;
         --brand-2: #5126EA;
