@@ -302,19 +302,3 @@ export const StyledUserDetails = styled.div`
         }
     }
 `;
-
-export const StyledInitialLetters = styled.p`
-    width: 77px;
-    height: 77px;
-    background: var(--brand-1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100px;
-
-    font-family: "Inter", sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 26.6538px;
-    color: var(--white-fixed);
-`;

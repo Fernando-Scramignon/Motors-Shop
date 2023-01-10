@@ -11,7 +11,7 @@ function Router() {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profileViewUser" element={<ProfileViewUser />} />
+            <Route path="/profileViewUser/:id" element={<ProfileViewUser />} />
             <Route path="/profileViewAdmin" element={<ProfileViewAdmin />} />
             <Route
                 path="/profileViewUser/product/:id"
