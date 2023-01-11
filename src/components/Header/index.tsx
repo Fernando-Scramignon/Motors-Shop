@@ -65,6 +65,9 @@ function Header({ yPositions }: IHeaderProps) {
                     setIsAdvertiser(isAdvertiser);
                     setAvatar(avatar);
                     setUsername(res.name);
+                } else {
+                    setIsAuthenticated(false);
+                    window.close();
                 }
             });
         }
