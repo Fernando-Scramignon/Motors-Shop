@@ -19,7 +19,7 @@ export interface IAddressCreateRequest {
     city: string;
     street: string;
     number: string;
-    complement: string;
+    complement?: string;
 }
 
 export interface IAddress extends IAddressCreateRequest {
@@ -35,7 +35,7 @@ export interface IAddressUpdateRequest {
     complement?: string;
 }
 
-export interface IUserCreateRequest {
+export interface IUserCreateRequest extends IAddressCreateRequest {
     name: string;
     email: string;
     password: string;
@@ -44,7 +44,7 @@ export interface IUserCreateRequest {
     birthdate: Date;
     description: string;
     isAdvertiser: boolean;
-    address: IAddressCreateRequest;
+    // address: IAddressCreateRequest;
 }
 
 export interface IBaseUser {

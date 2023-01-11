@@ -25,10 +25,6 @@ import { useNavigate } from "react-router-dom";
 
 import { IUserCreateRequest, UserContext } from "../../providers/user";
 
-interface IRegisterInputs {
-    name: string;
-}
-
 const schema = yup.object({
     name: yup
         .string()
@@ -92,7 +88,7 @@ function Register() {
 
     const { createUser } = useContext(UserContext);
 
-    async function onSubmit(data: any): Promise<void> {
+    async function onSubmit(data: IUserCreateRequest): Promise<void> {
         data.isAdvertiser = isAdvertiser;
         const userData: IUserCreateRequest = data;
 
@@ -105,7 +101,7 @@ function Register() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<IRegisterInputs>({
+    } = useForm<IUserCreateRequest>({
         mode: "onSubmit",
         reValidateMode: "onChange",
         shouldFocusError: false,
