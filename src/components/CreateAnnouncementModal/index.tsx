@@ -167,7 +167,7 @@ function ModalCreateAnnouncement({
             description: data.description,
             vehicle_type: vehicle_type,
             announcement_type: announcement_type,
-            published: false,
+            published: true,
             cover_image: data.cover_image,
             images: data.images,
         };
