@@ -35,29 +35,35 @@ function ModalEditUser({ modalOpen, setModalOpen }: IModalEditUser) {
     const formSchema = yup.object().shape({
         name: yup
             .string()
-            .required("Nome é um campo obrigatório")
-            .max(100, MAX_MESSAGE(100)),
+            .max(100, MAX_MESSAGE(100))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         email: yup
             .string()
             .email("O campo email deve conter um email")
-            .required("Email é um campo obrigatório")
-            .max(100, MAX_MESSAGE(100)),
+            .max(100, MAX_MESSAGE(100))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         cpf: yup
             .string()
-            .required("CPF é um campo obrigatório")
-            .max(14, MAX_MESSAGE(14)),
+            .max(14, MAX_MESSAGE(14))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         phone: yup
             .string()
-            .required("Celular é um campo obrigatório")
-            .max(14, MAX_MESSAGE(14)),
+            .max(14, MAX_MESSAGE(14))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         birthdate: yup
             .date()
             .typeError("O campo data de nascimento deve conter uma data válida")
-            .required("Data de nascimento é um campo obrigatório"),
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         description: yup
             .string()
-            .required("Descrição é um campo obrigatório")
-            .max(300, MAX_MESSAGE(300)),
+            .max(300, MAX_MESSAGE(300))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
     });
 
     const {
@@ -73,16 +79,27 @@ function ModalEditUser({ modalOpen, setModalOpen }: IModalEditUser) {
         return (
             Object.keys(errors).length == 0 &&
             JSON.stringify(watch()) !== "{}" &&
-            Object.values(watch()).every((value) => value !== "")
+            Object.values(watch()).find((element) =>
+                element !== "" ? true : false
+            )
         );
     }
 
     async function EditUser(data: FieldValues) {
-        await updateUser(id!, data).then((resp) => {
-            setSucess(true);
-            setModalOpen(false);
-            reset();
-            generateChange();
+        const requestData = Object.entries(data).reduce(
+            (acc, value) =>
+                value[1] !== "" && value[1] !== null
+                    ? { ...acc, [value[0]]: value[1] }
+                    : acc,
+            {}
+        );
+        setModalOpen(false);
+        await updateUser(id!, requestData).then((resp) => {
+            if (resp) {
+                setSucess(true);
+                reset();
+                generateChange();
+            }
         });
     }
 
