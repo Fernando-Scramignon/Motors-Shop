@@ -38,6 +38,7 @@ function ProductPage() {
     );
     const [name, setName] = useState<string>("");
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
+    const [commentValidation, setCommentValidation] = useState<boolean>(false);
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
 
@@ -49,7 +50,7 @@ function ProductPage() {
             setSeller(res!.user);
             setName(res!.user.name);
         });
-    }, [convertedPrice]);
+    }, [convertedPrice, commentValidation]);
 
     return (
         <>
@@ -119,7 +120,12 @@ function ProductPage() {
                         </StyledUserDetails>
                     </StyledProductUserDetails>
                 </StyledSectionProduct>
-                <Comments comments={comments} user={{ username: "Fernando" }} />
+                <Comments
+                    comments={comments}
+                    user={{ username: name ? name : "Usuário logado" }}
+                    setCommentValidation={setCommentValidation}
+                    commentValidation={commentValidation}
+                />
             </StyledProductPage>
             <Footer />
         </>

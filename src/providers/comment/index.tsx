@@ -13,7 +13,7 @@ export interface ICommentCreateRequest {
 export interface IComment {
     id: string;
     comment: string;
-    created_at: Date;
+    created_at: Date | string;
     user: IBaseUser;
 }
 
