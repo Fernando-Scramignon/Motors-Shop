@@ -7,7 +7,7 @@ interface IInputProps {
     name: string;
     errors: Partial<
         FieldErrorsImpl<{
-            [x: string]: string;
+            [x: string]: string | {};
         }>
     >;
     placeholder: string;

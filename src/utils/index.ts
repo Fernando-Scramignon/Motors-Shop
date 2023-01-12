@@ -10,7 +10,7 @@ export function showErrors(
         `${
             err?.response
                 ? err.response?.data?.message
-                : "check if the server is running"
+                : "Verifique se o servidor está rodando"
         }`
     );
 

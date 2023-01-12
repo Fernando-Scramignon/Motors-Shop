@@ -6,10 +6,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FieldValues } from "react-hook-form/dist/types/fields";
 import Button from "../Button";
 import { StyledModalEditAddress } from "./style";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyledSuccessModal } from "../CreateAnnouncementModal/style";
 import { ProductContext } from "../../providers/product";
-import { UserContext } from "../../providers/user";
+import { IFullUser, UserContext } from "../../providers/user";
 
 export interface IModalEditAddress {
     modalOpen: boolean;
@@ -17,17 +17,27 @@ export interface IModalEditAddress {
 }
 
 function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
-    const { generateChange } = useContext(ProductContext);
-    const { updateUser } = useContext(UserContext);
+    const { generateChange, change } = useContext(ProductContext);
+    const { updateUser, getUserById } = useContext(UserContext);
 
     const [sucess, setSucess] = useState(false);
+    const [userInfo, setUserInfo] = useState({} as IFullUser);
+
     const id = localStorage.getItem("user_id");
+    useEffect(() => {
+        getUserById(id!).then((resp) => setUserInfo(resp!));
+    }, [change]);
 
     function MAX_MESSAGE(charNum: number): string {
         return `Campo precisa ter no máximo ${charNum} caracteres`;
     }
     const formSchema = yup.object().shape({
-        cep: yup.string().max(9, MAX_MESSAGE(9)),
+        cep: yup
+            .string()
+            .max(9, MAX_MESSAGE(9))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null))
+            .matches(/^[0-9]+$/, "Esse campo deve conter apenas números"),
         state: yup
             .string()
             .max(50, MAX_MESSAGE(50))
@@ -47,7 +57,8 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
             .string()
             .max(10, MAX_MESSAGE(10))
             .nullable()
-            .transform((_, val) => (val !== "" ? val : null)),
+            .transform((_, val) => (val !== "" ? val : null))
+            .matches(/^[0-9]+$/, "Esse campo deve conter apenas números"),
         complement: yup
             .string()
             .nullable()
@@ -82,7 +93,7 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
             {}
         );
         setModalOpen(false);
-        await updateUser(id!, requestData).then((resp) => {
+        await updateUser(id!, { address: requestData }).then((resp) => {
             if (resp) {
                 setSucess(true);
                 reset();
@@ -119,7 +130,7 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
                         <Input
                             label="CEP"
                             name="cep"
-                            placeholder="89888.888"
+                            placeholder={userInfo?.address?.cep}
                             type=""
                             register={register}
                             errors={errors}
@@ -128,7 +139,7 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
                             <Input
                                 label="Estado"
                                 name="state"
-                                placeholder="Paraná"
+                                placeholder={userInfo?.address?.state}
                                 type=""
                                 register={register}
                                 errors={errors}
@@ -136,7 +147,7 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
                             <Input
                                 label="Cidade"
                                 name="city"
-                                placeholder="Curitiba"
+                                placeholder={userInfo?.address?.city}
                                 type=""
                                 register={register}
                                 errors={errors}
@@ -145,7 +156,7 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
                         <Input
                             label="Rua"
                             name="street"
-                            placeholder="Rua do paraná"
+                            placeholder={userInfo?.address?.street}
                             type=""
                             register={register}
                             errors={errors}
@@ -154,7 +165,7 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
                             <Input
                                 label="Número"
                                 name="number"
-                                placeholder="1029"
+                                placeholder={userInfo?.address?.number}
                                 type=""
                                 register={register}
                                 errors={errors}
@@ -162,7 +173,11 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
                             <Input
                                 label="Complemento"
                                 name="complement"
-                                placeholder="Apart 12"
+                                placeholder={
+                                    userInfo?.address?.complement
+                                        ? userInfo.address.complement
+                                        : "Complemento"
+                                }
                                 type=""
                                 register={register}
                                 errors={errors}

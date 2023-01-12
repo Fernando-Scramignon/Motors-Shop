@@ -35,7 +35,7 @@ export interface IAddressUpdateRequest {
     complement?: string;
 }
 
-export interface IUserCreateRequest extends IAddressCreateRequest {
+export interface IUserCreateRequest {
     name: string;
     email: string;
     password: string;
@@ -44,7 +44,7 @@ export interface IUserCreateRequest extends IAddressCreateRequest {
     birthdate: Date;
     description: string;
     isAdvertiser: boolean;
-    // address: IAddressCreateRequest;
+    address: IAddressCreateRequest;
 }
 
 export interface IBaseUser {
@@ -98,8 +98,11 @@ interface IUserContextProps {
     createUser: (data: IUserCreateRequest) => Promise<ISimpleUser | undefined>;
     login: (data: ILogin) => Promise<ILoginResponse | undefined>;
     getLocalStorage: () => ILoginResponse | undefined;
-    checkLocalStorage: () => ILoginResponse | undefined;
-    getUserById: (user_id: string) => Promise<IFullUser | undefined>;
+    checkLocalStorage: (modal?: boolean) => ILoginResponse | undefined;
+    getUserById: (
+        user_id: string,
+        modal?: boolean
+    ) => Promise<IFullUser | undefined>;
     getUserProfileById: (user_id: string) => Promise<IUserProfile | undefined>;
     updateUser: (
         user_id: string,
@@ -108,6 +111,11 @@ interface IUserContextProps {
     deleteUser: (user_id: string) => Promise<boolean | undefined>;
     isAuthenticated: boolean;
     setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
+    forgotPassword: (email: string) => Promise<boolean | undefined>;
+    recoverPassword: (
+        token: string,
+        newPassword: string
+    ) => Promise<{ message: string } | undefined>;
 }
 interface IUserProviderProps {
     children: ReactNode;
@@ -154,19 +162,21 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         return id && token ? ({ id, token } as ILoginResponse) : undefined;
     }
 
-    function checkLocalStorage() {
+    function checkLocalStorage(modal: boolean = true) {
         if (getLocalStorage()) {
             return getLocalStorage();
         }
 
-        setError("Usuário não identificado, por favor, faça o login");
-        setModalError(true);
+        if (modal) {
+            setError("Usuário não identificado, por favor, faça o login");
+            setModalError(true);
+        }
 
         return undefined;
     }
 
-    async function getUserById(user_id: string) {
-        const loginResponse = checkLocalStorage();
+    async function getUserById(user_id: string, modal: boolean = true) {
+        const loginResponse = checkLocalStorage(modal);
 
         return loginResponse
             ? await api
@@ -177,7 +187,9 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
                   })
                   .then((res) => res.data as IFullUser)
                   .catch((err: IAxiosError) =>
-                      showErrors(err, setError, setModalError)
+                      modal
+                          ? showErrors(err, setError, setModalError)
+                          : undefined
                   )
             : undefined;
     }
@@ -225,9 +237,22 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
             : undefined;
     }
 
-    async function registerUser(userData: ISimpleUser): Promise<AxiosResponse> {
-        const response = await api.post("/users", userData);
-        return response;
+    async function forgotPassword(email: string) {
+        return await api
+            .post("/users/forgot_password", { email })
+            .then(() => true)
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
+    }
+
+    async function recoverPassword(token: string, newPassword: string) {
+        return await api
+            .patch("/users/recover_password", { token, newPassword })
+            .then((res) => res.data as { message: string })
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
     }
 
     return (
@@ -243,6 +268,8 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
                 deleteUser,
                 setIsAuthenticated,
                 isAuthenticated,
+                forgotPassword,
+                recoverPassword,
             }}
         >
             {children}

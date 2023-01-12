@@ -24,14 +24,6 @@ export const StyledLogin = styled.div`
         align-items: center;
 
         animation: ${appearFromLeft} 1s;
-
-        a {
-            text-decoration: underline 0.05em rgba(0, 0, 0, 0);
-            transition: text-decoration-color 300ms;
-            &:hover {
-                text-decoration-color: rgba(0, 0, 0, 1);
-            }
-        }
     }
 
     form div:nth-child(2) {
@@ -49,7 +41,7 @@ export const StyledLogin = styled.div`
         align-self: flex-start;
     }
 
-    .login-link,
+    .form__button--forgotPassword,
     .form__span--divider {
         font-family: "Inter", sans-serif;
         font-weight: 500;
@@ -57,10 +49,20 @@ export const StyledLogin = styled.div`
         color: var(--grey-2);
     }
 
-    .login-link {
+    .form__button--forgotPassword {
+        padding: 0;
+        border: 0;
+        margin: 0;
+        background-color: transparent;
         margin-bottom: 21px;
         align-self: flex-end;
         cursor: pointer;
+
+        text-decoration: underline 0.05em rgba(0, 0, 0, 0);
+        transition: text-decoration-color 300ms;
+        &:hover {
+            text-decoration-color: var(--grey-2);
+        }
     }
 
     .form__span--divider {
@@ -74,6 +76,7 @@ export const StyledSuccessModal = styled.div`
     flex-flow: column nowrap;
     gap: 20px;
     max-width: 472px;
+    width: 83.73vw;
 
     .modalSuccess__h3--subtitle {
         color: var(--grey-1);
@@ -87,6 +90,18 @@ export const StyledSuccessModal = styled.div`
         font-weight: 400;
         font-family: "Inter", sans-serif;
         margin-bottom: 13px;
+        line-height: 28px;
+    }
+`;
+
+export const StyledForgotPasswordModal = styled(StyledSuccessModal)`
+    margin-top: 0;
+
+    .forgotPasswordModal__span--feedback {
+        color: var(--grey-2);
+        font-size: 16px;
+        font-weight: 400;
+        font-family: "Inter", sans-serif;
         line-height: 28px;
     }
 `;

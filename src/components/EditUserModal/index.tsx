@@ -58,7 +58,7 @@ function ModalEditUser({ modalOpen, setModalOpen }: IModalEditUser) {
             .date()
             .typeError("O campo data de nascimento deve conter uma data válida")
             .nullable()
-            .transform((_, val) => (val !== "" ? val : null)),
+            .transform((_, val) => (val !== "" ? new Date(val) : null)),
         description: yup
             .string()
             .max(300, MAX_MESSAGE(300))
@@ -166,10 +166,10 @@ function ModalEditUser({ modalOpen, setModalOpen }: IModalEditUser) {
                         <Input
                             label="Data de nascimento"
                             name="birthdate"
-                            placeholder={String(userInfo.birthdate)}
+                            placeholder=""
                             register={register}
                             errors={errors}
-                            type=""
+                            type="date"
                         />
 
                         <TextArea

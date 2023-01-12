@@ -146,6 +146,8 @@ function ProductPage() {
                         src={urlProduct}
                         style={{
                             backgroundColor: "var(--grey-7)",
+                            width: "83.73vw",
+                            maxWidth: "472px",
                         }}
                     />
                 </FeedbackModal>
