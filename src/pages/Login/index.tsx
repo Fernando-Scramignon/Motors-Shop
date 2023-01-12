@@ -42,7 +42,7 @@ const modalSchema = yup.object({
 function Login() {
     const [success, setSuccess] = useState<boolean>(false);
     const [forgotPasswordModal, setForgotPasswordModal] =
-        useState<boolean>(true);
+        useState<boolean>(false);
     const [emailSent, setEmailSent] = useState<boolean>(false);
     const navigate = useNavigate();
     const { login, setIsAuthenticated, forgotPassword } =
@@ -168,7 +168,7 @@ function Login() {
                 setState={setForgotPasswordModal}
                 state={forgotPasswordModal}
                 title="Esqueci minha senha"
-                onClose={() => emailSent && navigate("/")}
+                onClose={() => emailSent && navigate("/redefinePassword")}
             >
                 <StyledForgotPasswordModal
                     as="form"
