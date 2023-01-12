@@ -188,16 +188,12 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     }
 
     async function getUserProfileById(user_id: string) {
-        const loginResponse = checkLocalStorage();
-
-        return loginResponse
-            ? await api
-                  .get(`/users/${user_id}/profile`)
-                  .then((res) => res.data as IUserProfile)
-                  .catch((err: IAxiosError) =>
-                      showErrors(err, setError, setModalError)
-                  )
-            : undefined;
+        return await api
+            .get(`/users/${user_id}/profile`)
+            .then((res) => res.data as IUserProfile)
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
     }
 
     async function updateUser(user_id: string, data: IUserUpdateRequest) {

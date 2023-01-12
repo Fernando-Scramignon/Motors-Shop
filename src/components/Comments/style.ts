@@ -4,6 +4,25 @@ interface IThemeProps {
     background?: string;
 }
 
+interface ITextAreaProps {
+    widthButton?: string;
+}
+
+interface IButtonDeleteProps {
+    backgroundColor: string;
+    border: string;
+    color: string;
+    backgroundColorHover: string;
+    borderHover: string;
+    colorHover: string;
+}
+
+interface IButtonCommentProps {
+    backgroundColor: string;
+    border: string;
+    color: string;
+}
+
 export const StyledCommentsDiv = styled.div`
     display: flex;
     flex-direction: column;
@@ -95,6 +114,12 @@ export const StyledUsername = styled.div`
         font-weight: 600;
         color: var(--grey-1);
     }
+
+    > .timeComment {
+        font-weight: 400;
+        font-size: 12px;
+        color: var(--grey-3);
+    }
 `;
 
 export const StyledCommentInput = styled.div`
@@ -115,18 +140,19 @@ export const StyledCommentInput = styled.div`
     }
 `;
 
-export const StyledForm = styled.form`
+export const StyledForm = styled.form<ITextAreaProps>`
     display: flex;
     flex-direction: column;
     gap: 24px;
     width: 100%;
     position: relative;
+
     > button {
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 12px 20px;
-        width: 108px;
+        width: ${(prop) => (prop.widthButton ? prop.widthButton : "108px")};
         height: 38px;
         background: var(--brand-1);
         border: 1.5px solid var(--brand-1);
@@ -137,6 +163,11 @@ export const StyledForm = styled.form`
         font-weight: 600;
         font-size: 14px;
         color: var(--white-fixed);
+    }
+
+    > .commentDesconected {
+        background-color: var(--grey-5);
+        border: var(--grey-5);
     }
 
     > textarea {
@@ -224,5 +255,49 @@ export const StyledSuggestions = styled.div`
         > p {
             margin-top: 10px;
         }
+    }
+`;
+
+export const StyledDeleteModalComment = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 30px;
+
+    > p {
+        align-self: flex-start;
+        font-family: "Lexend";
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        color: var(--grey-0);
+    }
+
+    > div {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+`;
+
+export const StyledButtonDeleteComment = styled.button<IButtonDeleteProps>`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    background-color: ${(props) => props.backgroundColor};
+    border: ${(props) => props.border};
+    color: ${(props) => props.color};
+    width: fit-content;
+    height: 48px;
+    border-radius: 4px;
+    padding: 12px 8px;
+
+    &:hover {
+        background-color: ${(props) => props.backgroundColorHover};
+        border: ${(props) => props.borderHover};
+        color: ${(props) => props.colorHover};
     }
 `;

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Comments from "../../components/Comments";
+import FeedbackModal from "../../components/FeedbackModal";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import UserProfilePicture from "../../components/userProfilePicture";
@@ -38,6 +39,9 @@ function ProductPage() {
     );
     const [name, setName] = useState<string>("");
     const [convertedPrice, setConvertedPrice] = useState<number>(0);
+    const [commentValidation, setCommentValidation] = useState<boolean>(false);
+    const [modalProduct, setModalProduct] = useState(false);
+    const [urlProduct, setUrlProduct] = useState("");
     const { id } = useParams();
     const { getProductById } = useContext(ProductContext);
 
@@ -49,7 +53,7 @@ function ProductPage() {
             setSeller(res!.user);
             setName(res!.user.name);
         });
-    }, [convertedPrice]);
+    }, [convertedPrice, commentValidation]);
 
     return (
         <>
@@ -90,7 +94,12 @@ function ProductPage() {
                             <ul>
                                 {product?.images?.map(
                                     ({ url }: IImageResponse) => (
-                                        <li>
+                                        <li
+                                            onClick={() => {
+                                                setModalProduct(true);
+                                                setUrlProduct(url);
+                                            }}
+                                        >
                                             <img src={url} />
                                         </li>
                                     )
@@ -119,7 +128,24 @@ function ProductPage() {
                         </StyledUserDetails>
                     </StyledProductUserDetails>
                 </StyledSectionProduct>
-                <Comments comments={comments} user={{ username: "Fernando" }} />
+                <Comments
+                    comments={comments}
+                    user={{ username: name ? name : "Usuário logado" }}
+                    setCommentValidation={setCommentValidation}
+                    commentValidation={commentValidation}
+                />
+                <FeedbackModal
+                    setState={setModalProduct}
+                    state={modalProduct}
+                    title="Imagem do veículo"
+                >
+                    <img
+                        src={urlProduct}
+                        style={{
+                            backgroundColor: "var(--grey-7)",
+                        }}
+                    />
+                </FeedbackModal>
             </StyledProductPage>
             <Footer />
         </>
