@@ -13,13 +13,14 @@ export const GlobalStyle = createGlobalStyle`
     article, aside, canvas, details, embed,
     figure, figcaption, footer, header, hgroup,
     menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
+    time, mark, audio, video, input {
         margin: 0;
         padding: 0;
         border: 0;
         font-size: 100%;
         font: inherit;
         vertical-align: baseline;
+        box-sizing: border-box;
     }
     article, aside, details, figcaption, figure,
     footer, header, hgroup, menu, nav, section {
@@ -47,10 +48,28 @@ export const GlobalStyle = createGlobalStyle`
         cursor: pointer;
         transition: 0.3s;
     }
-    #root {
-        width: 100vw;
-        height: 100vh;
+
+    a {
+        color: inherit;
+        text-decoration: none;
     }
+
+    body {
+        min-height: 100vh;
+    }
+    
+    .ReactModal__Overlay {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+    :target {
+        scroll-margin-top: .8em;
+    }
+
     :root {
         --brand-1: #4529E6;
         --brand-2: #5126EA;
@@ -67,6 +86,7 @@ export const GlobalStyle = createGlobalStyle`
         --grey-8: #F1F3F5;
         --grey-9: #F8F9FA;
         --grey-10: #FDFDFD;
+        --black: #000000;
         --white-fixed: #FFFFFF;
         --alert-1: #CD2B31;
         --alert-2: #FDD8D8;
@@ -87,4 +107,5 @@ export const GlobalStyle = createGlobalStyle`
         --random-11: #5700E3;
         --random-12: #30007D;
     }
+
 `;
