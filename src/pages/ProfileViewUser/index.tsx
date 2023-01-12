@@ -28,25 +28,23 @@ function ProfileViewUser() {
     const { id } = useParams();
 
     useEffect(() => {
-        getUserProfileById(id!)
-            .then((response) => {
-                if (response) {
-                    const vehiclesList = response!.products;
+        getUserProfileById(id!).then((response) => {
+            if (response) {
+                const vehiclesList = response!.products;
 
-                    const carsList = vehiclesList.filter(
-                        (vehicle) => vehicle.vehicle_type === "Carro"
-                    );
+                const carsList = vehiclesList.filter(
+                    (vehicle) => vehicle.vehicle_type === "Carro"
+                );
 
-                    const bikeList = vehiclesList.filter(
-                        (vehicle) => vehicle.vehicle_type === "Moto"
-                    );
+                const bikeList = vehiclesList.filter(
+                    (vehicle) => vehicle.vehicle_type === "Moto"
+                );
 
-                    setCars(carsList);
-                    setMotos(bikeList);
-                    setUserView(response);
-                }
-            })
-            .catch((response) => console.error(response.message));
+                setCars(carsList);
+                setMotos(bikeList);
+                setUserView(response);
+            }
+        });
     }, []);
 
     return (
@@ -66,7 +64,7 @@ function ProfileViewUser() {
                     advertise={false}
                     showActivity={true}
                     title="Carro"
-                    username="Fernando"
+                    username={userView.name}
                 />
                 <ProductCardList
                     id="motorcycles"
@@ -74,7 +72,7 @@ function ProfileViewUser() {
                     advertise={false}
                     showActivity={true}
                     title="Moto"
-                    username="Fernando"
+                    username={userView.name}
                 />
             </ProductListSection>
             <Footer />

@@ -35,7 +35,7 @@ export interface IAddressUpdateRequest {
     complement?: string;
 }
 
-export interface IUserCreateRequest extends IAddressCreateRequest {
+export interface IUserCreateRequest {
     name: string;
     email: string;
     password: string;
@@ -44,7 +44,7 @@ export interface IUserCreateRequest extends IAddressCreateRequest {
     birthdate: Date;
     description: string;
     isAdvertiser: boolean;
-    // address: IAddressCreateRequest;
+    address: IAddressCreateRequest;
 }
 
 export interface IBaseUser {
@@ -98,8 +98,11 @@ interface IUserContextProps {
     createUser: (data: IUserCreateRequest) => Promise<ISimpleUser | undefined>;
     login: (data: ILogin) => Promise<ILoginResponse | undefined>;
     getLocalStorage: () => ILoginResponse | undefined;
-    checkLocalStorage: () => ILoginResponse | undefined;
-    getUserById: (user_id: string) => Promise<IFullUser | undefined>;
+    checkLocalStorage: (modal?: boolean) => ILoginResponse | undefined;
+    getUserById: (
+        user_id: string,
+        modal?: boolean
+    ) => Promise<IFullUser | undefined>;
     getUserProfileById: (user_id: string) => Promise<IUserProfile | undefined>;
     updateUser: (
         user_id: string,
@@ -159,19 +162,21 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         return id && token ? ({ id, token } as ILoginResponse) : undefined;
     }
 
-    function checkLocalStorage() {
+    function checkLocalStorage(modal: boolean = true) {
         if (getLocalStorage()) {
             return getLocalStorage();
         }
 
-        setError("Usuário não identificado, por favor, faça o login");
-        setModalError(true);
+        if (modal) {
+            setError("Usuário não identificado, por favor, faça o login");
+            setModalError(true);
+        }
 
         return undefined;
     }
 
-    async function getUserById(user_id: string) {
-        const loginResponse = checkLocalStorage();
+    async function getUserById(user_id: string, modal: boolean = true) {
+        const loginResponse = checkLocalStorage(modal);
 
         return loginResponse
             ? await api
@@ -182,7 +187,9 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
                   })
                   .then((res) => res.data as IFullUser)
                   .catch((err: IAxiosError) =>
-                      showErrors(err, setError, setModalError)
+                      modal
+                          ? showErrors(err, setError, setModalError)
+                          : undefined
                   )
             : undefined;
     }

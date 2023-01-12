@@ -52,7 +52,7 @@ function Header() {
         const id = localStorage.getItem("user_id");
         if (!id) setIsAuthenticated(false);
         else {
-            getUserById(id).then((res: IFullUser | undefined) => {
+            getUserById(id, false).then((res: IFullUser | undefined) => {
                 if (res?.name) {
                     const { name, isAdvertiser } = res;
 

@@ -23,7 +23,22 @@ import { useState, useContext } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { IUserCreateRequest, UserContext } from "../../providers/user";
+import {
+    IAddressCreateRequest,
+    IUserCreateRequest,
+    UserContext,
+} from "../../providers/user";
+
+export interface IFormRegister extends IAddressCreateRequest {
+    name: string;
+    email: string;
+    password: string;
+    cpf: string;
+    phone: string;
+    birthdate: Date;
+    description: string;
+    isAdvertiser: boolean;
+}
 
 const schema = yup.object({
     name: yup
@@ -42,7 +57,10 @@ const schema = yup.object({
         .string()
         .max(14, "Limite de 14 caracteres")
         .required("Campo obrigatório"),
-    birthdate: yup.date().required("Campo obrigatório"),
+    birthdate: yup
+        .date()
+        .typeError("Digite uma data válida")
+        .required("Campo obrigatório"),
     description: yup
         .string()
         .max(300, "Limite de 300 caracteres")
@@ -50,7 +68,8 @@ const schema = yup.object({
     cep: yup
         .string()
         .max(10, "Limite de 10 caracteres")
-        .required("Campo obrigatório"),
+        .required("Campo obrigatório")
+        .matches(/^[0-9]+$/, "Esse campo deve conter apenas números"),
     state: yup
         .string()
         .max(50, "Limite de 50 caracteres")
@@ -66,17 +85,16 @@ const schema = yup.object({
     number: yup
         .string()
         .max(10, "Limite de 10 caracteres")
-        .required("Campo obrigatório"),
-    complement: yup
-        .string()
-        .max(200, "Limite de 200 caracteres")
-        .required("Campo obrigatório"),
+        .required("Campo obrigatório")
+        .matches(/^[0-9]+$/, "Esse campo deve conter apenas números"),
+    complement: yup.string().max(200, "Limite de 200 caracteres"),
     password: yup
         .string()
         .max(30, "Limite de 30 caracteres")
         .required("Campo obrigatório"),
     passwordConfirmation: yup
         .string()
+        .required("Campo obrigatório")
         .oneOf([yup.ref("password"), null], "Senhas precisam ser iguais"),
 });
 
@@ -88,9 +106,34 @@ function Register() {
 
     const { createUser } = useContext(UserContext);
 
-    async function onSubmit(data: IUserCreateRequest): Promise<void> {
-        data.isAdvertiser = isAdvertiser;
-        const userData: IUserCreateRequest = data;
+    async function onSubmit(data: IFormRegister): Promise<void> {
+        const {
+            name,
+            email,
+            cpf,
+            phone,
+            birthdate,
+            description,
+            cep,
+            state,
+            city,
+            street,
+            number,
+            complement,
+            password,
+        } = data;
+
+        const userData: IUserCreateRequest = {
+            name,
+            email,
+            cpf,
+            phone,
+            birthdate,
+            description,
+            password,
+            isAdvertiser,
+            address: { cep, state, city, street, number, complement },
+        };
 
         const response = await createUser(userData);
 
@@ -101,10 +144,10 @@ function Register() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<IUserCreateRequest>({
+    } = useForm<IFormRegister>({
         mode: "onSubmit",
         reValidateMode: "onChange",
-        shouldFocusError: false,
+        shouldFocusError: true,
         shouldUnregister: false,
         resolver: yupResolver(schema),
     });
