@@ -245,7 +245,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
 
     async function recoverPassword(token: string, newPassword: string) {
         return await api
-            .post("/users/recover_password", { token, newPassword })
+            .patch("/users/recover_password", { token, newPassword })
             .then((res) => res.data as { message: string })
             .catch((err: IAxiosError) =>
                 showErrors(err, setError, setModalError)
