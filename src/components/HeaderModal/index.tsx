@@ -39,33 +39,41 @@ function HeaderModal({
         <ModalContainer>
             <StyledMobileHeaderModal>
                 <div className="mobileHeaderModal__option">
-                    <span
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            alternateModalIsOpen();
-                            yPositions?.carsY &&
-                                window.scrollTo({
-                                    top: yPositions?.carsY,
-                                    behavior: "smooth",
-                                });
-                        }}
-                    >
-                        Carros
-                    </span>
-                    <span
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            alternateModalIsOpen();
-                            yPositions?.bikesY &&
-                                window.scrollTo({
-                                    top: yPositions?.bikesY,
-                                    behavior: "smooth",
-                                });
-                        }}
-                    >
-                        Motos
-                    </span>
-                    <span>Leilão</span>
+                    <a href="#cars">
+                        <span
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                alternateModalIsOpen();
+                                // yPositions?.carsY &&
+                                //     window.scrollTo({
+                                //         top: yPositions?.carsY,
+                                //         behavior: "smooth",
+                                //     });
+                            }}
+                        >
+                            Carros
+                        </span>
+                    </a>
+                    <a href="#motorcycles">
+                        <span
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                alternateModalIsOpen();
+                            }}
+                        >
+                            Motos
+                        </span>
+                    </a>
+                    <a href="#auction">
+                        <span
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                alternateModalIsOpen();
+                            }}
+                        >
+                            Leilão
+                        </span>
+                    </a>
                 </div>
 
                 <div className="mobileHeaderModal__singUp">

@@ -102,6 +102,7 @@ function Login() {
                     register={loginForm.register}
                     type="password"
                 />
+
                 <button
                     className="form__button--forgotPassword"
                     type="button"
@@ -109,6 +110,7 @@ function Login() {
                 >
                     Esqueci minha senha
                 </button>
+
                 <Button
                     backgroundcolor="var(--brand-1)"
                     border="2px solid var(--brand-1)"

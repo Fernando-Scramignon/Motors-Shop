@@ -48,6 +48,12 @@ export const GlobalStyle = createGlobalStyle`
         cursor: pointer;
         transition: 0.3s;
     }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
     body {
         min-height: 100vh;
     }

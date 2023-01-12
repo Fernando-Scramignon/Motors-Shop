@@ -38,7 +38,7 @@ function Home() {
 
     return (
         <StyledHomeBody>
-            <Header yPositions={{ carsY: 400, bikesY: 950 }} />
+            <Header />
             <UnderHeaderBackground />
             <ProductCardAuctionList />
             <ProductListSection>

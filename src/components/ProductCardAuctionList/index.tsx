@@ -14,7 +14,7 @@ function ProductCardAuctionList() {
     }, [carousel.current]);
 
     return (
-        <StyledProductCardList>
+        <StyledProductCardList id="auction">
             <h5>Leilão</h5>
             <motion.ul
                 ref={carousel}
