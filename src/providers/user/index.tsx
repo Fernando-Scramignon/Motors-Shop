@@ -108,6 +108,11 @@ interface IUserContextProps {
     deleteUser: (user_id: string) => Promise<boolean | undefined>;
     isAuthenticated: boolean;
     setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
+    forgotPassword: (email: string) => Promise<boolean | undefined>;
+    recoverPassword: (
+        token: string,
+        newPassword: string
+    ) => Promise<{ message: string } | undefined>;
 }
 interface IUserProviderProps {
     children: ReactNode;
@@ -229,9 +234,22 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
             : undefined;
     }
 
-    async function registerUser(userData: ISimpleUser): Promise<AxiosResponse> {
-        const response = await api.post("/users", userData);
-        return response;
+    async function forgotPassword(email: string) {
+        return await api
+            .post("/users/forgot_password", { email })
+            .then(() => true)
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
+    }
+
+    async function recoverPassword(token: string, newPassword: string) {
+        return await api
+            .post("/users/recover_password", { token, newPassword })
+            .then((res) => res.data as { message: string })
+            .catch((err: IAxiosError) =>
+                showErrors(err, setError, setModalError)
+            );
     }
 
     return (
@@ -247,6 +265,8 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
                 deleteUser,
                 setIsAuthenticated,
                 isAuthenticated,
+                forgotPassword,
+                recoverPassword,
             }}
         >
             {children}
