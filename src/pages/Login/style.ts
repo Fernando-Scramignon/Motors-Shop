@@ -49,7 +49,7 @@ export const StyledLogin = styled.div`
         align-self: flex-start;
     }
 
-    a,
+    .login-link,
     .form__span--divider {
         font-family: "Inter", sans-serif;
         font-weight: 500;
@@ -57,7 +57,7 @@ export const StyledLogin = styled.div`
         color: var(--grey-2);
     }
 
-    a {
+    .login-link {
         margin-bottom: 21px;
         align-self: flex-end;
         cursor: pointer;

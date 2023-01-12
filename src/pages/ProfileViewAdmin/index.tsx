@@ -63,7 +63,7 @@ function ProfileViewAdmin() {
 
     return (
         <StyledAdminProfileBody>
-            <Header yPositions={{ carsY: 540, bikesY: 1125 }} />
+            <Header />
             <ProfileBackground />
             <ProfileCard
                 isAdvertiser={true}
@@ -77,6 +77,7 @@ function ProfileViewAdmin() {
                 ) : (
                     <>
                         <ProductCardList
+                            id="cars"
                             title="Carro"
                             advertise={true}
                             showActivity={false}
@@ -84,6 +85,7 @@ function ProfileViewAdmin() {
                             username={username}
                         />
                         <ProductCardList
+                            id="motorcycles"
                             title="Moto"
                             advertise={true}
                             showActivity={false}

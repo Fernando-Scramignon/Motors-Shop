@@ -71,7 +71,7 @@ function Login() {
                     register={register}
                     type="password"
                 />
-                <a>Esqueci minha senha</a>
+                <a className="login-link">Esqueci minha senha</a>
                 <Button
                     backgroundcolor="var(--brand-1)"
                     border="2px solid var(--brand-1)"
