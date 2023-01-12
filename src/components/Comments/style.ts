@@ -17,6 +17,12 @@ interface IButtonDeleteProps {
     colorHover: string;
 }
 
+interface IButtonCommentProps {
+    backgroundColor: string;
+    border: string;
+    color: string;
+}
+
 export const StyledCommentsDiv = styled.div`
     display: flex;
     flex-direction: column;
@@ -140,6 +146,7 @@ export const StyledForm = styled.form<ITextAreaProps>`
     gap: 24px;
     width: 100%;
     position: relative;
+
     > button {
         display: flex;
         justify-content: center;
@@ -156,6 +163,11 @@ export const StyledForm = styled.form<ITextAreaProps>`
         font-weight: 600;
         font-size: 14px;
         color: var(--white-fixed);
+    }
+
+    > .commentDesconected {
+        background-color: var(--grey-5);
+        border: var(--grey-5);
     }
 
     > textarea {

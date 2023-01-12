@@ -15,7 +15,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CommentContext, ICommentCreateRequest } from "../../providers/comment";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import buttonComment from "../../assets/Ellipse 3.png";
 import { AiFillEdit } from "react-icons/ai";
@@ -58,6 +58,7 @@ function Comments({
 }: ICommentsProps) {
     // ADICIONAR AUTENTICAÇÃO
 
+    const navigate = useNavigate();
     const { createComment } = useContext(CommentContext);
     const { id } = useParams();
     const userLoggedId = localStorage.getItem("user_id");
@@ -225,17 +226,29 @@ function Comments({
                 </ul>
             </StyledComments>
             <StyledCommentInput>
-                <StyledUsername background={"var(--brand-1)"}>
-                    <span>{setInitialLetters(userLoggedName)}</span>
-                    <p>{userLoggedName}</p>
-                </StyledUsername>
+                {isAuthenticated && (
+                    <StyledUsername background={"var(--brand-1)"}>
+                        <span>{setInitialLetters(userLoggedName)}</span>
+                        <p>{userLoggedName}</p>
+                    </StyledUsername>
+                )}
                 <StyledForm onSubmit={handleSubmit(onSubmitFunction)}>
                     <textarea
                         placeholder="Automóvel muito confortável, foi uma ótima experiência de compra..."
                         {...register("comment")}
                     />
                     <span>{errors.comment?.message as string}</span>
-                    <button type="submit">Comentar</button>
+                    {isAuthenticated ? (
+                        <button type="submit">Comentar</button>
+                    ) : (
+                        <button
+                            className="commentDesconected"
+                            type="button"
+                            onClick={() => navigate("/login")}
+                        >
+                            Comentar
+                        </button>
+                    )}
                 </StyledForm>
                 <StyledSuggestions>
                     <p onClick={() => addSuggestion("Gostei Muito!")}>
