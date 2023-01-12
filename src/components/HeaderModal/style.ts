@@ -4,6 +4,7 @@ import { appearFromTop } from "../../styles/animations";
 export const StyledMobileHeaderModal = styled.div`
     height: fit-content;
     width: 100%;
+    border-radius: 3px;
 
     position: absolute;
     z-index: 11;
@@ -16,6 +17,8 @@ export const StyledMobileHeaderModal = styled.div`
     font-family: "Inter", sans-serif;
     font-weight: 600;
     font-size: 16px;
+
+    box-shadow: 0px 40px 40px 0px #00000017;
 
     .mobileHeaderModal__option {
         display: flex;
@@ -72,6 +75,8 @@ export const StyledDesktopHeaderModal = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    box-shadow: 0px 40px 40px 0px #00000017;
 
     span {
         font-family: "Inter", sans-serif;

@@ -55,7 +55,7 @@ function ProfileViewUser() {
 
     return (
         <StyledProfileBody>
-            <Header yPositions={{ carsY: 450, bikesY: 1000 }} />
+            <Header />
             <ProfileBackground />
             <ProfileCard
                 isAdvertiser={false}
@@ -65,6 +65,7 @@ function ProfileViewUser() {
             />
             <ProductListSection>
                 <ProductCardList
+                    id="cars"
                     productList={cars}
                     advertise={false}
                     showActivity={true}
@@ -72,6 +73,7 @@ function ProfileViewUser() {
                     username="Fernando"
                 />
                 <ProductCardList
+                    id="motorcycles"
                     productList={motos}
                     advertise={false}
                     showActivity={true}

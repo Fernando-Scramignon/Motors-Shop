@@ -16,7 +16,7 @@ import { IHeaderProps } from "../../interfaces/header";
 
 import { ProductContext } from "../../providers/product";
 
-function Header({ yPositions }: IHeaderProps) {
+function Header() {
     const [isDesktop, setIsDesktop] = useState<boolean>(
         window.innerWidth > 768
     );
@@ -103,29 +103,15 @@ function Header({ yPositions }: IHeaderProps) {
                 ) : (
                     <DesktopMenu>
                         <div className="desktopMenu__options">
-                            <span
-                                onClick={() =>
-                                    yPositions?.carsY &&
-                                    window.scrollTo({
-                                        top: yPositions.carsY,
-                                        behavior: "smooth",
-                                    })
-                                }
-                            >
-                                Carros
-                            </span>
-                            <span
-                                onClick={() => {
-                                    yPositions?.bikesY &&
-                                        window.scrollTo({
-                                            top: yPositions.bikesY,
-                                            behavior: "smooth",
-                                        });
-                                }}
-                            >
-                                Motos
-                            </span>
-                            <span>Leilão</span>
+                            <a href="#cars">
+                                <span>Carros</span>
+                            </a>
+                            <a href="#motorcycles">
+                                <span>Motos</span>
+                            </a>
+                            <a href="#auction">
+                                <span>Leilão</span>
+                            </a>
                         </div>
                         <div className="desktopMenu__separator"></div>
                         {isAuthenticated ? (
@@ -172,7 +158,6 @@ function Header({ yPositions }: IHeaderProps) {
                     isAdvertiser={isAdvertiser}
                     isDesktop={isDesktop}
                     alternateModalIsOpen={alternateModalIsOpen}
-                    yPositions={yPositions}
                 />
             )}
         </>
