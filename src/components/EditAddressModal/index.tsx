@@ -6,6 +6,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FieldValues } from "react-hook-form/dist/types/fields";
 import Button from "../Button";
 import { StyledModalEditAddress } from "./style";
+import { useContext, useState } from "react";
+import { StyledSuccessModal } from "../CreateAnnouncementModal/style";
+import { ProductContext } from "../../providers/product";
+import { UserContext } from "../../providers/user";
 
 export interface IModalEditAddress {
     modalOpen: boolean;
@@ -13,31 +17,41 @@ export interface IModalEditAddress {
 }
 
 function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
+    const { generateChange } = useContext(ProductContext);
+    const { updateUser } = useContext(UserContext);
+
+    const [sucess, setSucess] = useState(false);
+    const id = localStorage.getItem("user_id");
+
     function MAX_MESSAGE(charNum: number): string {
         return `Campo precisa ter no máximo ${charNum} caracteres`;
     }
     const formSchema = yup.object().shape({
-        cep: yup
-            .string()
-            .required("CEP é um campo obrigatório")
-            .max(9, MAX_MESSAGE(9)),
+        cep: yup.string().max(9, MAX_MESSAGE(9)),
         state: yup
             .string()
-            .required("Estado é um campo obrigatório")
-            .max(50, MAX_MESSAGE(50)),
+            .max(50, MAX_MESSAGE(50))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         city: yup
             .string()
-            .required("Cidade é um campo obrigatório")
-            .max(50, MAX_MESSAGE(50)),
+            .max(50, MAX_MESSAGE(50))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         street: yup
             .string()
-            .required("Rua é um campo obrigatório")
-            .max(100, MAX_MESSAGE(100)),
+            .max(100, MAX_MESSAGE(100))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
         number: yup
             .string()
-            .required("Número é um campo obrigatório")
-            .max(10, MAX_MESSAGE(10)),
-        complement: yup.string().required("Complemento é um campo obrigatório"),
+            .max(10, MAX_MESSAGE(10))
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
+        complement: yup
+            .string()
+            .nullable()
+            .transform((_, val) => (val !== "" ? val : null)),
     });
 
     const {
@@ -53,128 +67,156 @@ function ModalEditAddress({ modalOpen, setModalOpen }: IModalEditAddress) {
         return (
             Object.keys(errors).length == 0 &&
             JSON.stringify(watch()) !== "{}" &&
-            Object.values(watch()).every((value) => value !== "")
+            Object.values(watch()).find((element) =>
+                element !== "" ? true : false
+            )
         );
     }
 
     async function EditAddress(data: FieldValues) {
-        console.log(data);
+        const requestData = Object.entries(data).reduce(
+            (acc, value) =>
+                value[1] !== " " && value[1] !== "" && value[1] !== null
+                    ? { ...acc, [value[0]]: value[1] }
+                    : acc,
+            {}
+        );
+        setModalOpen(false);
+        await updateUser(id!, requestData).then((resp) => {
+            if (resp) {
+                setSucess(true);
+                reset();
+                generateChange();
+            }
+        });
     }
 
-    console.log(errors);
-
     return (
-        <FeedbackModal
-            state={modalOpen}
-            setState={setModalOpen}
-            title={"Editar endereço"}
-            onClose={() => {
-                reset();
-            }}
-        >
-            <StyledModalEditAddress>
-                <h4>Informações de endereço</h4>
-                <form onSubmit={handleSubmit(EditAddress)}>
-                    <Input
-                        label="CEP"
-                        name="cep"
-                        placeholder="89888.888"
-                        type=""
-                        register={register}
-                        errors={errors}
-                    />
-                    <div className="containerInputs">
-                        <Input
-                            label="Estado"
-                            name="state"
-                            placeholder="Paraná"
-                            type=""
-                            register={register}
-                            errors={errors}
-                        />
-                        <Input
-                            label="Cidade"
-                            name="city"
-                            placeholder="Curitiba"
-                            type=""
-                            register={register}
-                            errors={errors}
-                        />
-                    </div>
-                    <Input
-                        label="Rua"
-                        name="street"
-                        placeholder="Rua do paraná"
-                        type=""
-                        register={register}
-                        errors={errors}
-                    />
-                    <div className="containerInputs">
-                        <Input
-                            label="Número"
-                            name="number"
-                            placeholder="1029"
-                            type=""
-                            register={register}
-                            errors={errors}
-                        />
-                        <Input
-                            label="Complemento"
-                            name="complement"
-                            placeholder="Apart 12"
-                            type=""
-                            register={register}
-                            errors={errors}
-                        />
-                    </div>
-                    <div className="containerButtonsFinal">
-                        <Button
-                            backgroundcolor="var(--grey-6)"
-                            width="126px"
-                            height="48px"
-                            type="button"
-                            border="none"
-                            color="var(--grey-2)"
-                            hover={{
-                                backgroundColorHover: "var(--grey-5)",
-                                colorHover: "var(--grey-2)",
-                                border: "none",
-                            }}
-                            size="big"
-                            onFunction={() => {
-                                setModalOpen(false);
+        <>
+            <FeedbackModal state={sucess} setState={setSucess} title="Sucesso!">
+                <StyledSuccessModal>
+                    <h3 className="modalSuccess__h3--subtitle">
+                        Endereço editado com sucesso!
+                    </h3>
 
-                                reset();
-                            }}
-                        >
-                            Cancelar
-                        </Button>
-                        {buttonIsAble() ? (
+                    <p className="modalSuccess__p--description">
+                        Suas novas informações foram salvas
+                    </p>
+                </StyledSuccessModal>
+            </FeedbackModal>
+
+            <FeedbackModal
+                state={modalOpen}
+                setState={setModalOpen}
+                title={"Editar endereço"}
+                onClose={() => {
+                    reset();
+                }}
+            >
+                <StyledModalEditAddress>
+                    <h4>Informações de endereço</h4>
+                    <form onSubmit={handleSubmit(EditAddress)}>
+                        <Input
+                            label="CEP"
+                            name="cep"
+                            placeholder="89888.888"
+                            type=""
+                            register={register}
+                            errors={errors}
+                        />
+                        <div className="containerInputs">
+                            <Input
+                                label="Estado"
+                                name="state"
+                                placeholder="Paraná"
+                                type=""
+                                register={register}
+                                errors={errors}
+                            />
+                            <Input
+                                label="Cidade"
+                                name="city"
+                                placeholder="Curitiba"
+                                type=""
+                                register={register}
+                                errors={errors}
+                            />
+                        </div>
+                        <Input
+                            label="Rua"
+                            name="street"
+                            placeholder="Rua do paraná"
+                            type=""
+                            register={register}
+                            errors={errors}
+                        />
+                        <div className="containerInputs">
+                            <Input
+                                label="Número"
+                                name="number"
+                                placeholder="1029"
+                                type=""
+                                register={register}
+                                errors={errors}
+                            />
+                            <Input
+                                label="Complemento"
+                                name="complement"
+                                placeholder="Apart 12"
+                                type=""
+                                register={register}
+                                errors={errors}
+                            />
+                        </div>
+                        <div className="containerButtonsFinal">
                             <Button
-                                backgroundcolor="var(--brand-1)"
-                                width="193px"
+                                backgroundcolor="var(--grey-6)"
+                                width="126px"
                                 height="48px"
-                                type="submit"
+                                type="button"
                                 border="none"
-                                color="var(--white-fixed)"
+                                color="var(--grey-2)"
                                 hover={{
-                                    backgroundColorHover: "var(--brand-2)",
-                                    colorHover: "var(--white-fixed)",
+                                    backgroundColorHover: "var(--grey-5)",
+                                    colorHover: "var(--grey-2)",
                                     border: "none",
                                 }}
                                 size="big"
+                                onFunction={() => {
+                                    setModalOpen(false);
+
+                                    reset();
+                                }}
                             >
-                                Criar anúncio
+                                Cancelar
                             </Button>
-                        ) : (
-                            <button className="disableButton" disabled>
-                                Salvar alterações
-                            </button>
-                        )}
-                    </div>
-                </form>
-            </StyledModalEditAddress>
-        </FeedbackModal>
+                            {buttonIsAble() ? (
+                                <Button
+                                    backgroundcolor="var(--brand-1)"
+                                    width="193px"
+                                    height="48px"
+                                    type="submit"
+                                    border="none"
+                                    color="var(--white-fixed)"
+                                    hover={{
+                                        backgroundColorHover: "var(--brand-2)",
+                                        colorHover: "var(--white-fixed)",
+                                        border: "none",
+                                    }}
+                                    size="big"
+                                >
+                                    Salvar alterações
+                                </Button>
+                            ) : (
+                                <button className="disableButton" disabled>
+                                    Salvar alterações
+                                </button>
+                            )}
+                        </div>
+                    </form>
+                </StyledModalEditAddress>
+            </FeedbackModal>
+        </>
     );
 }
 
