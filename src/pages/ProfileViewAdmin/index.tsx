@@ -28,7 +28,7 @@ function ProfileViewAdmin() {
     useEffect(() => {
         getUserById(window.localStorage.getItem("user_id")!).then(
             (response) => {
-                if (response?.isAdvertiser == false) {
+                if (response?.isAdvertiser == false || !response) {
                     navigate("/");
                     return;
                 }

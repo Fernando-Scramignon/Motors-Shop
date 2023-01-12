@@ -8,11 +8,8 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProfileCard from "../../components/ProfileCard";
 import ProductCardList from "../../components/ProductCardList";
-
-/* import { IProductCard } from "../../components/ProductCardList"; */
 import { useContext, useEffect, useState } from "react";
-
-import { APIRequests } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { IUserProfile, UserContext } from "../../providers/user";
 import { ISimpleProduct } from "../../providers/product";
@@ -26,12 +23,16 @@ function ProfileViewUser() {
     } as IUserProfile);
     const { getUserProfileById } = useContext(UserContext);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     console.log(id);
 
     useEffect(() => {
         getUserProfileById(id!)
             .then((response) => {
+                if (!response) {
+                    navigate("/");
+                }
                 if (response) {
                     console.log(response);
                     const vehiclesList = response!.products;

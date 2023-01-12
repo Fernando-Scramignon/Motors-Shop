@@ -43,6 +43,9 @@ function ProductPage() {
 
     useEffect(() => {
         getProductById(id!).then((res) => {
+            if (!res) {
+                navigate("/");
+            }
             setProduct(res!);
             setConvertedPrice(Number(product.price / 100));
             setComments(res!.comments);
