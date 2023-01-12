@@ -56,8 +56,6 @@ function Comments({
     commentValidation,
     setCommentValidation,
 }: ICommentsProps) {
-    // ADICIONAR AUTENTICAÇÃO
-
     const navigate = useNavigate();
     const { createComment } = useContext(CommentContext);
     const { id } = useParams();
@@ -71,9 +69,11 @@ function Comments({
     const [commentId, setCommentId] = useState("");
 
     useEffect(() => {
-        getUserProfileById(userLoggedId!).then((res) =>
-            setUserLoggedName(res!.name)
-        );
+        if (isAuthenticated) {
+            getUserProfileById(userLoggedId!).then((res) =>
+                setUserLoggedName(res!.name)
+            );
+        }
     }, []);
 
     const formSchema = yup.object().shape({

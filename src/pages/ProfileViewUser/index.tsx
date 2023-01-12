@@ -27,13 +27,10 @@ function ProfileViewUser() {
     const { getUserProfileById } = useContext(UserContext);
     const { id } = useParams();
 
-    console.log(id);
-
     useEffect(() => {
         getUserProfileById(id!)
             .then((response) => {
                 if (response) {
-                    console.log(response);
                     const vehiclesList = response!.products;
 
                     const carsList = vehiclesList.filter(
@@ -47,7 +44,6 @@ function ProfileViewUser() {
                     setCars(carsList);
                     setMotos(bikeList);
                     setUserView(response);
-                    console.log(response);
                 }
             })
             .catch((response) => console.error(response.message));

@@ -229,6 +229,7 @@ export const StyledImages = styled.div`
             padding: 27px 7px;
             background: var(--grey-7);
             border-radius: 4px;
+            cursor: pointer;
 
             > img {
                 width: 90px;
