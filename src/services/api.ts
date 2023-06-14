@@ -1,4 +1,5 @@
-import { IProductCard } from "../components/ProductCardList";
+// import { IProductCard } from "../components/ProductCardList";
+import { IFullProduct } from "../providers/product";
 
 import axios, { Axios } from "axios";
 const API_PORT = import.meta.env.VITE_API_PORT;
@@ -13,8 +14,8 @@ const api: Axios = axios.create({
 export class APIRequests {
     static api: Axios = api;
 
-    static async getProducts(): Promise<Array<IProductCard>> {
-        const products: Array<IProductCard> = await this.api.get("/products");
+    static async getProducts(): Promise<Array<IFullProduct>> {
+        const products: Array<IFullProduct> = await this.api.get("/products");
         return products;
     }
 }
